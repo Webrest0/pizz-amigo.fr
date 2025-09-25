@@ -1,44 +1,63 @@
-:root{--bg:#0b0f14;--panel:#121a2b;--line:#243156;--green:#19c37d;--text:#fff;--accent:#ff9f3f;}
+:root{
+  --bg:#0d1117; --panel:#0f1623; --line:#222c40;
+  --txt:#e6ebf5; --muted:#a9b3c7; --green:#19c37d; --accent:#ff9f3f; --danger:#d84b4b;
+}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
-h1,h2{margin:14px 16px}
-.section{padding:0 16px 16px}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,Roboto,Arial}
+a{color:#9bbcff}
 
-/* Hero image */
+/* header */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(180deg,#0f1623,rgba(15,22,35,.85))}
+.brand{font-weight:800;letter-spacing:.5px}
+
+/* hero */
 .hero{
-  height:42vh; min-height:280px;
+  min-height:44vh; display:grid; align-items:end;
   background:url('./images/oven.jpg') center/cover no-repeat fixed;
-  display:flex; align-items:flex-end;
 }
 .hero .hero-content{
-  width:100%; padding:20px 16px;
-  background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.65) 100%);
+  padding:28px 16px;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.66) 100%);
 }
-.hero h1{margin:0 0 6px 0}
-.hero p{margin:0 0 10px 0; opacity:.9}
+.hero h1{margin:0 0 8px 0;font-size:clamp(24px,5vw,44px)}
+.hero p{margin:0;opacity:.9}
 
-/* Menu */
-#menu-list{list-style:none;margin:0;padding:0}
-.menu-item{display:flex;justify-content:space-between;gap:12px;padding:14px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+/* banner info */
+.banner{background:#c43d3d;color:#fff;text-align:center;padding:10px 12px;font-weight:700}
+
+/* sections */
+.section{padding:18px 16px}
+h2{margin:0 0 10px 0;font-size:clamp(20px,3.5vw,28px)}
+.small{opacity:.75}
+
+/* carte */
+#menu-list{list-style:none;margin:0;padding:0;border-radius:12px;overflow:hidden}
+.menu-item{display:flex;justify-content:space-between;gap:12px;padding:14px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+.menu-item:last-child{border-bottom:0}
 .mi-title{font-weight:700}
-.mi-desc{opacity:.85}
-.mi-price{color:#32a852;font-weight:800}
-.btn{cursor:pointer;border-radius:8px;padding:8px 12px;border:1px solid var(--accent);color:var(--accent);background:transparent}
-.btn:hover{background:var(--accent);color:#000}
+.mi-desc{color:var(--muted);font-size:.95rem;margin-top:4px}
+.mi-price{color:#31cc7c;font-weight:800;margin-right:12px}
+.btn{cursor:pointer;border-radius:999px;padding:8px 14px;border:1px solid var(--accent);color:var(--accent);background:transparent}
+.btn:hover{filter:brightness(1.1)}
+.btn.primary{background:var(--green);border:0;color:#000}
+.btn.dark{background:rgba(255,255,255,.1);border:0}
 
-/* Cart bar */
-#cart-bar{
-  position:sticky;bottom:0;left:0;right:0;z-index:10;
-  display:flex;gap:10px;justify-content:center;align-items:center;
-  padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)
-}
+/* cart bar */
+#cart-bar{position:sticky;bottom:0;left:0;right:0;display:flex;gap:12px;align-items:center;justify-content:center;background:rgba(10,12,16,.86);backdrop-filter:blur(6px);padding:10px;border-top:1px solid var(--line)}
 #cart-bar.hidden{display:none}
-#cart-bar .btn{border:0}
-#cart-bar .primary{background:#2f9e44;color:#000}
-#cart-bar .dark{background:rgba(255,255,255,.1);color:#fff}
 
-/* Modal */
-dialog{border:0;border-radius:10px;padding:18px 16px;max-width:520px;width:92%}
-dialog::backdrop{background:rgba(0,0,0,.6)}
-.form label{display:block;margin:10px 0}
-.form input,.form textarea{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,.18);background:#0f1520;color:#fff}
+/* modal checkout */
+dialog{border:1px solid var(--line);background:var(--panel);color:var(--txt);border-radius:12px;padding:14px;max-width:520px;width:92%}
+.ck h3{margin:0 0 10px 0}
+.ck .ck-items{white-space:pre-wrap;margin-bottom:10px}
+.form label{display:block;margin:8px 0}
+.form input,.form textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:#0c1320;color:#fff}
+.form small{color:var(--muted)}
+#close-modal{float:right}
+
+/* info blocks */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+
+/* footer */
+footer{padding:40px 16px;color:var(--muted);text-align:center;border-top:1px solid var(--line);margin-top:24px}
+
