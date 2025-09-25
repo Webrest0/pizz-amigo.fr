@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PIZZ'AMIGO — Montmerle-sur-Saône</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <header class="hero">
@@ -14,26 +14,29 @@
     </div>
   </header>
 
-  <section>
+  <section class="section">
     <h2>Notre carte</h2>
+    <p style="opacity:.8;margin:0 0 8px 0">Boissons : réglez en ligne, <b>choix de la saveur sur place</b>.</p>
     <ul id="menu-list"></ul>
   </section>
 
+  <!-- Barre panier -->
   <div id="cart-bar" class="hidden">
     <span>Panier • <span class="cart-total">0,00</span> €</span>
     <button id="btn-view" class="btn dark">Voir panier</button>
     <button id="btn-checkout" class="btn primary">Passer commande</button>
   </div>
 
+  <!-- Modal commande -->
   <dialog id="checkout">
     <button id="close-modal" class="btn dark" style="float:right">×</button>
     <h3>Finaliser la commande</h3>
-    <p class="ck-items"></p>
+    <p class="ck-items" style="margin-top:0"></p>
     <div class="form">
-      <label>Nom*<input id="ck-name"></label>
-      <label>Téléphone*<input id="ck-phone"></label>
-      <label>Heure de retrait*<input id="ck-slot" value="19:00"></label>
-      <label>Commentaire<textarea id="ck-note"></textarea></label>
+      <label>Nom*<input id="ck-name" placeholder="Votre nom" /></label>
+      <label>Téléphone*<input id="ck-phone" placeholder="06…" /></label>
+      <label>Heure de retrait*<input id="ck-slot" value="19:00" /></label>
+      <label>Commentaire (optionnel)<textarea id="ck-note" placeholder="Sans olives, etc."></textarea></label>
     </div>
     <button id="btn-send" class="btn primary" style="width:100%">Envoyer la commande</button>
   </dialog>
