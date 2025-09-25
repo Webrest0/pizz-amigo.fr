@@ -1,0 +1,23 @@
+body{margin:0;font-family:sans-serif;background:#0b0f14;color:#fff;}
+.hero{background:url('./images/oven.jpg') center/cover no-repeat;height:40vh;display:flex;align-items:end;}
+.hero-content{padding:20px;background:rgba(0,0,0,.5);}
+
+h1,h2{margin:12px 0;}
+ul{list-style:none;padding:0;margin:0;}
+
+.menu-item{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid rgba(255,255,255,.1);}
+.mi-title{font-weight:bold;}
+.mi-price{color:#32a852;font-weight:bold;}
+
+.btn{cursor:pointer;border:1px solid #ff9f3f;background:transparent;color:#ff9f3f;border-radius:6px;padding:6px 12px;}
+.btn.add:hover{background:#ff9f3f;color:#000;}
+
+#cart-bar{position:sticky;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);padding:10px;display:flex;justify-content:center;gap:10px;}
+#cart-bar.hidden{display:none;}
+#cart-bar .btn{border:0;padding:8px 14px;border-radius:6px;}
+#cart-bar .primary{background:#19c37d;color:#000;}
+#cart-bar .dark{background:#444;color:#fff;}
+
+dialog{border:0;border-radius:8px;padding:20px;}
+dialog::backdrop{background:rgba(0,0,0,.7);}
+.form label{display:block;margin:10px 0;}
