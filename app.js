@@ -49,6 +49,7 @@ function setCart(cart){
     console.warn('Cart saving error', error);
   }
   renderCartBar();
+  renderCheckout();
 }
 
 function addToCart(name, price){
@@ -63,18 +64,18 @@ function addToCart(name, price){
 }
 
 function renderMenu(){
-  const list = document.querySelector('#menu');
+  const list = document.querySelector('#menu-list');
   if(!list) return;
   list.innerHTML = '';
   MENU.forEach(item => {
     const li = document.createElement('li');
-    li.className = 'row';
+    li.className = 'item';
     li.innerHTML = `
-      <div>
-        <div class="title">${item.n}</div>
+      <div class="left">
+        <div class="name">${item.n}</div>
         <div class="desc">${item.d}</div>
       </div>
-      <div class="item-actions">
+      <div class="right">
         <div class="price">${€(item.p)}</div>
         <button class="btn add" type="button">Ajouter</button>
       </div>`;
@@ -84,65 +85,79 @@ function renderMenu(){
 }
 
 function renderCartBar(){
-  const bar = document.querySelector('#cart-bar');
-  const list = bar?.querySelector('.cart-list');
-  if(!bar || !list) return;
+  const bar = document.getElementById('cart-bar');
+  const totalNode = document.getElementById('cart-total');
+  if(!bar || !totalNode) return;
 
   const cart = getCart();
   const items = cart.items;
   const total = items.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.qty) || 0), 0);
 
-  list.innerHTML = items.length ? '' : '<em>Panier vide</em>';
-  items.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'cart-row';
-    row.innerHTML = `
-      <span class="name">${item.name}</span>
-      <div class="qty-controls">
-        <button class="btn sm minus" type="button" aria-label="Retirer">−</button>
-        <span class="qty">${item.qty}</span>
-        <button class="btn sm plus" type="button" aria-label="Ajouter">+</button>
-        <button class="btn sm danger trash" type="button" aria-label="Supprimer">🗑️</button>
-      </div>`;
+  totalNode.textContent = €(total);
+  bar.classList.toggle('hidden', items.length === 0);
+}
 
-    row.querySelector('.minus')?.addEventListener('click', () => {
-      item.qty = Math.max(1, (Number(item.qty) || 1) - 1);
-      setCart(cart);
-    });
-    row.querySelector('.plus')?.addEventListener('click', () => {
-      item.qty = (Number(item.qty) || 0) + 1;
-      setCart(cart);
-    });
-    row.querySelector('.trash')?.addEventListener('click', () => {
-      const index = cart.items.indexOf(item);
-      if(index > -1){
-        cart.items.splice(index, 1);
+function renderCheckout(){
+  const linesContainer = document.getElementById('cart-lines');
+  const totalContainer = document.getElementById('ck-total');
+  if(!linesContainer || !totalContainer) return;
+
+  const cart = getCart();
+  const items = cart.items;
+  const total = items.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.qty) || 0), 0);
+
+  linesContainer.innerHTML = '';
+
+  if(!items.length){
+    const empty = document.createElement('li');
+    empty.className = 'cart-line empty';
+    empty.textContent = 'Votre panier est vide.';
+    linesContainer.appendChild(empty);
+  }else{
+    items.forEach((item, index) => {
+      const line = document.createElement('li');
+      line.className = 'cart-line';
+      const lineTotal = (Number(item.price) || 0) * (Number(item.qty) || 0);
+      line.innerHTML = `
+        <span class="count">${index + 1}</span>
+        <div class="line-name">${item.name}</div>
+        <div class="line-total">${€(lineTotal)}</div>
+        <div class="qtybox">
+          <button class="minus" type="button" aria-label="Retirer">−</button>
+          <span class="qty">${item.qty}</span>
+          <button class="plus" type="button" aria-label="Ajouter">+</button>
+        </div>
+        <button class="remove" type="button" aria-label="Supprimer">✕</button>
+      `;
+
+      line.querySelector('.minus')?.addEventListener('click', () => {
+        item.qty = Math.max(1, (Number(item.qty) || 1) - 1);
         setCart(cart);
-      }
+      });
+      line.querySelector('.plus')?.addEventListener('click', () => {
+        item.qty = (Number(item.qty) || 0) + 1;
+        setCart(cart);
+      });
+      line.querySelector('.remove')?.addEventListener('click', () => {
+        const indexInCart = cart.items.indexOf(item);
+        if(indexInCart > -1){
+          cart.items.splice(indexInCart, 1);
+          setCart(cart);
+        }
+      });
+
+      linesContainer.appendChild(line);
     });
+  }
 
-    list.appendChild(row);
-  });
-
-  bar.style.display = items.length ? 'block' : 'none';
-  document.querySelectorAll('.cart-total').forEach(node => {
-    node.textContent = €(total);
-  });
+  totalContainer.textContent = €(total);
 }
 
 function openModal(){
   const dialog = document.getElementById('checkout');
   if(!dialog) return;
 
-  const cart = getCart();
-  const lines = cart.items.map(item => `• ${item.name} × ${item.qty}`).join('<br>');
-  const total = cart.items.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.qty) || 0), 0);
-
-  const linesContainer = document.getElementById('ck-lines');
-  const totalContainer = document.getElementById('ck-total');
-  if(linesContainer) linesContainer.innerHTML = lines || '<em>Panier vide</em>';
-  if(totalContainer) totalContainer.textContent = €(total);
-
+  renderCheckout();
   dialog.showModal();
 }
 
@@ -206,12 +221,12 @@ async function sendOrder(){
 }
 
 function handleSlotSelection(event){
-  const slot = event.target.closest('.slot');
+  const slot = event.target.closest('.time');
   if(!slot) return;
-  const grid = document.getElementById('slot-grid');
+  const grid = document.getElementById('times');
   const input = document.getElementById('ck-slot');
   if(!grid || !input) return;
-  grid.querySelectorAll('.slot').forEach(node => {
+  grid.querySelectorAll('.time').forEach(node => {
     node.classList.remove('active');
     node.removeAttribute('aria-selected');
     node.tabIndex = -1;
@@ -228,7 +243,7 @@ function handleSlotKeydown(event){
     return;
   }
   event.preventDefault();
-  const slot = event.target.closest('.slot');
+  const slot = event.target.closest('.time');
   if(slot){
     handleSlotSelection({ target: slot });
   }
@@ -239,7 +254,7 @@ function bindEvents(){
   document.getElementById('btn-checkout')?.addEventListener('click', openModal);
   document.getElementById('close-modal')?.addEventListener('click', closeModal);
   document.getElementById('btn-send')?.addEventListener('click', sendOrder);
-  const slotGrid = document.getElementById('slot-grid');
+  const slotGrid = document.getElementById('times');
   slotGrid?.addEventListener('click', handleSlotSelection);
   slotGrid?.addEventListener('keydown', handleSlotKeydown);
 
@@ -256,4 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindEvents();
 });
 
-window.addEventListener('storage', renderCartBar);
+window.addEventListener('storage', () => {
+  renderCartBar();
+  renderCheckout();
+});
