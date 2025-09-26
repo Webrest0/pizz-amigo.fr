@@ -4,398 +4,149 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
-  <style>
-    :root {
-      --it-red: #d64545;
-      --it-green: #1ea63a;
-      --it-white: #f4f4f4;
-      --bg: #111;
-      --panel: #1a1a1a;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--it-white);
-    }
-
-    a {
-      color: #6dc7ff;
-    }
-
-    header {
-      padding: 1rem;
-      text-align: center;
-      background: var(--panel);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      color: var(--it-green);
-    }
-
-    header p {
-      margin: .2rem 0 0;
-      font-size: .9rem;
-      color: #ccc;
-    }
-
-    .status {
-      background: var(--it-red);
-      color: white;
-      padding: .6rem;
-      text-align: center;
-      font-weight: bold;
-      border-radius: 6px;
-      margin: 1rem;
-    }
-
-    h2 {
-      margin: 1.5rem 1rem .5rem;
-      color: var(--it-green);
-    }
-
-    .menu {
-      padding: 0 1rem 4.5rem;
-    }
-
-    .item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: .7rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .item span:first-child {
-      font-size: 1rem;
-    }
-
-    .item small {
-      color: #bbb;
-    }
-
-    .item button {
-      background: var(--it-red);
-      border: none;
-      padding: .4rem .8rem;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-      transition: background .2s ease;
-    }
-
-    .item button:hover {
-      background: #bd3434;
-    }
-
-    /* INFOS PRATIQUES */
-    #infos {
-      margin: 2rem 1rem 5rem;
-      padding: 1.2rem 1.4rem;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      line-height: 1.6;
-    }
-
-    #infos h2 {
-      font-size: 1.3rem;
-      margin-bottom: .8rem;
-      color: var(--it-green);
-    }
-
-    #infos ul {
-      margin: 0;
-      padding-left: 1.2rem;
-    }
-
-    #infos li {
-      margin-bottom: .6rem;
-    }
-
-    #infos b {
-      color: var(--it-red);
-    }
-
-    /* PANIER FIXE */
-    .cart-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: var(--panel);
-      padding: .7rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      gap: 1rem;
-    }
-
-    .cart-bar button {
-      background: var(--it-green);
-      border: none;
-      padding: .5rem 1rem;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-      transition: background .2s ease;
-    }
-
-    .cart-bar button:hover {
-      background: #15802b;
-    }
-
-    /* CHECKOUT */
-    #checkout {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--panel);
-      padding: 1.5rem;
-      border-radius: 12px;
-      max-width: 420px;
-      width: 90%;
-      z-index: 1000;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
-    }
-
-    #checkout h2 {
-      margin-bottom: 1rem;
-      color: var(--it-green);
-    }
-
-    #checkout form {
-      display: flex;
-      flex-direction: column;
-      gap: .9rem;
-    }
-
-    #checkout input,
-    #checkout textarea {
-      width: 100%;
-      padding: .6rem .8rem;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: #222;
-      color: var(--it-white);
-    }
-
-    #checkout textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
-
-    #checkout .times {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: .5rem;
-    }
-
-    #checkout .chip {
-      padding: .5rem .6rem;
-      text-align: center;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #333;
-      border: 1px solid transparent;
-      transition: border .2s ease, background .2s ease;
-    }
-
-    #checkout .chip:hover {
-      border-color: var(--it-green);
-      background: rgba(30,166,58,0.12);
-    }
-
-    #checkout .chip.active {
-      border-color: var(--it-green);
-      background: rgba(30,166,58,0.2);
-    }
-
-    #checkout .actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1rem;
-      gap: .6rem;
-    }
-
-    #checkout .actions button {
-      flex: 1;
-      padding: .6rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-    }
-
-    #checkout .actions .cancel {
-      background: #555;
-      color: white;
-    }
-
-    #checkout .actions .submit {
-      background: var(--it-green);
-      color: white;
-    }
-
-    #overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 999;
-    }
-
-    @media (min-width: 640px) {
-      header h1 { font-size: 2rem; }
-      .status { margin: 1.5rem auto; max-width: 640px; }
-      .menu { margin: 0 auto; max-width: 720px; }
-      #infos { margin: 3rem auto 5rem; max-width: 720px; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-    <p>Le goût authentique de l’Italie près de chez vous.</p>
+  <header class="topbar">
+    <div class="brand">PIZZ’AMIGO</div>
+    <div class="top-actions">
+      <a class="btn dark" href="tel:0680480456">06 80 48 04 56</a>
+      <button class="btn primary" id="btn-checkout" type="button">Commander en ligne</button>
+    </div>
   </header>
 
-  <div class="status">🔴 Fermé pour le moment — retrouvez-nous ce week-end !</div>
-
-  <h2>Notre carte</h2>
-  <p style="padding:0 1rem;">Boissons : réglez en ligne, <b>saveur choisie sur place</b>.<br>
-    <i>Supplément (viande / poisson / œuf / fromage) : +1 € par ajout.</i></p>
-
-  <div class="menu">
-    <div class="item"><span><b>Margharita</b><br><small>tomate, emmental</small></span> <span>7,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Chasseur</b><br><small>tomate, emmental, champignons</small></span> <span>8,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Sicilienne</b><br><small>tomate, emmental, anchois</small></span> <span>8,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Napolitaine</b><br><small>tomate, emmental, jambon</small></span> <span>9,00 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Capri</b><br><small>tomate, emmental, jambon, champignons</small></span> <span>9,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Carnivore</b><br><small>tomate, emmental, viande hachée, merguez, œuf</small></span> <span>11,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Savoyarde</b><br><small>tomate, emmental, lardons, reblochon, PDT, crème</small></span> <span>11,00 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Norvégienne</b><br><small>tomate, emmental, saumon fumé, mozzarella</small></span> <span>11,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Canette 33cl</b><br><small>saveur choisie sur place</small></span> <span>1,50 € <button type="button">Ajouter</button></span></div>
-    <div class="item"><span><b>Bouteille 50cl</b><br><small>saveur choisie sur place</small></span> <span>3,00 € <button type="button">Ajouter</button></span></div>
-  </div>
-
-  <div id="infos">
-    <h2>Infos pratiques</h2>
-    <p><b>Nous trouver :</b></p>
-    <ul>
-      <li><b>Vendredi soir</b> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) · 18:00–21:00 — <a href="https://maps.app.goo.gl/kjK3x2f7x7m2b71q7" target="_blank" rel="noopener">Itinéraire</a></li>
-      <li><b>Samedi soir</b> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
-      <li><b>Dimanche soir</b> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
-    </ul>
-    <p><b>Téléphone :</b> <a href="tel:0680480456">06 80 48 04 56</a> · <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
-  </div>
-
-  <div class="cart-bar">
-    <span>Panier · 0,00 €</span>
-    <button type="button" id="open-checkout">Commander</button>
-  </div>
-
-  <div id="overlay"></div>
-
-  <div id="checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
-    <h2 id="checkout-title">Finaliser la commande</h2>
-    <form id="checkout-form">
-      <div><input type="text" placeholder="Votre nom *" required></div>
-      <div><input type="tel" placeholder="Téléphone *" required></div>
-      <div><textarea placeholder="Commentaire (optionnel)"></textarea></div>
-      <div class="times" role="radiogroup" aria-label="Sélection du créneau horaire">
-        <div class="chip" data-time="18:00" role="radio" tabindex="0" aria-checked="false">18:00</div>
-        <div class="chip" data-time="18:30" role="radio" tabindex="-1" aria-checked="false">18:30</div>
-        <div class="chip" data-time="19:00" role="radio" tabindex="-1" aria-checked="false">19:00</div>
-        <div class="chip" data-time="19:30" role="radio" tabindex="-1" aria-checked="false">19:30</div>
-        <div class="chip" data-time="20:00" role="radio" tabindex="-1" aria-checked="false">20:00</div>
-        <div class="chip" data-time="20:30" role="radio" tabindex="-1" aria-checked="false">20:30</div>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <p class="small">Food-truck italien — Montmerle-sur-Saône</p>
+          <h1 id="hero-title">Le goût authentique de l’Italie, tout près de chez vous.</h1>
+          <p>Pizzas artisanales cuites au feu de bois et boissons fraîches. Commandez en ligne et récupérez au camion.</p>
+          <div class="hero-cta">
+            <button class="btn primary" id="btn-hero-order" type="button">Je passe commande</button>
+            <a class="btn orange" href="#menu">Voir la carte</a>
+          </div>
+        </div>
       </div>
-      <input type="hidden" name="slot" id="checkout-slot">
-      <div class="actions">
-        <button type="button" class="cancel" id="close-checkout">Fermer</button>
-        <button type="submit" class="submit">Envoyer la commande</button>
+    </section>
+
+    <section class="section badge" aria-live="polite">
+      <div class="inner">
+        <span class="dot" aria-hidden="true"></span>
+        <span>🔴 Fermé pour le moment — retrouvez-nous ce week-end !</span>
       </div>
+    </section>
+
+    <section class="section" id="menu">
+      <h2>Notre carte</h2>
+      <p class="small">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>. Supplément (viande / poisson / œuf / fromage) : +1 € par ajout.</p>
+      <ul id="menu-list" aria-live="polite"></ul>
+    </section>
+
+    <section class="section" id="infos">
+      <div class="card">
+        <h2>Infos pratiques</h2>
+        <p><strong>Nous trouver :</strong></p>
+        <ul>
+          <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) · 18:00–21:00 — <a href="https://maps.app.goo.gl/kjK3x2f7x7m2b71q7" target="_blank" rel="noopener">Itinéraire</a></li>
+          <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
+          <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
+        </ul>
+        <p><strong>Téléphone :</strong> <a href="tel:0680480456">06 80 48 04 56</a> · <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © PIZZ’AMIGO — Montmerle-sur-Saône · Food-truck italien
+  </footer>
+
+  <div id="cart-bar" class="hidden" role="region" aria-live="polite">
+    <span>Panier · <span class="cart-total">0,00</span> €</span>
+    <button class="btn primary" id="btn-view" type="button">Voir ma commande</button>
+  </div>
+
+  <dialog id="checkout" class="ck" aria-labelledby="checkout-title">
+    <button class="btn dark" id="close-modal" type="button">Fermer</button>
+    <h3 id="checkout-title">Finaliser la commande</h3>
+    <p class="small">Commande n° <span id="ck-order-id">(générée automatiquement)</span></p>
+    <div class="ck-items">Votre panier est vide.</div>
+    <form class="form" method="dialog">
+      <label for="ck-name">Nom et prénom *</label>
+      <input id="ck-name" name="name" type="text" autocomplete="name" required>
+
+      <label for="ck-phone">Téléphone *</label>
+      <input id="ck-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+
+      <label for="ck-slot">Créneau souhaité *</label>
+      <div class="chips" role="radiogroup" aria-label="Choisir un créneau">
+        <div class="chip" data-slot="18:00" role="radio" tabindex="0" aria-checked="false">18:00</div>
+        <div class="chip" data-slot="18:30" role="radio" tabindex="-1" aria-checked="false">18:30</div>
+        <div class="chip" data-slot="19:00" role="radio" tabindex="-1" aria-checked="false">19:00</div>
+        <div class="chip" data-slot="19:30" role="radio" tabindex="-1" aria-checked="false">19:30</div>
+        <div class="chip" data-slot="20:00" role="radio" tabindex="-1" aria-checked="false">20:00</div>
+        <div class="chip" data-slot="20:30" role="radio" tabindex="-1" aria-checked="false">20:30</div>
+      </div>
+      <input id="ck-slot" name="slot" type="hidden" required>
+
+      <label for="ck-note">Commentaire</label>
+      <textarea id="ck-note" name="note" rows="3" placeholder="Allergies, cuisson, etc."></textarea>
+
+      <fieldset>
+        <legend>Paiement</legend>
+        <label><input type="radio" name="paymode" value="en_ligne" checked> Paiement en ligne</label>
+        <label><input type="radio" name="paymode" value="sur_place"> Paiement sur place</label>
+      </fieldset>
+
+      <button class="btn ck-primary" id="btn-send" type="button">Envoyer ma commande</button>
     </form>
-  </div>
+  </dialog>
 
+  <script type="module" src="app.js"></script>
   <script>
-    const checkout = document.getElementById('checkout');
-    const overlay = document.getElementById('overlay');
-    const openBtn = document.getElementById('open-checkout');
-    const closeBtn = document.getElementById('close-checkout');
-    const slotInput = document.getElementById('checkout-slot');
+    const heroOrderBtn = document.getElementById('btn-hero-order');
+    const dialog = document.getElementById('checkout');
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    const slotInput = document.getElementById('ck-slot');
 
-    function openCheckout() {
-      checkout.style.display = 'block';
-      overlay.style.display = 'block';
-      checkout.querySelector('input')?.focus();
+    function selectChip(chip){
+      chips.forEach(el => {
+        const isActive = el === chip;
+        el.classList.toggle('active', isActive);
+        el.setAttribute('aria-checked', String(isActive));
+        el.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+      slotInput.value = chip?.dataset.slot || '';
+      if(chip){ chip.focus(); }
     }
 
-    function closeCheckout() {
-      checkout.style.display = 'none';
-      overlay.style.display = 'none';
-    }
-
-    openBtn?.addEventListener('click', openCheckout);
-    closeBtn?.addEventListener('click', closeCheckout);
-    overlay?.addEventListener('click', closeCheckout);
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && checkout.style.display === 'block') {
-        closeCheckout();
-      }
-    });
-
-    checkout.querySelectorAll('.chip').forEach((chip, index) => {
+    chips.forEach((chip, index) => {
       chip.addEventListener('click', () => selectChip(chip));
       chip.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if(event.key === ' ' || event.key === 'Enter'){
           event.preventDefault();
           selectChip(chip);
         }
-        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        if(event.key === 'ArrowRight' || event.key === 'ArrowDown'){
           event.preventDefault();
-          const next = checkout.querySelectorAll('.chip')[index + 1] || checkout.querySelectorAll('.chip')[0];
+          const next = chips[index + 1] || chips[0];
           next.focus();
         }
-        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        if(event.key === 'ArrowLeft' || event.key === 'ArrowUp'){
           event.preventDefault();
-          const chips = checkout.querySelectorAll('.chip');
           const prev = chips[index - 1] || chips[chips.length - 1];
           prev.focus();
         }
       });
     });
 
-    function selectChip(selected) {
-      checkout.querySelectorAll('.chip').forEach((chip) => {
-        const isActive = chip === selected;
-        chip.classList.toggle('active', isActive);
-        chip.setAttribute('aria-checked', isActive);
-        chip.setAttribute('tabindex', isActive ? '0' : '-1');
-        if (!isActive && !chip.classList.contains('active')) {
-          chip.blur();
-        }
-      });
-      slotInput.value = selected.dataset.time || '';
-      selected.focus();
-    }
+    heroOrderBtn?.addEventListener('click', () => {
+      document.getElementById('btn-checkout')?.click();
+    });
 
-    document.getElementById('checkout-form')?.addEventListener('submit', (event) => {
+    dialog?.addEventListener('cancel', (event) => {
       event.preventDefault();
-      alert("Commande envoyée ! (démo)");
-      closeCheckout();
+      dialog.close();
     });
   </script>
 </body>

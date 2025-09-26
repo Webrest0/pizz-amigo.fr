@@ -15,6 +15,8 @@ const MENU = [
   { name:"Bouteille 50cl (boisson - choix sur place)", price:3.00, desc:"Saveur choisie sur place" },
 ];
 
+let currentOrderId = "";
+
 const cart = {
   items: [], // {name, qty, price}
   get total(){ return this.items.reduce((s,i)=>s+i.price*i.qty,0); },
@@ -70,7 +72,12 @@ function openModal(){
   const dlg = document.querySelector("#checkout");
   if(!dlg) return;
   const items = dlg.querySelector(".ck-items");
-  items.innerHTML = cart.items.map(i=>`• ${i.name} × ${i.qty} — ${€(i.price)} €`).join("<br>");
+  items.innerHTML = cart.items.length
+    ? cart.items.map(i=>`• ${i.name} × ${i.qty} — ${€(i.price)} €`).join("<br>")
+    : "Votre panier est vide.";
+  currentOrderId = genLocalId();
+  const idEl = dlg.querySelector("#ck-order-id");
+  if(idEl) idEl.textContent = currentOrderId;
   dlg.showModal();
 }
 function closeModal(){ document.querySelector("#checkout")?.close(); }
@@ -96,8 +103,10 @@ async function sendOrder(){
     return;
   }
 
+  const orderId = currentOrderId || genLocalId();
+
   const payload = {
-    id: genLocalId(),
+    id: orderId,
     name, phone, slot, note, paymode: pay,
     items: cart.items.map(i=>({name:i.name, qty:i.qty, price:i.price})),
     total: Number(cart.total.toFixed(2)),
@@ -121,6 +130,7 @@ async function sendOrder(){
     }
 
     cart.clear();
+    currentOrderId = "";
     closeModal();
     alert("Commande enregistrée (simulation). Merci !");
   }catch(err){
