@@ -8,29 +8,24 @@
 <style>
 :root{--bg:#0b0f14;--panel:#121a2b;--line:#243156;--muted:#b9c2d6;--green:#19c37d;--orange:#ff9f3f}
 html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
-a{color:#9ec5ff;text-decoration:none}
-a:hover{text-decoration:underline}
+a{color:#9ec5ff;text-decoration:none} a:hover{text-decoration:underline}
 .container{max-width:1050px;margin:0 auto;padding:0 14px}
 
-/* ===== Hero dézoommé ===== */
+/* HERO propre et dézoommé */
 .hero{padding:14px 14px 0}
 .hero-img{width:100%;height:clamp(220px,38vh,360px);border-radius:14px;display:block;object-fit:cover;object-position:center 20%}
-@media (min-width:768px){
-  .hero-img{object-fit:contain;object-position:center;height:48vh;background:#0e1420}
-}
-.hero-overlay{position:relative;margin-top:-28vh;pointer-events:none}
-@media (min-width:768px){ .hero-overlay{margin-top: -36vh} }
+@media (min-width:768px){ .hero-img{object-fit:contain;object-position:center;height:48vh;background:#0e1420} }
+.hero-overlay{position:relative;margin-top:-26vh;pointer-events:none}
+@media (min-width:768px){ .hero-overlay{margin-top:-34vh} }
 .hero-title{position:relative;pointer-events:auto;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.65) 100%);padding:18px;border-radius:12px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
 .brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
 
-/* ===== UI ===== */
+/* UI */
 .badge{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px;margin:12px 0}
 .badge .dot{width:10px;height:10px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
-section{padding:18px 0}
-h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;margin:0 0 6px}
-.lead{opacity:.9;margin:0}
-h2{font-size:26px;margin:8px 0 6px}
+section{padding:18px 0} h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;margin:0 0 6px}
+.lead{opacity:.9;margin:0} h2{font-size:26px;margin:8px 0 6px}
 .note{color:var(--muted)}
 .list{list-style:none;margin:12px 0 26px;padding:0}
 .item{display:flex;justify-content:space-between;gap:16px;padding:16px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -47,11 +42,11 @@ h2{font-size:26px;margin:8px 0 6px}
 .card h3{margin:0 0 10px}
 .small{opacity:.8}
 
-/* ===== Panier ===== */
+/* Panier */
 #cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);z-index:50}
 #cartBar.show{display:flex}
 
-/* ===== Modal ===== */
+/* Modal */
 dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;max-width:720px;width:95%}
 dialog::backdrop{background:rgba(0,0,0,.6)}
 #ck-list{white-space:pre-wrap;background:#0e1420;border:1px dashed #2a3d6b;border-radius:10px;padding:10px;margin:10px 0}
@@ -77,17 +72,43 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 </div>
 
 <div class="container">
-
   <div class="badge"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
 
   <section>
     <h2>Notre carte</h2>
-    <p class="note">
-      Boissons : réglez en ligne, <strong>savour choisie sur place</strong>.<br>
-      <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.
-    </p>
+    <p class="note">Boissons : réglez en ligne, <strong>savour choisie sur place</strong>.<br>
+      <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
 
-    <ul id="menu" class="list"></ul>
+    <!-- ======== CARTE STATIQUE ======== -->
+    <ul id="menu" class="list">
+      <!-- PIZZAS -->
+      <li class="item" data-name="Margharita" data-price="7.5"><div class="it-left"><div class="it-title">Margharita</div><div class="it-desc">tomate, emmental</div></div><div class="it-right"><div class="price">7,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Chasseur" data-price="8.5"><div class="it-left"><div class="it-title">Chasseur</div><div class="it-desc">tomate, emmental, champignons</div></div><div class="it-right"><div class="price">8,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Sicilienne" data-price="8.5"><div class="it-left"><div class="it-title">Sicilienne</div><div class="it-desc">tomate, emmental, anchois</div></div><div class="it-right"><div class="price">8,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Napolitaine" data-price="9"><div class="it-left"><div class="it-title">Napolitaine</div><div class="it-desc">tomate, emmental, jambon</div></div><div class="it-right"><div class="price">9,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Paysanne" data-price="9.5"><div class="it-left"><div class="it-title">Paysanne</div><div class="it-desc">tomate, emmental, jambon, œuf</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Capri" data-price="9.5"><div class="it-left"><div class="it-title">Capri</div><div class="it-desc">tomate, emmental, jambon, champignons</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Mozzarella" data-price="9.5"><div class="it-left"><div class="it-title">Mozzarella</div><div class="it-desc">tomate, emmental, mozzarella</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Quatre Saisons" data-price="9.5"><div class="it-left"><div class="it-title">Quatre Saisons</div><div class="it-desc">tomate, emmental, oignons, champignons, poivrons, mozzarella</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Vénitienne" data-price="9.5"><div class="it-left"><div class="it-title">Vénitienne</div><div class="it-desc">tomate, emmental, roquefort, oignons, crème</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Oslo" data-price="10"><div class="it-left"><div class="it-title">Oslo</div><div class="it-desc">tomate, emmental, thon, champignons, crème</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Orientale" data-price="10"><div class="it-left"><div class="it-title">Orientale</div><div class="it-desc">tomate, emmental, merguez, poivrons</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Bolognaise" data-price="10"><div class="it-left"><div class="it-title">Bolognaise</div><div class="it-desc">tomate, emmental, viande hachée, crème, mozzarella</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Fermière" data-price="10"><div class="it-left"><div class="it-title">Fermière</div><div class="it-desc">tomate, emmental, œuf, lardons, champignons</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Miel" data-price="10.5"><div class="it-left"><div class="it-title">Miel</div><div class="it-desc">crème, emmental, chèvre frais, miel</div></div><div class="it-right"><div class="price">10,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Forestière" data-price="10.5"><div class="it-left"><div class="it-title">Forestière</div><div class="it-desc">tomate, emmental, poulet, champignons, crème</div></div><div class="it-right"><div class="price">10,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Lyonnaise" data-price="11"><div class="it-left"><div class="it-title">Lyonnaise</div><div class="it-desc">tomate, emmental, saint-marcellin, poulet, crème</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Quatre Fromages" data-price="11"><div class="it-left"><div class="it-title">Quatre Fromages</div><div class="it-desc">tomate, emmental, chèvre, roquefort, mozzarella</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Paradoxe" data-price="11"><div class="it-left"><div class="it-title">Paradoxe</div><div class="it-desc">tomate, emmental, œuf, jambon, chorizo, mozzarella</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Boisée" data-price="11"><div class="it-left"><div class="it-title">Boisée</div><div class="it-desc">crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Savoyarde" data-price="11"><div class="it-left"><div class="it-title">Savoyarde</div><div class="it-desc">emmental, lardons, reblochon, pomme de terre, crème</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Carnivore" data-price="11.5"><div class="it-left"><div class="it-title">Carnivore</div><div class="it-desc">tomate, emmental, viande hachée, merguez, œuf, mozzarella</div></div><div class="it-right"><div class="price">11,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Norvégienne" data-price="11.5"><div class="it-left"><div class="it-title">Norvégienne</div><div class="it-desc">emmental, saumon fumé, mozzarella, crème</div></div><div class="it-right"><div class="price">11,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Burger" data-price="12"><div class="it-left"><div class="it-title">Burger</div><div class="it-desc">tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger</div></div><div class="it-right"><div class="price">12,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <!-- BOISSONS -->
+      <li class="item" data-name="Canette 33cl (choix sur place)" data-price="1.5"><div class="it-left"><div class="it-title">Canette 33cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">1,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Bouteille 50cl (choix sur place)" data-price="3"><div class="it-left"><div class="it-title">Bouteille 50cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">3,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+    </ul>
 
     <div class="card">
       <h3>Infos pratiques</h3>
@@ -111,33 +132,19 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
   <button id="btnCheckout" class="btn primary">Passer commande</button>
 </div>
 
-<!-- MODAL PANIER / CHECKOUT -->
+<!-- MODAL -->
 <dialog id="checkout">
   <form method="dialog">
     <h3>Finaliser la commande</h3>
     <div id="ck-list" class="small"></div>
-
     <div class="two">
-      <div>
-        <label>Nom*</label>
-        <input id="ck-name" placeholder="Votre nom" autocomplete="name">
-      </div>
-      <div>
-        <label>Téléphone*</label>
-        <input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel">
-      </div>
+      <div><label>Nom*</label><input id="ck-name" placeholder="Votre nom" autocomplete="name"></div>
+      <div><label>Téléphone*</label><input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel"></div>
     </div>
     <div class="two">
-      <div>
-        <label>Heure de retrait*</label>
-        <input id="ck-slot" value="19:00">
-      </div>
-      <div>
-        <label>Commentaire (optionnel)</label>
-        <input id="ck-note" placeholder="Sans olives, etc.">
-      </div>
+      <div><label>Heure de retrait*</label><input id="ck-slot" value="19:00"></div>
+      <div><label>Commentaire (optionnel)</label><input id="ck-note" placeholder="Sans olives, etc."></div>
     </div>
-
     <hr class="sep">
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button class="btn" id="btnClose">Fermer</button>
@@ -147,156 +154,91 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 </dialog>
 
 <script>
-/* ====== CONFIG API (laisser vide = simulation) ====== */
+/* ===== CONFIG API (vide = simulation) ===== */
 const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec"
 
-/* ====== CARTE COMPLÈTE ====== */
-const PIZZAS = [
-  ["Margharita","tomate, emmental",7.50],
-  ["Chasseur","tomate, emmental, champignons",8.50],
-  ["Sicilienne","tomate, emmental, anchois",8.50],
-  ["Napolitaine","tomate, emmental, jambon",9.00],
-  ["Paysanne","tomate, emmental, jambon, œuf",9.50],
-  ["Capri","tomate, emmental, jambon, champignons",9.50],
-  ["Mozzarella","tomate, emmental, mozzarella",9.50],
-  ["Quatre Saisons","tomate, emmental, oignons, champignons, poivrons, mozzarella",9.50],
-  ["Vénitienne","tomate, emmental, roquefort, oignons, crème",9.50],
-  ["Oslo","tomate, emmental, thon, champignons, crème",10.00],
-  ["Orientale","tomate, emmental, merguez, poivrons",10.00],
-  ["Bolognaise","tomate, emmental, viande hachée, crème, mozzarella",10.00],
-  ["Fermière","tomate, emmental, œuf, lardons, champignons",10.00],
-  ["Miel","crème, emmental, chèvre frais, miel",10.50],
-  ["Forestière","tomate, emmental, poulet, champignons, crème",10.50],
-  ["Lyonnaise","tomate, emmental, saint-marcellin, poulet, crème",11.00],
-  ["Quatre Fromages","tomate, emmental, chèvre, roquefort, mozzarella",11.00],
-  ["Paradoxe","tomate, emmental, œuf, jambon, chorizo, mozzarella",11.00],
-  ["Boisée","crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère",11.00],
-  ["Savoyarde","emmental, lardons, reblochon, pomme de terre, crème",11.00],
-  ["Carnivore","tomate, emmental, viande hachée, merguez, œuf, mozzarella",11.50],
-  ["Norvégienne","emmental, saumon fumé, mozzarella, crème",11.50],
-  ["Burger","tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger",12.00]
-];
-const DRINKS = [
-  ["Canette 33cl (choix sur place)","boisson",1.50],
-  ["Bouteille 50cl (choix sur place)","boisson",3.00]
-];
-
-/* ====== PANIER ====== */
+/* ===== PANIER ===== */
 const cart = {
-  items: [], // {kind:"pizza"|"drink", key?, name, price, qty, sups, supsList}
-  addPizza(name, price){
-    const want = confirm("Ajouter un supplément (+1 €) ?\n(viande / poisson / œuf / fromage)");
-    let sups = 0, supsList = [];
-    if(want){
-      const type = prompt("Type de supplément ? (viande / poisson / œuf / fromage)","");
-      if(type){ sups=1; supsList=[type.trim()]; }
+  items: [], // {name, price, qty, sups, supsList}
+  add(name, price, isDrink=false){
+    let sups=0, supsList=[];
+    if(!isDrink){
+      if(confirm("Ajouter un supplément (+1 €) ?\n(viande / poisson / œuf / fromage)")){
+        const t=(prompt("Type de supplément ? (viande / poisson / œuf / fromage)","")||"").trim();
+        if(t){ sups=1; supsList=[t]; }
+      }
     }
     const key=(name+"|"+supsList.join(",")).toLowerCase();
-    const ex = cart.items.find(i=>i.key===key && i.kind==="pizza");
-    if(ex){ ex.qty++; } else cart.items.push({kind:"pizza", key, name, price, qty:1, sups, supsList});
+    const ex=this.items.find(i=>i.key===key);
+    if(ex){ ex.qty++; } else this.items.push({key,name,price,qty:1,sups,supsList});
     renderCartBar();
   },
-  addDrink(name, price){
-    const ex = cart.items.find(i=>i.name===name && i.kind==="drink");
-    if(ex){ ex.qty++; } else cart.items.push({kind:"drink", name, price, qty:1});
-    renderCartBar();
-  },
-  total(){ return cart.items.reduce((s,i)=> s + i.price*i.qty + (i.sups||0)*1*i.qty, 0); },
+  total(){ return this.items.reduce((s,i)=> s + (i.price + (i.sups?1:0))*i.qty, 0); },
   clear(){ this.items.length=0; renderCartBar(); }
 };
-
 function €(v){ return v.toFixed(2).replace(".",","); }
 
-/* ====== RENDU ====== */
-function renderMenu(){
-  const ul=document.getElementById("menu"); ul.innerHTML="";
-  PIZZAS.forEach(([name,desc,price])=>{
-    const li=document.createElement("li"); li.className="item";
-    li.innerHTML=`
-      <div class="it-left">
-        <div class="it-title">${name}</div>
-        <div class="it-desc">${desc}</div>
-      </div>
-      <div class="it-right">
-        <div class="price">${€(price)} €</div>
-        <button class="btn orange">Ajouter</button>
-      </div>`;
-    li.querySelector("button").onclick = ()=>cart.addPizza(name,price);
-    ul.appendChild(li);
-  });
-  DRINKS.forEach(([name,desc,price])=>{
-    const li=document.createElement("li"); li.className="item";
-    li.innerHTML=`
-      <div class="it-left">
-        <div class="it-title">${name}</div>
-        <div class="it-desc">${desc} — saveur choisie sur place</div>
-      </div>
-      <div class="it-right">
-        <div class="price">${€(price)} €</div>
-        <button class="btn orange">Ajouter</button>
-      </div>`;
-    li.querySelector("button").onclick = ()=>cart.addDrink(name,price);
-    ul.appendChild(li);
-  });
-}
+/* ===== HOOKS BOUTONS “AJOUTER” ===== */
+document.querySelectorAll("#menu .item").forEach(li=>{
+  const name=li.dataset.name, price=parseFloat(li.dataset.price||"0");
+  const isDrink = /choix sur place/i.test(name);
+  li.querySelector(".add").addEventListener("click",()=>cart.add(name,price,isDrink));
+});
 
+/* ===== BARRE PANIER ===== */
 function renderCartBar(){
   const bar=document.getElementById("cartBar");
-  const tot=document.getElementById("cartTotal");
-  const t=cart.total();
-  tot.textContent = €(t);
+  document.getElementById("cartTotal").textContent=€(cart.total());
   bar.classList.toggle("show", cart.items.length>0);
 }
+document.getElementById("btnView").onclick=openCheckout;
+document.getElementById("btnCheckout").onclick=openCheckout;
 
+/* ===== MODAL / ENVOI ===== */
 function openCheckout(){
   if(cart.items.length===0){ alert("Votre panier est vide."); return; }
-  const box=document.getElementById("ck-list");
   const lines=cart.items.map(i=>{
     const sup=i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
     return `• ${i.name} × ${i.qty}${sup} — ${€(i.price)} €`;
   }).join("\n");
-  box.textContent = lines + `\n\nTotal : ${€(cart.total())} €`;
+  document.getElementById("ck-list").textContent = lines + `\n\nTotal : ${€(cart.total())} €`;
   document.getElementById("checkout").showModal();
 }
-function closeCheckout(){ document.getElementById("checkout").close(); }
+document.getElementById("btnClose").onclick=(e)=>{e.preventDefault();document.getElementById("checkout").close();};
 
-/* ====== ENVOI API ====== */
-async function sendOrder(){
+document.getElementById("btnSend").onclick=async (e)=>{
+  e.preventDefault();
   const name=document.getElementById("ck-name").value.trim();
   const phone=document.getElementById("ck-phone").value.trim();
   const slot=document.getElementById("ck-slot").value.trim();
   const note=document.getElementById("ck-note").value.trim();
   if(!name||!phone||!slot){ alert("Merci de compléter nom, téléphone et heure."); return; }
 
-  const items=cart.items.map(i=>({
-    name: i.name + (i.sups?` (+${i.sups} suppl.)`:""),
-    qty: i.qty,
-    price: i.price + (i.sups?1:0)
-  }));
-  const payload={ name, phone, slot, note, items, total:Number(cart.total().toFixed(2)), source:"site" };
+  const items=cart.items.map(i=>({name:i.name+(i.sups?` (+${i.sups} suppl.)`:""),qty:i.qty,price:i.price+(i.sups?1:0)}));
+  const payload={name,phone,slot,note,items,total:Number(cart.total().toFixed(2)),source:"site"};
 
   if(!API_URL){
     alert("Commande enregistrée (simulation). Merci !");
-    cart.clear(); closeCheckout(); return;
+    cart.clear();
+    document.getElementById("checkout").close();
+    return;
   }
+
   try{
     const res=await fetch(API_URL,{method:"POST",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const data=await res.json().catch(()=>({ok:false}));
-    if(res.ok && data && data.ok){ cart.clear(); closeCheckout(); alert("Commande enregistrée. Merci !"); }
-    else{ throw new Error((data&&data.error)||"api_error"); }
+    const data=await res.json().catch(()=>({}));
+    if(res.ok && data && data.ok){
+      alert("Commande enregistrée. Merci !");
+      cart.clear();
+      document.getElementById("checkout").close();
+    }else{
+      throw new Error((data&&data.error)||"api_error");
+    }
   }catch(err){
-    console.error(err); alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
+    console.error(err);
+    alert("Impossible d'envoyer la commande. Merci de réessayer ou de nous contacter.");
   }
-}
-
-/* ====== HOOKS ====== */
-window.addEventListener("DOMContentLoaded",()=>{
-  renderMenu(); renderCartBar();
-  document.getElementById("btnView").onclick=openCheckout;
-  document.getElementById("btnCheckout").onclick=openCheckout;
-  document.getElementById("btnSend").onclick=(e)=>{e.preventDefault();sendOrder();};
-  document.getElementById("btnClose").onclick=(e)=>{e.preventDefault();closeCheckout();};
-});
+};
 </script>
 </body>
 </html>
