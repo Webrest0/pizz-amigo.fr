@@ -6,6 +6,21 @@
   <meta name="theme-color" content="#0b0f14">
   <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+.gal{margin:16px 0 22px}
+.gal-wrap{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.gal-viewport{position:relative;overflow:hidden}
+.gal-slides{display:flex;transition:transform .35s ease}
+.gal-slide{min-width:100%;height:220px;background:#000 center/cover no-repeat}
+@media (min-width:700px){.gal-slide{height:320px}}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;border:0;border-radius:50%;
+  width:38px;height:38px;cursor:pointer;background:rgba(0,0,0,.4);color:#fff}
+.gal-nav:hover{background:rgba(0,0,0,.55)}
+.gal-nav.prev{left:10px}.gal-nav.next{right:10px}
+.gal-dots{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.gal-dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.35);border:1px solid var(--line);cursor:pointer}
+.gal-dot.active{background:var(--it-green)}
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -22,6 +37,17 @@
     <div class="banner" id="state-banner" role="status" aria-live="polite">
       <span class="led" aria-hidden="true"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !
     </div>
+
+    <section id="gallery" class="gal">
+      <div class="gal-wrap">
+        <button class="gal-nav prev" aria-label="Précédent">‹</button>
+        <div class="gal-viewport">
+          <div class="gal-slides" id="gal-slides"><!-- slides injectées --></div>
+        </div>
+        <button class="gal-nav next" aria-label="Suivant">›</button>
+      </div>
+      <div class="gal-dots" id="gal-dots"></div>
+    </section>
 
     <h2>Notre carte</h2>
     <p class="lead">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
@@ -84,6 +110,78 @@
     </div>
   </dialog>
 
+  <script>
+(function(){
+  // Liste des images potentielles : celles qui n’existent pas seront ignorées automatiquement
+  const CANDIDATES = [
+    "images/oven.jpg",
+    "images/pizza-1.jpg",
+    "images/pizza-2.jpg",
+    "images/truck.jpg"
+  ];
+
+  const slidesEl = document.getElementById('gal-slides');
+  const dotsEl   = document.getElementById('gal-dots');
+  if(!slidesEl || !dotsEl) return;
+
+  // Précharge et garde seulement celles qui existent
+  Promise.allSettled(CANDIDATES.map(src => new Promise((res,rej)=>{
+    const im = new Image();
+    im.onload = ()=>res(src);
+    im.onerror = ()=>rej(src);
+    im.src = src;
+  }))).then(results=>{
+    const ok = results.filter(r=>r.status==="fulfilled").map(r=>r.value);
+    // Toujours au moins oven.jpg
+    const list = ok.length ? ok : ["images/oven.jpg"];
+
+    // Construire les slides
+    list.forEach((src,i)=>{
+      const s = document.createElement('div');
+      s.className = 'gal-slide';
+      s.style.backgroundImage = `url('${src}')`;
+      slidesEl.appendChild(s);
+
+      const d = document.createElement('button');
+      d.className = 'gal-dot' + (i===0?' active':'');
+      d.setAttribute('aria-label','Aller à la diapo ' + (i+1));
+      d.addEventListener('click', ()=>go(i));
+      dotsEl.appendChild(d);
+    });
+
+    // Logique navigation
+    let idx = 0, N = list.length, startX = 0, curX = 0, dragging=false;
+    const viewport = slidesEl.parentElement;
+
+    function update(){ slidesEl.style.transform = `translateX(${-idx*100}%)`;
+      [...dotsEl.children].forEach((dot,i)=>dot.classList.toggle('active', i===idx)); }
+
+    function go(i){ idx = (i+N)%N; update(); }
+    function next(){ go(idx+1); }
+    function prev(){ go(idx-1); }
+
+    document.querySelector('.gal-nav.next')?.addEventListener('click', next);
+    document.querySelector('.gal-nav.prev')?.addEventListener('click', prev);
+
+    // Swipe mobile
+    viewport.addEventListener('touchstart', e=>{dragging=true; startX = e.touches[0].clientX;}, {passive:true});
+    viewport.addEventListener('touchmove',  e=>{ if(!dragging) return; curX = e.touches[0].clientX; }, {passive:true});
+    viewport.addEventListener('touchend',   ()=>{
+      if(!dragging) return; dragging=false;
+      const dx = curX - startX;
+      if(Math.abs(dx) > 40){ dx<0 ? next() : prev(); }
+      startX = curX = 0;
+    });
+
+    // Auto défilement léger (désactivable en commentant)
+    let timer = setInterval(next, 5000);
+    viewport.addEventListener('mouseenter', ()=>clearInterval(timer));
+    viewport.addEventListener('mouseleave', ()=>{ timer = setInterval(next, 5000); });
+
+    update();
+  });
+})();
+</script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
