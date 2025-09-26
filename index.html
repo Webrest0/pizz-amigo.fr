@@ -8,21 +8,31 @@
 <style>
 :root{--bg:#0b0f14;--panel:#121a2b;--line:#243156;--muted:#b9c2d6;--green:#19c37d;--orange:#ff9f3f}
 html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
-a{color:#9ec5ff}
+a{color:#9ec5ff;text-decoration:none}
+a:hover{text-decoration:underline}
 .container{max-width:1050px;margin:0 auto;padding:0 14px}
-header.hero{min-height:44vh;display:grid;align-items:end;background:url('./images/oven.jpg') center/cover no-repeat fixed}
-.hero-inner{background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.65) 100%);padding:26px 14px}
-h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;margin:0 0 6px}
-.lead{opacity:.9;margin:0 0 10px}
 
-.badge{display:inline-flex;gap:8px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:10px 14px;border-radius:10px;margin:14px 0}
-.badge .dot{width:9px;height:9px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
+/* ===== Hero dézoommé ===== */
+.hero{padding:14px 14px 0}
+.hero-img{width:100%;height:clamp(220px,38vh,360px);border-radius:14px;display:block;object-fit:cover;object-position:center 20%}
+@media (min-width:768px){
+  .hero-img{object-fit:contain;object-position:center;height:48vh;background:#0e1420}
+}
+.hero-overlay{position:relative;margin-top:-28vh;pointer-events:none}
+@media (min-width:768px){ .hero-overlay{margin-top: -36vh} }
+.hero-title{position:relative;pointer-events:auto;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.65) 100%);padding:18px;border-radius:12px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
+.brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
 
+/* ===== UI ===== */
+.badge{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px;margin:12px 0}
+.badge .dot{width:10px;height:10px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
 section{padding:18px 0}
+h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;margin:0 0 6px}
+.lead{opacity:.9;margin:0}
 h2{font-size:26px;margin:8px 0 6px}
 .note{color:var(--muted)}
-
-.list{list-style:none;margin:10px 0 26px;padding:0}
+.list{list-style:none;margin:12px 0 26px;padding:0}
 .item{display:flex;justify-content:space-between;gap:16px;padding:16px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
 .it-left{max-width:72%}
 .it-title{font-weight:700;font-size:18px}
@@ -33,45 +43,49 @@ h2{font-size:26px;margin:8px 0 6px}
 .btn.primary{background:var(--green);border:0;color:#000}
 .btn.orange{border-color:var(--orange);color:var(--orange)}
 .btn.small{padding:6px 10px;font-size:13px}
-.btn.link{border:0;color:#9ec5ff;background:transparent;padding:0}
-
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
 .card h3{margin:0 0 10px}
+.small{opacity:.8}
 
-#cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08)}
+/* ===== Panier ===== */
+#cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);z-index:50}
 #cartBar.show{display:flex}
 
+/* ===== Modal ===== */
 dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;max-width:720px;width:95%}
 dialog::backdrop{background:rgba(0,0,0,.6)}
 #ck-list{white-space:pre-wrap;background:#0e1420;border:1px dashed #2a3d6b;border-radius:10px;padding:10px;margin:10px 0}
 .form label{display:block;margin:10px 0 4px}
-.form input,.form textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
+.form input,.form textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
-
-.small{opacity:.8}
 .footer{padding:30px 0 80px;color:#cfd6e6}
-.brand{display:flex;align-items:center;gap:8px}
-.brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="hero-inner container">
-    <div class="brand"><span class="dot"></span><strong>PIZZ’AMIGO</strong></div>
-    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-    <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+<!-- HERO -->
+<div class="hero container">
+  <img class="hero-img" src="./images/oven.jpg" alt="Four à pizza">
+  <div class="hero-overlay">
+    <div class="hero-title">
+      <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
+      <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+      <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+    </div>
   </div>
-</header>
+</div>
 
 <div class="container">
+
   <div class="badge"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
 
   <section>
     <h2>Notre carte</h2>
-    <p class="note">Boissons : réglez en ligne, <strong>savour choisie sur place</strong>. <br>
-    <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
+    <p class="note">
+      Boissons : réglez en ligne, <strong>savour choisie sur place</strong>.<br>
+      <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.
+    </p>
 
     <ul id="menu" class="list"></ul>
 
@@ -133,10 +147,10 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 </dialog>
 
 <script>
-/* ====== CONFIG API (mets ton URL Apps Script ici) ====== */
-const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec" (laisser vide = simulation)
+/* ====== CONFIG API (laisser vide = simulation) ====== */
+const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec"
 
-/* ====== DONNÉES CARTE ====== */
+/* ====== CARTE COMPLÈTE ====== */
 const PIZZAS = [
   ["Margharita","tomate, emmental",7.50],
   ["Chasseur","tomate, emmental, champignons",8.50],
@@ -166,25 +180,20 @@ const DRINKS = [
   ["Canette 33cl (choix sur place)","boisson",1.50],
   ["Bouteille 50cl (choix sur place)","boisson",3.00]
 ];
-const SUP_TYPES = ["viande","+ poisson","+ œuf","+ fromage"]; // affichage badge
 
 /* ====== PANIER ====== */
 const cart = {
-  items: [], // {name, price, qty, note?, sups: number, supsList: []}
+  items: [], // {kind:"pizza"|"drink", key?, name, price, qty, sups, supsList}
   addPizza(name, price){
-    // prompt supplément ?
     const want = confirm("Ajouter un supplément (+1 €) ?\n(viande / poisson / œuf / fromage)");
     let sups = 0, supsList = [];
     if(want){
       const type = prompt("Type de supplément ? (viande / poisson / œuf / fromage)","");
-      if(type){
-        sups = 1; supsList=[type.trim()];
-      }
+      if(type){ sups=1; supsList=[type.trim()]; }
     }
     const key=(name+"|"+supsList.join(",")).toLowerCase();
     const ex = cart.items.find(i=>i.key===key && i.kind==="pizza");
-    if(ex){ ex.qty++; }
-    else cart.items.push({kind:"pizza", key, name, price, qty:1, sups, supsList});
+    if(ex){ ex.qty++; } else cart.items.push({kind:"pizza", key, name, price, qty:1, sups, supsList});
     renderCartBar();
   },
   addDrink(name, price){
@@ -192,21 +201,18 @@ const cart = {
     if(ex){ ex.qty++; } else cart.items.push({kind:"drink", name, price, qty:1});
     renderCartBar();
   },
-  total(){
-    return cart.items.reduce((s,i)=> s + i.price*i.qty + (i.sups||0)*1*i.qty, 0);
-  },
-  clear(){ cart.items.length=0; renderCartBar(); }
+  total(){ return cart.items.reduce((s,i)=> s + i.price*i.qty + (i.sups||0)*1*i.qty, 0); },
+  clear(){ this.items.length=0; renderCartBar(); }
 };
 
-/* ====== RENDU ====== */
 function €(v){ return v.toFixed(2).replace(".",","); }
 
+/* ====== RENDU ====== */
 function renderMenu(){
-  const ul = document.getElementById("menu"); ul.innerHTML="";
-  [...PIZZAS.map(p=>({...p})), ...DRINKS.map(d=>({...d}))]
+  const ul=document.getElementById("menu"); ul.innerHTML="";
   PIZZAS.forEach(([name,desc,price])=>{
     const li=document.createElement("li"); li.className="item";
-    li.innerHTML = `
+    li.innerHTML=`
       <div class="it-left">
         <div class="it-title">${name}</div>
         <div class="it-desc">${desc}</div>
@@ -220,7 +226,7 @@ function renderMenu(){
   });
   DRINKS.forEach(([name,desc,price])=>{
     const li=document.createElement("li"); li.className="item";
-    li.innerHTML = `
+    li.innerHTML=`
       <div class="it-left">
         <div class="it-title">${name}</div>
         <div class="it-desc">${desc} — saveur choisie sur place</div>
@@ -237,65 +243,59 @@ function renderMenu(){
 function renderCartBar(){
   const bar=document.getElementById("cartBar");
   const tot=document.getElementById("cartTotal");
-  const t = cart.total();
+  const t=cart.total();
   tot.textContent = €(t);
   bar.classList.toggle("show", cart.items.length>0);
 }
 
 function openCheckout(){
-  const dlg=document.getElementById("checkout");
-  const box=document.getElementById("ck-list");
   if(cart.items.length===0){ alert("Votre panier est vide."); return; }
-  const lines = cart.items.map(i=>{
-    const supTxt = i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
-    return `• ${i.name} × ${i.qty}${supTxt} — ${€(i.price)} €`;
+  const box=document.getElementById("ck-list");
+  const lines=cart.items.map(i=>{
+    const sup=i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
+    return `• ${i.name} × ${i.qty}${sup} — ${€(i.price)} €`;
   }).join("\n");
   box.textContent = lines + `\n\nTotal : ${€(cart.total())} €`;
-  dlg.showModal();
+  document.getElementById("checkout").showModal();
 }
 function closeCheckout(){ document.getElementById("checkout").close(); }
 
 /* ====== ENVOI API ====== */
 async function sendOrder(){
-  const name = document.getElementById("ck-name").value.trim();
-  const phone= document.getElementById("ck-phone").value.trim();
-  const slot = document.getElementById("ck-slot").value.trim();
-  const note = document.getElementById("ck-note").value.trim();
-  if(!name || !phone || !slot){ alert("Merci de compléter nom, téléphone et heure."); return; }
+  const name=document.getElementById("ck-name").value.trim();
+  const phone=document.getElementById("ck-phone").value.trim();
+  const slot=document.getElementById("ck-slot").value.trim();
+  const note=document.getElementById("ck-note").value.trim();
+  if(!name||!phone||!slot){ alert("Merci de compléter nom, téléphone et heure."); return; }
 
-  const items = cart.items.map(i=>({
+  const items=cart.items.map(i=>({
     name: i.name + (i.sups?` (+${i.sups} suppl.)`:""),
     qty: i.qty,
-    price: i.price + (i.sups?1:0) // prix unitaire avec supplément
+    price: i.price + (i.sups?1:0)
   }));
-  const payload = { name, phone, slot, note, items, total:Number(cart.total().toFixed(2)), source:"site" };
+  const payload={ name, phone, slot, note, items, total:Number(cart.total().toFixed(2)), source:"site" };
 
   if(!API_URL){
     alert("Commande enregistrée (simulation). Merci !");
     cart.clear(); closeCheckout(); return;
   }
   try{
-    const res = await fetch(API_URL, { method:"POST", headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-    const data = await res.json().catch(()=>({ok:false}));
-    if(res.ok && data && data.ok){
-      cart.clear(); closeCheckout();
-      alert("Commande enregistrée. Merci !");
-    }else{
-      throw new Error((data&&data.error)||"api_error");
-    }
+    const res=await fetch(API_URL,{method:"POST",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>({ok:false}));
+    if(res.ok && data && data.ok){ cart.clear(); closeCheckout(); alert("Commande enregistrée. Merci !"); }
+    else{ throw new Error((data&&data.error)||"api_error"); }
   }catch(err){
-    console.error(err);
-    alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
+    console.error(err); alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
   }
 }
 
 /* ====== HOOKS ====== */
 window.addEventListener("DOMContentLoaded",()=>{
   renderMenu(); renderCartBar();
-  document.getElementById("btnView").onclick = openCheckout;
-  document.getElementById("btnCheckout").onclick = openCheckout;
-  document.getElementById("btnSend").onclick = (e)=>{e.preventDefault(); sendOrder();};
-  document.getElementById("btnClose").onclick = (e)=>{e.preventDefault(); closeCheckout();};
+  document.getElementById("btnView").onclick=openCheckout;
+  document.getElementById("btnCheckout").onclick=openCheckout;
+  document.getElementById("btnSend").onclick=(e)=>{e.preventDefault();sendOrder();};
+  document.getElementById("btnClose").onclick=(e)=>{e.preventDefault();closeCheckout();};
 });
 </script>
 </body>
