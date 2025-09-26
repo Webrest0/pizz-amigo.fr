@@ -7,147 +7,63 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
+  <div class="ribbon"></div>
+
+  <header class="nav container">
     <div class="brand">PIZZ’AMIGO</div>
-    <div class="top-actions">
-      <a class="btn dark" href="tel:0680480456">06 80 48 04 56</a>
-      <button class="btn primary" id="btn-checkout" type="button">Commander en ligne</button>
-    </div>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#carte">Voir la carte</a>
+      <a href="#infos">Infos</a>
+    </nav>
   </header>
 
-  <main>
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-inner">
-        <div class="hero-content">
-          <p class="small">Food-truck italien — Montmerle-sur-Saône</p>
-          <h1 id="hero-title">Le goût authentique de l’Italie, tout près de chez vous.</h1>
-          <p>Pizzas artisanales cuites au feu de bois et boissons fraîches. Commandez en ligne et récupérez au camion.</p>
-          <div class="hero-cta">
-            <button class="btn primary" id="btn-hero-order" type="button">Je passe commande</button>
-            <a class="btn orange" href="#menu">Voir la carte</a>
-          </div>
-        </div>
-      </div>
+  <section class="hero">
+    <div class="hero-img" role="img" aria-label="Four à bois et pizza sortant du four"></div>
+    <div class="hero-txt container">
+      <div><span class="dot" aria-hidden="true"></span><strong>PIZZ’AMIGO — Montmerle-sur-Saône</strong></div>
+      <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+    </div>
+  </section>
+
+  <div class="banner container" role="status" aria-live="polite">
+    <div class="status-dot" aria-hidden="true"></div>
+    <p><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end&nbsp;!</p>
+  </div>
+
+  <main class="container">
+    <section id="carte" class="section">
+      <h1>Notre carte</h1>
+      <p class="lead">Boissons&nbsp;: réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
+        <em>Supplément</em> (viande / poisson / œuf / fromage)&nbsp;: <strong>+1&nbsp;€</strong> par ajout.</p>
+      <ul id="menu" class="menu" aria-live="polite"></ul>
     </section>
 
-    <section class="section badge" aria-live="polite">
-      <div class="inner">
-        <span class="dot" aria-hidden="true"></span>
-        <span>🔴 Fermé pour le moment — retrouvez-nous ce week-end !</span>
-      </div>
-    </section>
-
-    <section class="section" id="menu">
-      <h2>Notre carte</h2>
-      <p class="small">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>. Supplément (viande / poisson / œuf / fromage) : +1 € par ajout.</p>
-      <ul id="menu-list" aria-live="polite"></ul>
-    </section>
-
-    <section class="section" id="infos">
+    <section id="infos" class="section">
       <div class="card">
         <h2>Infos pratiques</h2>
-        <p><strong>Nous trouver :</strong></p>
-        <ul>
-          <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) · 18:00–21:00 — <a href="https://maps.app.goo.gl/kjK3x2f7x7m2b71q7" target="_blank" rel="noopener">Itinéraire</a></li>
-          <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
-          <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
-        </ul>
-        <p><strong>Téléphone :</strong> <a href="tel:0680480456">06 80 48 04 56</a> · <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
+        <p><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins">Itinéraire</a></p>
+        <p><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Amareins+carrefour+des+feux">Itinéraire</a></p>
+        <p><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Amareins+carrefour+des+feux">Itinéraire</a></p>
+        <hr>
+        <p><strong>Téléphone&nbsp;:</strong> <a href="tel:0680480456">06&nbsp;80&nbsp;48&nbsp;04&nbsp;56</a> • <a href="https://www.facebook.com/profile.php?id=100070204571227" target="_blank" rel="noopener">Facebook</a></p>
       </div>
     </section>
   </main>
 
-  <footer>
-    © PIZZ’AMIGO — Montmerle-sur-Saône · Food-truck italien
-  </footer>
-
-  <div id="cart-bar" class="hidden" role="region" aria-live="polite">
-    <span>Panier · <span class="cart-total">0,00</span> €</span>
-    <button class="btn primary" id="btn-view" type="button">Voir ma commande</button>
+  <div id="cartbar" class="cartbar" role="region" aria-live="polite">
+    <span class="tag">Panier • <strong id="cartTotal">0,00&nbsp;€</strong></span>
+    <button id="btnView" class="btn secondary" type="button">Voir panier</button>
+    <button id="btnCheckout" class="btn primary" type="button">Passer commande</button>
   </div>
 
-  <dialog id="checkout" class="ck" aria-labelledby="checkout-title">
-    <button class="btn dark" id="close-modal" type="button">Fermer</button>
-    <h3 id="checkout-title">Finaliser la commande</h3>
-    <p class="small">Commande n° <span id="ck-order-id">(générée automatiquement)</span></p>
-    <div class="ck-items">Votre panier est vide.</div>
-    <form class="form" method="dialog">
-      <label for="ck-name">Nom et prénom *</label>
-      <input id="ck-name" name="name" type="text" autocomplete="name" required>
-
-      <label for="ck-phone">Téléphone *</label>
-      <input id="ck-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
-
-      <label for="ck-slot">Créneau souhaité *</label>
-      <div class="chips" role="radiogroup" aria-label="Choisir un créneau">
-        <div class="chip" data-slot="18:00" role="radio" tabindex="0" aria-checked="false">18:00</div>
-        <div class="chip" data-slot="18:30" role="radio" tabindex="-1" aria-checked="false">18:30</div>
-        <div class="chip" data-slot="19:00" role="radio" tabindex="-1" aria-checked="false">19:00</div>
-        <div class="chip" data-slot="19:30" role="radio" tabindex="-1" aria-checked="false">19:30</div>
-        <div class="chip" data-slot="20:00" role="radio" tabindex="-1" aria-checked="false">20:00</div>
-        <div class="chip" data-slot="20:30" role="radio" tabindex="-1" aria-checked="false">20:30</div>
-      </div>
-      <input id="ck-slot" name="slot" type="hidden" required>
-
-      <label for="ck-note">Commentaire</label>
-      <textarea id="ck-note" name="note" rows="3" placeholder="Allergies, cuisson, etc."></textarea>
-
-      <fieldset>
-        <legend>Paiement</legend>
-        <label><input type="radio" name="paymode" value="en_ligne" checked> Paiement en ligne</label>
-        <label><input type="radio" name="paymode" value="sur_place"> Paiement sur place</label>
-      </fieldset>
-
-      <button class="btn ck-primary" id="btn-send" type="button">Envoyer ma commande</button>
-    </form>
+  <dialog id="checkout" aria-labelledby="modalTitle">
+    <div class="modal-head" id="modalTitle">Finaliser la commande</div>
+    <div class="modal-body"></div>
+    <div class="modal-foot"></div>
   </dialog>
 
+  <footer class="footer">© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
+
   <script type="module" src="app.js"></script>
-  <script>
-    const heroOrderBtn = document.getElementById('btn-hero-order');
-    const dialog = document.getElementById('checkout');
-    const chips = Array.from(document.querySelectorAll('.chip'));
-    const slotInput = document.getElementById('ck-slot');
-
-    function selectChip(chip){
-      chips.forEach(el => {
-        const isActive = el === chip;
-        el.classList.toggle('active', isActive);
-        el.setAttribute('aria-checked', String(isActive));
-        el.setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-      slotInput.value = chip?.dataset.slot || '';
-      if(chip){ chip.focus(); }
-    }
-
-    chips.forEach((chip, index) => {
-      chip.addEventListener('click', () => selectChip(chip));
-      chip.addEventListener('keydown', (event) => {
-        if(event.key === ' ' || event.key === 'Enter'){
-          event.preventDefault();
-          selectChip(chip);
-        }
-        if(event.key === 'ArrowRight' || event.key === 'ArrowDown'){
-          event.preventDefault();
-          const next = chips[index + 1] || chips[0];
-          next.focus();
-        }
-        if(event.key === 'ArrowLeft' || event.key === 'ArrowUp'){
-          event.preventDefault();
-          const prev = chips[index - 1] || chips[chips.length - 1];
-          prev.focus();
-        }
-      });
-    });
-
-    heroOrderBtn?.addEventListener('click', () => {
-      document.getElementById('btn-checkout')?.click();
-    });
-
-    dialog?.addEventListener('cancel', (event) => {
-      event.preventDefault();
-      dialog.close();
-    });
-  </script>
 </body>
 </html>
