@@ -11,22 +11,26 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-
 a{color:#9ec5ff;text-decoration:none} a:hover{text-decoration:underline}
 .container{max-width:1050px;margin:0 auto;padding:0 14px}
 
-/* HERO propre et dézoommé */
-.hero{padding:14px 14px 0}
-.hero-img{width:100%;height:clamp(220px,38vh,360px);border-radius:14px;display:block;object-fit:cover;object-position:center 20%}
-@media (min-width:768px){ .hero-img{object-fit:contain;object-position:center;height:48vh;background:#0e1420} }
-.hero-overlay{position:relative;margin-top:-26vh;pointer-events:none}
-@media (min-width:768px){ .hero-overlay{margin-top:-34vh} }
-.hero-title{position:relative;pointer-events:auto;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.65) 100%);padding:18px;border-radius:12px}
+/* HERO – image entière, pas recadrée */
+.hero{padding:16px 14px 0}
+.hero-card{position:relative;background:#0e1420;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.hero-img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;object-position:center;background:#0e1420}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%, rgba(0,0,0,.55) 100%)}
+.hero-txt{position:absolute;left:16px;right:16px;bottom:12px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
 .brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
+h1{font-size:clamp(22px,4.6vw,40px);line-height:1.08;margin:0 0 4px}
+.lead{margin:0;opacity:.9}
 
-/* UI */
-.badge{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px;margin:12px 0}
+/* Bandeau état */
+.badge{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px;margin:12px 14px}
 .badge .dot{width:10px;height:10px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
-section{padding:18px 0} h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;margin:0 0 6px}
-.lead{opacity:.9;margin:0} h2{font-size:26px;margin:8px 0 6px}
+
+/* Sections */
+section{padding:18px 14px} h2{font-size:26px;margin:0 0 6px}
 .note{color:var(--muted)}
+
+/* Carte */
 .list{list-style:none;margin:12px 0 26px;padding:0}
 .item{display:flex;justify-content:space-between;gap:16px;padding:16px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
 .it-left{max-width:72%}
@@ -38,11 +42,13 @@ section{padding:18px 0} h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;mar
 .btn.primary{background:var(--green);border:0;color:#000}
 .btn.orange{border-color:var(--orange);color:var(--orange)}
 .btn.small{padding:6px 10px;font-size:13px}
+
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
 .card h3{margin:0 0 10px}
 .small{opacity:.8}
+.footer{padding:30px 14px 90px;color:#cfd6e6}
 
-/* Panier */
+/* Panier sticky */
 #cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);z-index:50}
 #cartBar.show{display:flex}
 
@@ -54,16 +60,16 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 .form input,.form textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
-.footer{padding:30px 0 80px;color:#cfd6e6}
 </style>
 </head>
 <body>
 
 <!-- HERO -->
-<div class="hero container">
-  <img class="hero-img" src="./images/oven.jpg" alt="Four à pizza">
-  <div class="hero-overlay">
-    <div class="hero-title">
+<div class="hero">
+  <div class="hero-card">
+    <img class="hero-img" src="./images/oven.jpg" alt="Four à pizza">
+    <div class="hero-grad"></div>
+    <div class="hero-txt">
       <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
       <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
       <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
@@ -71,15 +77,16 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
   </div>
 </div>
 
-<div class="container">
-  <div class="badge"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
+<!-- Bandeau info -->
+<div class="badge"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
 
+<div class="container">
   <section>
     <h2>Notre carte</h2>
-    <p class="note">Boissons : réglez en ligne, <strong>savour choisie sur place</strong>.<br>
+    <p class="note">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
       <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
 
-    <!-- ======== CARTE STATIQUE ======== -->
+    <!-- ======== CARTE COMPLÈTE ======== -->
     <ul id="menu" class="list">
       <!-- PIZZAS -->
       <li class="item" data-name="Margharita" data-price="7.5"><div class="it-left"><div class="it-title">Margharita</div><div class="it-desc">tomate, emmental</div></div><div class="it-right"><div class="price">7,50 €</div><button class="btn orange add">Ajouter</button></div></li>
@@ -159,7 +166,7 @@ const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec"
 
 /* ===== PANIER ===== */
 const cart = {
-  items: [], // {name, price, qty, sups, supsList}
+  items: [], // {key,name, price, qty, sups, supsList}
   add(name, price, isDrink=false){
     let sups=0, supsList=[];
     if(!isDrink){
@@ -170,7 +177,7 @@ const cart = {
     }
     const key=(name+"|"+supsList.join(",")).toLowerCase();
     const ex=this.items.find(i=>i.key===key);
-    if(ex){ ex.qty++; } else this.items.push({key,name,price,qty:1,sups,supsList});
+    if(ex){ ex.qty++; } else this.items.push({key,name,price:parseFloat(price||0),qty:1,sups,supsList});
     renderCartBar();
   },
   total(){ return this.items.reduce((s,i)=> s + (i.price + (i.sups?1:0))*i.qty, 0); },
@@ -178,14 +185,14 @@ const cart = {
 };
 function €(v){ return v.toFixed(2).replace(".",","); }
 
-/* ===== HOOKS BOUTONS “AJOUTER” ===== */
+/* Boutons “Ajouter” */
 document.querySelectorAll("#menu .item").forEach(li=>{
   const name=li.dataset.name, price=parseFloat(li.dataset.price||"0");
   const isDrink = /choix sur place/i.test(name);
   li.querySelector(".add").addEventListener("click",()=>cart.add(name,price,isDrink));
 });
 
-/* ===== BARRE PANIER ===== */
+/* Barre panier */
 function renderCartBar(){
   const bar=document.getElementById("cartBar");
   document.getElementById("cartTotal").textContent=€(cart.total());
@@ -194,7 +201,7 @@ function renderCartBar(){
 document.getElementById("btnView").onclick=openCheckout;
 document.getElementById("btnCheckout").onclick=openCheckout;
 
-/* ===== MODAL / ENVOI ===== */
+/* Modal + envoi */
 function openCheckout(){
   if(cart.items.length===0){ alert("Votre panier est vide."); return; }
   const lines=cart.items.map(i=>{
@@ -219,24 +226,17 @@ document.getElementById("btnSend").onclick=async (e)=>{
 
   if(!API_URL){
     alert("Commande enregistrée (simulation). Merci !");
-    cart.clear();
-    document.getElementById("checkout").close();
-    return;
+    cart.clear(); document.getElementById("checkout").close(); return;
   }
 
   try{
-    const res=await fetch(API_URL,{method:"POST",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const data=await res.json().catch(()=>({}));
-    if(res.ok && data && data.ok){
-      alert("Commande enregistrée. Merci !");
-      cart.clear();
-      document.getElementById("checkout").close();
-    }else{
-      throw new Error((data&&data.error)||"api_error");
-    }
+    const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    const txt=await res.text(); let data; try{data=JSON.parse(txt);}catch{data={ok:false,error:"bad_json",raw:txt};}
+    if(!res.ok||!data||data.ok!==true){ throw new Error((data&&data.error)||("HTTP "+res.status)); }
+    alert("Commande enregistrée. Merci !");
+    cart.clear(); document.getElementById("checkout").close();
   }catch(err){
-    console.error(err);
-    alert("Impossible d'envoyer la commande. Merci de réessayer ou de nous contacter.");
+    console.error(err); alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
   }
 };
 </script>
