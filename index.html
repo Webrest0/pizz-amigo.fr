@@ -11,20 +11,22 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-
 a{color:#9ec5ff;text-decoration:none} a:hover{text-decoration:underline}
 .container{max-width:1050px;margin:0 auto;padding:0 14px}
 
-/* HERO plein écran */
+/* HERO en carte arrondie, image bien lisible */
+.hero-wrap{padding:18px 14px}
 .hero{
-  min-height:44vh;
-  background:url('./images/oven.jpg') center/cover no-repeat fixed;
-  display:flex;align-items:flex-end;
+  height:260px;border-radius:18px;overflow:hidden;
+  background:url('./images/oven.jpg') center/cover no-repeat;
+  display:flex;align-items:flex-end;border:1px solid #2a375a;
+  box-shadow:0 10px 30px rgba(0,0,0,.35)
 }
-.hero-inner{width:100%;background:linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,.65) 100%);padding:22px 14px}
+.hero-inner{width:100%;background:linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,.7) 100%);padding:18px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
 .brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
-h1{font-size:clamp(24px,5.2vw,44px);line-height:1.08;margin:0 0 6px}
+h1{font-size:clamp(22px,5vw,38px);line-height:1.08;margin:0 0 6px}
 .lead{margin:0;opacity:.92}
 
-/* Bandeau info avec léger chevauchement */
-.badge{position:relative;z-index:3;margin:-8px auto 10px;max-width:1050px;padding:0 14px}
+/* Bandeau info */
+.badge{padding:0 14px;margin-top:4px}
 .badge .inner{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px}
 .badge .dot{width:10px;height:10px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
 
@@ -54,26 +56,38 @@ section{padding:18px 14px} h2{font-size:26px;margin:0 0 6px}
 #cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);z-index:50}
 #cartBar.show{display:flex}
 
-/* Modal */
+/* Dialog générique */
 dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;max-width:720px;width:95%}
 dialog::backdrop{background:rgba(0,0,0,.6)}
+hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
+
+/* Checkout */
 #ck-list{white-space:pre-wrap;background:#0e1420;border:1px dashed #2a3d6b;border-radius:10px;padding:10px;margin:10px 0}
 .form label{display:block;margin:10px 0 4px}
-.form input,.form textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
+.form input,.form textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);padding:8px 10px;border-radius:999px;cursor:pointer}
+.chip.active{background:var(--green);color:#000;border-color:transparent}
+
+/* Modal supplément */
+.sup-body{display:flex;flex-direction:column;gap:12px}
+.sup-row{display:flex;gap:10px;flex-wrap:wrap}
+.sup-help{font-size:13px;opacity:.85}
 </style>
 </head>
 <body>
 
 <!-- HERO -->
-<header class="hero">
-  <div class="hero-inner container">
-    <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
-    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-    <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+<div class="hero-wrap">
+  <div class="hero">
+    <div class="hero-inner container">
+      <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
+      <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+      <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+    </div>
   </div>
-</header>
+</div>
 
 <!-- Bandeau info -->
 <div class="badge">
@@ -113,8 +127,8 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
       <li class="item" data-name="Norvégienne" data-price="11.5"><div class="it-left"><div class="it-title">Norvégienne</div><div class="it-desc">emmental, saumon fumé, mozzarella, crème</div></div><div class="it-right"><div class="price">11,50 €</div><button class="btn orange add">Ajouter</button></div></li>
       <li class="item" data-name="Burger" data-price="12"><div class="it-left"><div class="it-title">Burger</div><div class="it-desc">tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger</div></div><div class="it-right"><div class="price">12,00 €</div><button class="btn orange add">Ajouter</button></div></li>
       <!-- BOISSONS -->
-      <li class="item" data-name="Canette 33cl (choix sur place)" data-price="1.5"><div class="it-left"><div class="it-title">Canette 33cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">1,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Bouteille 50cl (choix sur place)" data-price="3"><div class="it-left"><div class="it-title">Bouteille 50cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">3,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Canette 33cl (choix sur place)" data-price="1.5" data-drink="1"><div class="it-left"><div class="it-title">Canette 33cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">1,50 €</div><button class="btn orange add">Ajouter</button></div></li>
+      <li class="item" data-name="Bouteille 50cl (choix sur place)" data-price="3" data-drink="1"><div class="it-left"><div class="it-title">Bouteille 50cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">3,00 €</div><button class="btn orange add">Ajouter</button></div></li>
     </ul>
 
     <div class="card">
@@ -139,25 +153,56 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
   <button id="btnCheckout" class="btn primary">Passer commande</button>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL CHECKOUT -->
 <dialog id="checkout">
   <form method="dialog">
     <h3>Finaliser la commande</h3>
     <div id="ck-list" class="small"></div>
+
     <div class="two">
       <div><label>Nom*</label><input id="ck-name" placeholder="Votre nom" autocomplete="name"></div>
       <div><label>Téléphone*</label><input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel"></div>
     </div>
+
     <div class="two">
-      <div><label>Heure de retrait*</label><input id="ck-slot" value="19:00"></div>
+      <div>
+        <label>Heure de retrait*</label>
+        <input id="ck-slot" placeholder="19:00">
+        <div class="chips" id="slot-chips">
+          <span class="chip">18:00</span><span class="chip">18:30</span><span class="chip">19:00</span>
+          <span class="chip">19:30</span><span class="chip">20:00</span><span class="chip">20:30</span>
+        </div>
+      </div>
       <div><label>Commentaire (optionnel)</label><input id="ck-note" placeholder="Sans olives, etc."></div>
     </div>
+
     <hr class="sep">
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button class="btn" id="btnClose">Fermer</button>
       <button class="btn primary" id="btnSend">Envoyer la commande</button>
     </div>
   </form>
+</dialog>
+
+<!-- MODAL SUPPLÉMENT -->
+<dialog id="supModal">
+  <div class="sup-body">
+    <h3>Supplément pour <span id="supName"></span> ?</h3>
+    <div class="sup-help">Choisis si tu veux ajouter un supplément (+1 €) : viande / poisson / œuf / fromage.</div>
+    <div class="sup-row">
+      <button class="btn" id="supNo">Sans supplément</button>
+      <button class="btn primary" id="supYes">+1 € Supplément</button>
+      <select id="supType" style="min-width:180px">
+        <option value="viande">viande</option>
+        <option value="poisson">poisson</option>
+        <option value="œuf">œuf</option>
+        <option value="fromage">fromage</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" id="supCancel">Annuler</button>
+    </div>
+  </div>
 </dialog>
 
 <script>
@@ -167,15 +212,8 @@ const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec"
 /* ===== PANIER ===== */
 const cart = {
   items: [], // {key,name, price, qty, sups, supsList}
-  add(name, price, isDrink=false){
-    let sups=0, supsList=[];
-    if(!isDrink){
-      if(confirm("Ajouter un supplément (+1 €) ?\n(viande / poisson / œuf / fromage)")){
-        const t=(prompt("Type de supplément ? (viande / poisson / œuf / fromage)","")||"").trim();
-        if(t){ sups=1; supsList=[t]; }
-      }
-    }
-    const key=(name+"|"+supsList.join(",")).toLowerCase();
+  addWithSup(name, price, sups=0, supsList=[]){
+    const key=(name+"|"+(supsList.join(","))).toLowerCase();
     const ex=this.items.find(i=>i.key===key);
     if(ex){ ex.qty++; } else this.items.push({key,name,price:parseFloat(price||0),qty:1,sups,supsList});
     renderCartBar();
@@ -185,15 +223,24 @@ const cart = {
 };
 function euro(v){ return v.toFixed(2).replace(".",","); }
 
-/* DÉLÉGATION : capte tous les clics “Ajouter” (fiable) */
+/* Ajout avec choix supplément (dialog) */
+let pending = null;
 document.getElementById("menu").addEventListener("click", (ev)=>{
   const btn = ev.target.closest(".add"); if(!btn) return;
   const li  = btn.closest(".item");
   const name= li.dataset.name;
   const price= parseFloat(li.dataset.price||"0");
-  const isDrink = /choix sur place/i.test(name);
-  cart.add(name,price,isDrink);
+  const isDrink = !!li.dataset.drink;
+
+  if(isDrink){ cart.addWithSup(name,price,0,[]); return; }
+
+  pending = {name,price};
+  document.getElementById("supName").textContent = name;
+  document.getElementById("supModal").showModal();
 });
+document.getElementById("supNo").onclick = ()=>{ if(!pending) return; cart.addWithSup(pending.name,pending.price,0,[]); pending=null; document.getElementById("supModal").close(); };
+document.getElementById("supYes").onclick= ()=>{ if(!pending) return; const t=document.getElementById("supType").value||"supplément"; cart.addWithSup(pending.name,pending.price,1,[t]); pending=null; document.getElementById("supModal").close(); };
+document.getElementById("supCancel").onclick= ()=>{ pending=null; document.getElementById("supModal").close(); };
 
 /* Barre panier */
 function renderCartBar(){
@@ -204,17 +251,24 @@ function renderCartBar(){
 document.getElementById("btnView").onclick=openCheckout;
 document.getElementById("btnCheckout").onclick=openCheckout;
 
-/* Modal + envoi */
+/* Modal checkout + horaires chips */
 function openCheckout(){
   if(cart.items.length===0){ alert("Votre panier est vide."); return; }
   const lines=cart.items.map(i=>{
     const sup=i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
-    return `• ${i.name} × ${i.qty}${sup} — ${euro(i.price)} €`;
+    return `• ${i.name} × ${i.qty}${sup} — ${euro(i.price + (i.sups?1:0))} €`;
   }).join("\n");
   document.getElementById("ck-list").textContent = lines + `\n\nTotal : ${euro(cart.total())} €`;
   document.getElementById("checkout").showModal();
 }
 document.getElementById("btnClose").onclick=(e)=>{e.preventDefault();document.getElementById("checkout").close();};
+
+document.getElementById("slot-chips").addEventListener("click",(e)=>{
+  const c=e.target.closest(".chip"); if(!c) return;
+  document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+  c.classList.add("active");
+  document.getElementById("ck-slot").value=c.textContent.trim();
+});
 
 document.getElementById("btnSend").onclick=async (e)=>{
   e.preventDefault();
