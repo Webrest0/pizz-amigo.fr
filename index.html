@@ -1,326 +1,626 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
-<meta name="color-scheme" content="dark" />
-<style>
-:root{
-  --it-green:#008C45;
-  --it-white:#F4F5F0;
-  --it-red:#CD212A;
-  --bg:#0b0f12;--panel:#111826;--line:#24324f;--muted:#cdd7ea;--green:var(--it-green);
-}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--it-white);font-family:system-ui,Segoe UI,Roboto,Arial}
-a{color:#9fd6ff;text-decoration:none} a:hover{text-decoration:underline}
-.container{max-width:1050px;margin:0 auto;padding:0 14px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root {
+      --it-red: #d64545;
+      --it-green: #1ea63a;
+      --it-white: #f4f4f4;
+      --bg: #111;
+      --panel: #1a1a1a;
+      --line: rgba(255, 255, 255, 0.12);
+    }
 
-/* HERO */
-.hero-wrap{padding:18px 14px}
-.hero{
-  position:relative;
-  height:260px;border-radius:18px;overflow:hidden;
-  background:url('./images/oven.jpg') center/cover no-repeat;
-  display:flex;align-items:flex-end;border:1px solid #2b3a60;
-  box-shadow:0 10px 30px rgba(0,0,0,.35)
-}
-.hero-inner{width:100%;background:linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,.72) 100%);padding:18px}
-.hero::after{content:"";display:block;height:3px;position:absolute;left:0;right:0;bottom:0;background:linear-gradient(90deg,var(--it-green) 0 33%, var(--it-white) 33% 66%, var(--it-red) 66% 100%)}
-.brand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
-.brand .dot{width:10px;height:10px;border-radius:99px;background:var(--it-green);box-shadow:0 0 10px rgba(0,140,69,.6)}
-h1{font-size:clamp(22px,5vw,38px);line-height:1.08;margin:0 0 6px}
-.lead{margin:0;opacity:.92}
+    * {
+      box-sizing: border-box;
+    }
 
-/* Bandeau info */
-.badge{padding:0 14px;margin-top:4px}
-.badge .inner{display:flex;gap:10px;align-items:center;background:#351818;border:1px solid #6c2a2a;color:#ffd7d7;padding:12px 14px;border-radius:12px}
-.badge .dot{width:10px;height:10px;border-radius:99px;background:var(--it-red);box-shadow:0 0 0 3px rgba(205,33,42,.18)}
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--it-white);
+    }
 
-/* Sections & carte (inchangé) */
-section{padding:18px 14px} h2{font-size:26px;margin:0 0 6px}
-.note{color:var(--muted)}
-.list{list-style:none;margin:12px 0 26px;padding:0}
-.item{display:flex;justify-content:space-between;gap:16px;padding:16px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
-.it-left{max-width:72%}
-.it-title{font-weight:700;font-size:18px}
-.it-desc{opacity:.85;margin-top:4px}
-.it-right{text-align:right;display:flex;gap:12px;align-items:center}
-.price{color:var(--it-green);font-weight:700;min-width:72px}
-.btn{cursor:pointer;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:transparent;color:var(--it-white)}
-.btn.primary{background:var(--it-green);border:0;color:#08110c}
-.btn.primary:hover{filter:brightness(1.08)}
-.btn.orange{border-color:var(--it-red);color:var(--it-red)}
-.btn.orange:hover{filter:brightness(1.08)}
-.btn.small{padding:6px 10px;font-size:13px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
-.card h3{margin:0 0 10px}
-.small{opacity:.8}
-.footer{padding:30px 14px 90px;color:#cfd6e6}
+    a {
+      color: #9fd6ff;
+    }
 
-/* Panier sticky (inchangé) */
-#cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(5,8,12,.7);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);z-index:50}
-#cartBar.show{display:flex}
+    header {
+      padding: 1.8rem 1rem 1.2rem;
+      text-align: center;
+      background: var(--panel);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
 
-/* Dialog générique */
-dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;max-width:720px;width:95%}
-dialog::backdrop{background:rgba(0,0,0,.6)}
-hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      color: var(--it-green);
+      letter-spacing: 0.3px;
+    }
 
-/* ===== MODAL SUPPLÉMENT (inchangé) ===== */
-.sup-body{display:flex;flex-direction:column;gap:12px}
-.sup-row{display:flex;gap:10px;flex-wrap:wrap}
-.sup-help{font-size:13px;opacity:.85}
+    header p {
+      margin: 0.4rem auto 0;
+      max-width: 480px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.74);
+    }
 
-/* ====== MODAL CHECKOUT — NOUVEAU DESIGN ====== */
-/* palette chaude seulement dans le modal */
-.ck{--ck-bg:#111826;--ck-panel:#0f1522;--ck-line:#2a3960;--ck-accent:var(--it-green);--ck-accent-2:#0a6e3a;--ck-text:#eef4f1}
-#checkout{background:var(--ck-bg);border-color:var(--ck-line)}
-#checkout h3{margin:0 0 8px;color:var(--ck-text);letter-spacing:.2px}
-#ck-list{white-space:pre-wrap;background:var(--ck-panel);border:1px dashed var(--ck-line);border-radius:12px;padding:10px;margin:10px 0;color:#e9eef6}
-.form label{display:block;margin:8px 0 6px;color:#cfd6e6}
-.form input,.form textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--ck-line);background:#0e1420;color:#fff}
-.form textarea{min-height:64px;resize:vertical}
+    .status {
+      background: var(--it-red);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      font-weight: 700;
+      border-radius: 10px;
+      margin: 1rem;
+      box-shadow: 0 10px 30px rgba(214, 69, 69, 0.25);
+    }
 
-/* une seule colonne + grille d’horaires clean */
-.ck-grid{display:grid;grid-template-columns:1fr;gap:12px}
-.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:6px}
-.chip{
-  text-align:center;border:1px solid var(--ck-line);padding:10px 0;border-radius:12px;cursor:pointer;
-  background:linear-gradient(180deg,#121a26,#0f151f)
-}
-.chip.active{background:linear-gradient(180deg,var(--ck-accent),#0a6e3a);border-color:transparent;color:#07130c;font-weight:700}
+    h2 {
+      margin: 1.8rem 1rem 0.4rem;
+      color: var(--it-green);
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+    }
 
-/* actions */
-.ck-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
-.btn.ck-ghost{border:1px solid var(--ck-line);background:#0e1420}
-.btn.ck-primary{
-  background:linear-gradient(180deg,var(--ck-accent),#0a6e3a);
-  border:0;color:#06140b;font-weight:700
-}
+    .note {
+      margin: 0 1rem 1.4rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+    }
 
-/* réduire l’“effet zoom” du dialog natif */
-@media (min-width:520px){
-  #checkout{max-width:560px}
-}
-</style>
+    .menu {
+      padding: 0 1rem 6rem;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item strong {
+      font-size: 1rem;
+    }
+
+    .item small {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .item button {
+      background: var(--it-red);
+      border: none;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .item button:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    /* INFOS PRATIQUES */
+    #infos {
+      margin: 2.4rem 1rem 6rem;
+      padding: 1.2rem 1.4rem;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.7;
+    }
+
+    #infos h2 {
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+    }
+
+    #infos ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    #infos li {
+      margin-bottom: 0.6rem;
+    }
+
+    #infos b {
+      color: var(--it-red);
+    }
+
+    /* PANIER FIXE */
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(17, 17, 17, 0.92);
+      padding: 0.7rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(6px);
+    }
+
+    .cart-bar button {
+      background: var(--it-green);
+      border: none;
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .cart-bar button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* CHECKOUT */
+    #checkout {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    #checkout.active {
+      display: flex;
+    }
+
+    #checkout .sheet {
+      background: var(--panel);
+      padding: 1.5rem;
+      border-radius: 16px;
+      max-width: 420px;
+      width: min(420px, 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    #checkout h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    #checkout form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    #checkout input,
+    #checkout textarea {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #232323;
+      color: var(--it-white);
+      font-size: 1rem;
+    }
+
+    #checkout textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    #checkout .times {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    #checkout .chip {
+      padding: 0.55rem 0.6rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #333;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    #checkout .chip.active {
+      background: var(--it-green);
+      border-color: transparent;
+      color: #0c1b12;
+      font-weight: 700;
+    }
+
+    #checkout .summary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.8rem;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    #checkout .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      gap: 0.6rem;
+    }
+
+    #checkout .actions button {
+      flex: 1;
+      padding: 0.65rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    #checkout .actions .cancel {
+      background: #4d4d4d;
+      color: white;
+    }
+
+    #checkout .actions .submit {
+      background: var(--it-green);
+      color: #0c1b12;
+    }
+
+    footer {
+      padding: 3rem 1rem 5rem;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+    }
+
+    @media (min-width: 720px) {
+      body {
+        font-size: 18px;
+      }
+
+      header {
+        padding: 2.4rem 1rem 1.6rem;
+      }
+
+      .menu {
+        padding: 0 2.5rem 6rem;
+      }
+
+      h2 {
+        margin-left: 2.5rem;
+      }
+
+      .note {
+        margin-left: 2.5rem;
+      }
+
+      .status {
+        margin: 1.4rem auto 1.2rem;
+        max-width: 620px;
+      }
+
+      #infos {
+        margin-left: 2.5rem;
+        margin-right: 2.5rem;
+      }
+
+      #checkout .sheet {
+        padding: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+    <p>Le goût authentique de l’Italie près de chez vous.</p>
+  </header>
 
-<!-- ===== HERO ===== -->
-<div class="hero-wrap">
-  <div class="hero">
-    <div class="hero-inner container">
-      <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
-      <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-      <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+  <div class="status" role="status">🔴 Fermé pour le moment — retrouvez-nous ce week-end !</div>
+
+  <h2>Notre carte</h2>
+  <p class="note">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
+    <em>Supplément (viande / poisson / œuf / fromage)</em> : <strong>+1 €</strong> par ajout.</p>
+
+  <div class="menu">
+    <div class="item" data-name="Margharita" data-price="7.5">
+      <span><strong>Margharita</strong><br /><small>tomate, emmental</small></span>
+      <span>7,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Chasseur" data-price="8.5">
+      <span><strong>Chasseur</strong><br /><small>tomate, emmental, champignons</small></span>
+      <span>8,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Sicilienne" data-price="8.5">
+      <span><strong>Sicilienne</strong><br /><small>tomate, emmental, anchois</small></span>
+      <span>8,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Napolitaine" data-price="9">
+      <span><strong>Napolitaine</strong><br /><small>tomate, emmental, jambon</small></span>
+      <span>9,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Paysanne" data-price="9.5">
+      <span><strong>Paysanne</strong><br /><small>tomate, emmental, jambon, œuf</small></span>
+      <span>9,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Capri" data-price="9.5">
+      <span><strong>Capri</strong><br /><small>tomate, emmental, jambon, champignons</small></span>
+      <span>9,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Mozzarella" data-price="9.5">
+      <span><strong>Mozzarella</strong><br /><small>tomate, emmental, mozzarella</small></span>
+      <span>9,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Quatre Saisons" data-price="9.5">
+      <span><strong>Quatre Saisons</strong><br /><small>tomate, emmental, oignons, champignons, poivrons, mozzarella</small></span>
+      <span>9,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Vénitienne" data-price="9.5">
+      <span><strong>Vénitienne</strong><br /><small>tomate, emmental, roquefort, oignons, crème</small></span>
+      <span>9,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Oslo" data-price="10">
+      <span><strong>Oslo</strong><br /><small>tomate, emmental, thon, champignons, crème</small></span>
+      <span>10,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Orientale" data-price="10">
+      <span><strong>Orientale</strong><br /><small>tomate, emmental, merguez, poivrons</small></span>
+      <span>10,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Bolognaise" data-price="10">
+      <span><strong>Bolognaise</strong><br /><small>tomate, emmental, viande hachée, crème, mozzarella</small></span>
+      <span>10,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Fermière" data-price="10">
+      <span><strong>Fermière</strong><br /><small>tomate, emmental, œuf, lardons, champignons</small></span>
+      <span>10,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Miel" data-price="10.5">
+      <span><strong>Miel</strong><br /><small>crème, emmental, chèvre frais, miel</small></span>
+      <span>10,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Forestière" data-price="10.5">
+      <span><strong>Forestière</strong><br /><small>tomate, emmental, poulet, champignons, crème</small></span>
+      <span>10,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Lyonnaise" data-price="11">
+      <span><strong>Lyonnaise</strong><br /><small>tomate, emmental, saint-marcellin, poulet, crème</small></span>
+      <span>11,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Quatre Fromages" data-price="11">
+      <span><strong>Quatre Fromages</strong><br /><small>tomate, emmental, chèvre, roquefort, mozzarella</small></span>
+      <span>11,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Paradoxe" data-price="11">
+      <span><strong>Paradoxe</strong><br /><small>tomate, emmental, œuf, jambon, chorizo, mozzarella</small></span>
+      <span>11,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Boisée" data-price="11">
+      <span><strong>Boisée</strong><br /><small>crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère</small></span>
+      <span>11,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Savoyarde" data-price="11">
+      <span><strong>Savoyarde</strong><br /><small>emmental, lardons, reblochon, pomme de terre, crème</small></span>
+      <span>11,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Carnivore" data-price="11.5">
+      <span><strong>Carnivore</strong><br /><small>tomate, emmental, viande hachée, merguez, œuf, mozzarella</small></span>
+      <span>11,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Norvégienne" data-price="11.5">
+      <span><strong>Norvégienne</strong><br /><small>emmental, saumon fumé, mozzarella, crème</small></span>
+      <span>11,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Burger" data-price="12">
+      <span><strong>Burger</strong><br /><small>tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger</small></span>
+      <span>12,00 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Canette 33cl (choix sur place)" data-price="1.5">
+      <span><strong>Canette 33cl (choix sur place)</strong><br /><small>boisson — saveur choisie sur place</small></span>
+      <span>1,50 € <button type="button">Ajouter</button></span>
+    </div>
+    <div class="item" data-name="Bouteille 50cl (choix sur place)" data-price="3">
+      <span><strong>Bouteille 50cl (choix sur place)</strong><br /><small>boisson — saveur choisie sur place</small></span>
+      <span>3,00 € <button type="button">Ajouter</button></span>
     </div>
   </div>
-</div>
 
-<!-- Bandeau info -->
-<div class="badge">
-  <div class="inner"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
-</div>
-
-<div class="container">
-  <section>
-    <h2>Notre carte</h2>
-    <p class="note">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
-      <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
-
-    <!-- === CARTE (inchangée, tronquée ici pour gagner de la place : garde la tienne complète) === -->
-    <ul id="menu" class="list">
-      <!-- PIZZAS -->
-      <li class="item" data-name="Margharita" data-price="7.5"><div class="it-left"><div class="it-title">Margharita</div><div class="it-desc">tomate, emmental</div></div><div class="it-right"><div class="price">7,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Chasseur" data-price="8.5"><div class="it-left"><div class="it-title">Chasseur</div><div class="it-desc">tomate, emmental, champignons</div></div><div class="it-right"><div class="price">8,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Sicilienne" data-price="8.5"><div class="it-left"><div class="it-title">Sicilienne</div><div class="it-desc">tomate, emmental, anchois</div></div><div class="it-right"><div class="price">8,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Napolitaine" data-price="9"><div class="it-left"><div class="it-title">Napolitaine</div><div class="it-desc">tomate, emmental, jambon</div></div><div class="it-right"><div class="price">9,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Paysanne" data-price="9.5"><div class="it-left"><div class="it-title">Paysanne</div><div class="it-desc">tomate, emmental, jambon, œuf</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Capri" data-price="9.5"><div class="it-left"><div class="it-title">Capri</div><div class="it-desc">tomate, emmental, jambon, champignons</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Mozzarella" data-price="9.5"><div class="it-left"><div class="it-title">Mozzarella</div><div class="it-desc">tomate, emmental, mozzarella</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Quatre Saisons" data-price="9.5"><div class="it-left"><div class="it-title">Quatre Saisons</div><div class="it-desc">tomate, emmental, oignons, champignons, poivrons, mozzarella</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Vénitienne" data-price="9.5"><div class="it-left"><div class="it-title">Vénitienne</div><div class="it-desc">tomate, emmental, roquefort, oignons, crème</div></div><div class="it-right"><div class="price">9,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Oslo" data-price="10"><div class="it-left"><div class="it-title">Oslo</div><div class="it-desc">tomate, emmental, thon, champignons, crème</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Orientale" data-price="10"><div class="it-left"><div class="it-title">Orientale</div><div class="it-desc">tomate, emmental, merguez, poivrons</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Bolognaise" data-price="10"><div class="it-left"><div class="it-title">Bolognaise</div><div class="it-desc">tomate, emmental, viande hachée, crème, mozzarella</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Fermière" data-price="10"><div class="it-left"><div class="it-title">Fermière</div><div class="it-desc">tomate, emmental, œuf, lardons, champignons</div></div><div class="it-right"><div class="price">10,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Miel" data-price="10.5"><div class="it-left"><div class="it-title">Miel</div><div class="it-desc">crème, emmental, chèvre frais, miel</div></div><div class="it-right"><div class="price">10,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Forestière" data-price="10.5"><div class="it-left"><div class="it-title">Forestière</div><div class="it-desc">tomate, emmental, poulet, champignons, crème</div></div><div class="it-right"><div class="price">10,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Lyonnaise" data-price="11"><div class="it-left"><div class="it-title">Lyonnaise</div><div class="it-desc">tomate, emmental, saint-marcellin, poulet, crème</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Quatre Fromages" data-price="11"><div class="it-left"><div class="it-title">Quatre Fromages</div><div class="it-desc">tomate, emmental, chèvre, roquefort, mozzarella</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Paradoxe" data-price="11"><div class="it-left"><div class="it-title">Paradoxe</div><div class="it-desc">tomate, emmental, œuf, jambon, chorizo, mozzarella</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Boisée" data-price="11"><div class="it-left"><div class="it-title">Boisée</div><div class="it-desc">crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Savoyarde" data-price="11"><div class="it-left"><div class="it-title">Savoyarde</div><div class="it-desc">emmental, lardons, reblochon, pomme de terre, crème</div></div><div class="it-right"><div class="price">11,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Carnivore" data-price="11.5"><div class="it-left"><div class="it-title">Carnivore</div><div class="it-desc">tomate, emmental, viande hachée, merguez, œuf, mozzarella</div></div><div class="it-right"><div class="price">11,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Norvégienne" data-price="11.5"><div class="it-left"><div class="it-title">Norvégienne</div><div class="it-desc">emmental, saumon fumé, mozzarella, crème</div></div><div class="it-right"><div class="price">11,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Burger" data-price="12"><div class="it-left"><div class="it-title">Burger</div><div class="it-desc">tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger</div></div><div class="it-right"><div class="price">12,00 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <!-- BOISSONS -->
-      <li class="item" data-name="Canette 33cl (choix sur place)" data-price="1.5" data-drink="1"><div class="it-left"><div class="it-title">Canette 33cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">1,50 €</div><button class="btn orange add">Ajouter</button></div></li>
-      <li class="item" data-name="Bouteille 50cl (choix sur place)" data-price="3" data-drink="1"><div class="it-left"><div class="it-title">Bouteille 50cl (choix sur place)</div><div class="it-desc">boisson — saveur choisie sur place</div></div><div class="it-right"><div class="price">3,00 €</div><button class="btn orange add">Ajouter</button></div></li>
+  <div id="infos">
+    <h2>Infos pratiques</h2>
+    <p><b>Nous trouver :</b></p>
+    <ul>
+      <li><b>Vendredi soir</b> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) · 18:00–21:00 — <a href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins" target="_blank" rel="noopener">Itinéraire</a></li>
+      <li><b>Samedi soir</b> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank" rel="noopener">Itinéraire</a></li>
+      <li><b>Dimanche soir</b> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank" rel="noopener">Itinéraire</a></li>
     </ul>
+    <p><b>Téléphone :</b> <a href="tel:0680480456">06 80 48 04 56</a> · <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
+  </div>
 
-    <div class="card">
-      <h3>Infos pratiques</h3>
-      <div class="small">Nous trouver :</div>
-      <ul>
-        <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins" target="_blank" rel="noopener">Itinéraire</a></li>
-        <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank" rel="noopener">Itinéraire</a></li>
-        <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank" rel="noopener">Itinéraire</a></li>
-      </ul>
-      <div style="margin-top:8px">Téléphone : <a href="tel:0680480456">06 80 48 04 56</a> • <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></div>
-    </div>
-  </section>
+  <footer>© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
 
-  <footer class="footer small">© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
-</div>
+  <div class="cart-bar" aria-live="polite">
+    <span id="cart-text">Panier · 0,00 €</span>
+    <button id="checkout-btn" type="button" disabled>Commander</button>
+  </div>
 
-<!-- BARRE PANIER (inchangée) -->
-<div id="cartBar">
-  <span>Panier • <strong id="cartTotal">0,00</strong> €</span>
-  <button id="btnView" class="btn">Voir panier</button>
-  <button id="btnCheckout" class="btn primary">Passer commande</button>
-</div>
-
-<!-- ===== MODAL CHECKOUT (NOUVEAU) ===== -->
-<dialog id="checkout">
-  <form method="dialog" class="ck">
-    <h3>Finaliser la commande</h3>
-    <div id="ck-list" class="small"></div>
-
-    <div class="ck-grid">
-      <div class="form"><label>Nom*</label><input id="ck-name" placeholder="Votre nom" autocomplete="name"></div>
-      <div class="form"><label>Téléphone*</label><input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel"></div>
-      <div class="form">
-        <label>Heure de retrait*</label>
-        <input id="ck-slot" placeholder="19:00">
-        <div class="chips" id="slot-chips">
-          <span class="chip">18:00</span><span class="chip">18:30</span><span class="chip">19:00</span>
-          <span class="chip">19:30</span><span class="chip">20:00</span><span class="chip">20:30</span>
+  <div id="checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <div class="sheet">
+      <h2 id="checkout-title">Finaliser la commande</h2>
+      <div class="summary" id="order-summary">Votre panier est vide.</div>
+      <form id="checkout-form">
+        <div><input id="cust-name" type="text" name="name" placeholder="Votre nom *" autocomplete="name" required></div>
+        <div><input id="cust-phone" type="tel" name="phone" placeholder="Téléphone *" autocomplete="tel" required></div>
+        <div><textarea id="cust-note" name="note" placeholder="Commentaire (optionnel)"></textarea></div>
+        <div>
+          <div class="times" id="time-chips">
+            <div class="chip" role="button" tabindex="0">18:00</div>
+            <div class="chip" role="button" tabindex="0">18:30</div>
+            <div class="chip" role="button" tabindex="0">19:00</div>
+            <div class="chip" role="button" tabindex="0">19:30</div>
+            <div class="chip" role="button" tabindex="0">20:00</div>
+            <div class="chip" role="button" tabindex="0">20:30</div>
+          </div>
+          <input type="hidden" id="pickup-time" name="slot" required>
         </div>
-      </div>
-      <div class="form"><label>Commentaire (optionnel)</label><textarea id="ck-note" placeholder="Sans olives, etc."></textarea></div>
-    </div>
-
-    <div class="ck-actions">
-      <button class="btn ck-ghost" id="btnClose">Fermer</button>
-      <button class="btn ck-primary" id="btnSend">Envoyer la commande</button>
-    </div>
-  </form>
-</dialog>
-
-<!-- ===== MODAL SUPPLÉMENT (inchangé) ===== -->
-<dialog id="supModal">
-  <div class="sup-body">
-    <h3>Supplément pour <span id="supName"></span> ?</h3>
-    <div class="sup-help">Ajouter un supplément (+1 €) : viande / poisson / œuf / fromage.</div>
-    <div class="sup-row">
-      <button class="btn" id="supNo">Sans supplément</button>
-      <button class="btn primary" id="supYes">+1 € Supplément</button>
-      <select id="supType" style="min-width:180px">
-        <option value="viande">viande</option>
-        <option value="poisson">poisson</option>
-        <option value="œuf">œuf</option>
-        <option value="fromage">fromage</option>
-      </select>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn" id="supCancel">Annuler</button>
+        <div class="actions">
+          <button type="button" class="cancel" id="cancel-checkout">Fermer</button>
+          <button type="submit" class="submit">Envoyer la commande</button>
+        </div>
+      </form>
     </div>
   </div>
-</dialog>
 
-<script>
-/* ===== CONFIG API (vide = simulation) ===== */
-const API_URL = ""; // mets ton URL /exec ici si tu veux envoyer en vrai
+  <script>
+    const menuEl = document.querySelector('.menu');
+    const cartText = document.getElementById('cart-text');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const checkoutSheet = document.getElementById('checkout');
+    const orderSummary = document.getElementById('order-summary');
+    const checkoutForm = document.getElementById('checkout-form');
+    const pickupInput = document.getElementById('pickup-time');
 
-/* ===== PANIER (inchangé) ===== */
-const cart = {
-  items: [],
-  addWithSup(name, price, sups=0, supsList=[]){
-    const key=(name+"|"+(supsList.join(","))).toLowerCase();
-    const ex=this.items.find(i=>i.key===key);
-    if(ex){ ex.qty++; } else this.items.push({key,name,price:parseFloat(price||0),qty:1,sups,supsList});
-    renderCartBar();
-  },
-  total(){ return this.items.reduce((s,i)=> s + (i.price + (i.sups?1:0))*i.qty, 0); },
-  clear(){ this.items.length=0; renderCartBar(); }
-};
-function euro(v){ return v.toFixed(2).replace(".",","); }
+    const cart = new Map();
 
-/* Ajout + supplément (inchangé) */
-let pending = null;
-document.getElementById("menu").addEventListener("click", (ev)=>{
-  const btn = ev.target.closest(".add"); if(!btn) return;
-  const li  = btn.closest(".item");
-  const name= li.dataset.name;
-  const price= parseFloat(li.dataset.price||"0");
-  const isDrink = !!li.dataset.drink;
+    const euro = (value) => value.toFixed(2).replace('.', ',');
 
-  if(isDrink){ cart.addWithSup(name,price,0,[]); return; }
+    function refreshCartBar() {
+      let total = 0;
+      let count = 0;
+      cart.forEach(({ qty, price }) => {
+        total += price * qty;
+        count += qty;
+      });
+      cartText.textContent = `Panier · ${euro(total)} €${count ? ` (${count} article${count > 1 ? 's' : ''})` : ''}`;
+      checkoutBtn.disabled = total === 0;
+    }
 
-  pending = {name,price};
-  document.getElementById("supName").textContent = name;
-  document.getElementById("supModal").showModal();
-});
-document.getElementById("supNo").onclick = ()=>{ if(!pending) return; cart.addWithSup(pending.name,pending.price,0,[]); pending=null; document.getElementById("supModal").close(); };
-document.getElementById("supYes").onclick= ()=>{ if(!pending) return; const t=document.getElementById("supType").value||"supplément"; cart.addWithSup(pending.name,pending.price,1,[t]); pending=null; document.getElementById("supModal").close(); };
-document.getElementById("supCancel").onclick= ()=>{ pending=null; document.getElementById("supModal").close(); };
+    function updateSummary() {
+      if (cart.size === 0) {
+        orderSummary.textContent = 'Votre panier est vide.';
+        return;
+      }
+      const lines = [];
+      let total = 0;
+      cart.forEach(({ qty, price }, name) => {
+        total += price * qty;
+        lines.push(`• ${name} × ${qty} — ${euro(price)} €`);
+      });
+      lines.push('', `Total : ${euro(total)} €`);
+      orderSummary.textContent = lines.join('\n');
+    }
 
-/* Barre panier */
-function renderCartBar(){
-  const bar=document.getElementById("cartBar");
-  document.getElementById("cartTotal").textContent=euro(cart.total());
-  bar.classList.toggle("show", cart.items.length>0);
-}
-document.getElementById("btnView").onclick=openCheckout;
-document.getElementById("btnCheckout").onclick=openCheckout;
+    menuEl.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const item = event.target.closest('.item');
+      if (!item) return;
+      const name = item.dataset.name;
+      const price = Number.parseFloat(item.dataset.price || '0');
+      const existing = cart.get(name) || { qty: 0, price };
+      cart.set(name, { qty: existing.qty + 1, price });
+      refreshCartBar();
+    });
 
-/* Modal checkout + horaires chips */
-function openCheckout(){
-  if(cart.items.length===0){ alert("Votre panier est vide."); return; }
-  const lines=cart.items.map(i=>{
-    const sup=i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
-    return `• ${i.name} × ${i.qty}${sup} — ${euro(i.price + (i.sups?1:0))} €`;
-  }).join("\n");
-  document.getElementById("ck-list").textContent = lines + `\n\nTotal : ${euro(cart.total())} €`;
-  document.getElementById("checkout").showModal();
-}
-document.getElementById("btnClose").onclick=(e)=>{e.preventDefault();document.getElementById("checkout").close();};
+    checkoutBtn.addEventListener('click', () => {
+      if (cart.size === 0) {
+        alert('Votre panier est vide.');
+        return;
+      }
+      updateSummary();
+      checkoutSheet.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
 
-document.getElementById("slot-chips").addEventListener("click",(e)=>{
-  const c=e.target.closest(".chip"); if(!c) return;
-  document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
-  c.classList.add("active");
-  document.getElementById("ck-slot").value=c.textContent.trim();
-});
+    document.getElementById('cancel-checkout').addEventListener('click', () => {
+      checkoutSheet.classList.remove('active');
+      document.body.style.overflow = '';
+    });
 
-document.getElementById("btnSend").onclick=async (e)=>{
-  e.preventDefault();
-  const name=document.getElementById("ck-name").value.trim();
-  const phone=document.getElementById("ck-phone").value.trim();
-  const slot=document.getElementById("ck-slot").value.trim();
-  const note=document.getElementById("ck-note").value.trim();
-  if(!name||!phone||!slot){ alert("Merci de compléter nom, téléphone et heure."); return; }
+    checkoutSheet.addEventListener('click', (event) => {
+      if (event.target === checkoutSheet) {
+        checkoutSheet.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
 
-  const items=cart.items.map(i=>({name:i.name+(i.sups?` (+${i.sups} suppl.)`:""),qty:i.qty,price:i.price+(i.sups?1:0)}));
-  const payload={name,phone,slot,note,items,total:Number(cart.total().toFixed(2)),source:"site"};
+    function selectTime(value) {
+      pickupInput.value = value;
+      document.querySelectorAll('#time-chips .chip').forEach((chip) => {
+        chip.classList.toggle('active', chip.textContent.trim() === value);
+      });
+    }
 
-  if(!API_URL){
-    alert("Commande enregistrée (simulation). Merci !");
-    cart.clear(); document.getElementById("checkout").close(); return;
-  }
+    document.getElementById('time-chips').addEventListener('click', (event) => {
+      const chip = event.target.closest('.chip');
+      if (!chip) return;
+      selectTime(chip.textContent.trim());
+    });
 
-  try{
-    const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-    const txt=await res.text(); let data; try{data=JSON.parse(txt);}catch{data={ok:false,error:"bad_json",raw:txt};}
-    if(!res.ok||!data||data.ok!==true){ throw new Error((data&&data.error)||("HTTP "+res.status)); }
-    alert("Commande enregistrée. Merci !");
-    cart.clear(); document.getElementById("checkout").close();
-  }catch(err){
-    console.error(err); alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
-  }
-};
-</script>
+    document.getElementById('time-chips').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        const chip = event.target.closest('.chip');
+        if (!chip) return;
+        event.preventDefault();
+        selectTime(chip.textContent.trim());
+      }
+    }, true);
+
+    checkoutForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (cart.size === 0) {
+        alert('Ajoutez des articles au panier avant de commander.');
+        return;
+      }
+      if (!pickupInput.value) {
+        alert('Merci de sélectionner une heure de retrait.');
+        return;
+      }
+
+      const formData = new FormData(checkoutForm);
+      const payload = {
+        name: formData.get('name')?.trim(),
+        phone: formData.get('phone')?.trim(),
+        note: formData.get('note')?.trim(),
+        slot: formData.get('slot'),
+        items: Array.from(cart.entries()).map(([name, { qty, price }]) => ({ name, qty, price })),
+        total: Array.from(cart.values()).reduce((sum, { qty, price }) => sum + price * qty, 0),
+      };
+
+      console.log('Commande simulée', payload);
+      alert('Commande enregistrée (simulation). Merci !');
+
+      cart.clear();
+      refreshCartBar();
+      checkoutSheet.classList.remove('active');
+      document.body.style.overflow = '';
+      checkoutForm.reset();
+      pickupInput.value = '';
+      updateSummary();
+    });
+
+    refreshCartBar();
+    updateSummary();
+  </script>
 </body>
 </html>
