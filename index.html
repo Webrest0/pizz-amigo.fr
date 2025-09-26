@@ -4,26 +4,28 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark" />
 <style>
 :root{--bg:#0b0f14;--panel:#121a2b;--line:#243156;--muted:#b9c2d6;--green:#19c37d;--orange:#ff9f3f}
 html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
 a{color:#9ec5ff;text-decoration:none} a:hover{text-decoration:underline}
 .container{max-width:1050px;margin:0 auto;padding:0 14px}
 
-/* HERO – image entière, pas recadrée */
-.hero{padding:16px 14px 0}
-.hero-card{position:relative;background:#0e1420;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.hero-img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;object-position:center;background:#0e1420}
-.hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%, rgba(0,0,0,.55) 100%)}
-.hero-txt{position:absolute;left:16px;right:16px;bottom:12px}
+/* HERO plein écran */
+.hero{
+  min-height:44vh;
+  background:url('./images/oven.jpg') center/cover no-repeat fixed;
+  display:flex;align-items:flex-end;
+}
+.hero-inner{width:100%;background:linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,.65) 100%);padding:22px 14px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
 .brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
-h1{font-size:clamp(22px,4.6vw,40px);line-height:1.08;margin:0 0 4px}
-.lead{margin:0;opacity:.9}
+h1{font-size:clamp(24px,5.2vw,44px);line-height:1.08;margin:0 0 6px}
+.lead{margin:0;opacity:.92}
 
-/* Bandeau état */
-.badge{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px;margin:12px 14px}
+/* Bandeau info avec léger chevauchement */
+.badge{position:relative;z-index:3;margin:-8px auto 10px;max-width:1050px;padding:0 14px}
+.badge .inner{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px}
 .badge .dot{width:10px;height:10px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
 
 /* Sections */
@@ -65,20 +67,18 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 <body>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-card">
-    <img class="hero-img" src="./images/oven.jpg" alt="Four à pizza">
-    <div class="hero-grad"></div>
-    <div class="hero-txt">
-      <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
-      <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-      <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
-    </div>
+<header class="hero">
+  <div class="hero-inner container">
+    <div class="brand"><span class="dot"></span>PIZZ’AMIGO</div>
+    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+    <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
   </div>
-</div>
+</header>
 
 <!-- Bandeau info -->
-<div class="badge"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
+<div class="badge">
+  <div class="inner"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
+</div>
 
 <div class="container">
   <section>
@@ -121,11 +121,11 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
       <h3>Infos pratiques</h3>
       <div class="small">Nous trouver :</div>
       <ul>
-        <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins" target="_blank">Itinéraire</a></li>
-        <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank">Itinéraire</a></li>
-        <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank">Itinéraire</a></li>
+        <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins" target="_blank" rel="noopener">Itinéraire</a></li>
+        <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank" rel="noopener">Itinéraire</a></li>
+        <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank" rel="noopener">Itinéraire</a></li>
       </ul>
-      <div style="margin-top:8px">Téléphone : <a href="tel:0680480456">06 80 48 04 56</a> • <a href="https://facebook.com" target="_blank">Facebook</a></div>
+      <div style="margin-top:8px">Téléphone : <a href="tel:0680480456">06 80 48 04 56</a> • <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></div>
     </div>
   </section>
 
@@ -183,19 +183,22 @@ const cart = {
   total(){ return this.items.reduce((s,i)=> s + (i.price + (i.sups?1:0))*i.qty, 0); },
   clear(){ this.items.length=0; renderCartBar(); }
 };
-function €(v){ return v.toFixed(2).replace(".",","); }
+function euro(v){ return v.toFixed(2).replace(".",","); }
 
-/* Boutons “Ajouter” */
-document.querySelectorAll("#menu .item").forEach(li=>{
-  const name=li.dataset.name, price=parseFloat(li.dataset.price||"0");
+/* DÉLÉGATION : capte tous les clics “Ajouter” (fiable) */
+document.getElementById("menu").addEventListener("click", (ev)=>{
+  const btn = ev.target.closest(".add"); if(!btn) return;
+  const li  = btn.closest(".item");
+  const name= li.dataset.name;
+  const price= parseFloat(li.dataset.price||"0");
   const isDrink = /choix sur place/i.test(name);
-  li.querySelector(".add").addEventListener("click",()=>cart.add(name,price,isDrink));
+  cart.add(name,price,isDrink);
 });
 
 /* Barre panier */
 function renderCartBar(){
   const bar=document.getElementById("cartBar");
-  document.getElementById("cartTotal").textContent=€(cart.total());
+  document.getElementById("cartTotal").textContent=euro(cart.total());
   bar.classList.toggle("show", cart.items.length>0);
 }
 document.getElementById("btnView").onclick=openCheckout;
@@ -206,9 +209,9 @@ function openCheckout(){
   if(cart.items.length===0){ alert("Votre panier est vide."); return; }
   const lines=cart.items.map(i=>{
     const sup=i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
-    return `• ${i.name} × ${i.qty}${sup} — ${€(i.price)} €`;
+    return `• ${i.name} × ${i.qty}${sup} — ${euro(i.price)} €`;
   }).join("\n");
-  document.getElementById("ck-list").textContent = lines + `\n\nTotal : ${€(cart.total())} €`;
+  document.getElementById("ck-list").textContent = lines + `\n\nTotal : ${euro(cart.total())} €`;
   document.getElementById("checkout").showModal();
 }
 document.getElementById("btnClose").onclick=(e)=>{e.preventDefault();document.getElementById("checkout").close();};
