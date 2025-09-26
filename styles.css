@@ -1,10 +1,23 @@
 :root{
-  --bg:#0d1117; --panel:#0f1623; --line:#222c40;
-  --txt:#e6ebf5; --muted:#a9b3c7; --green:#19c37d; --accent:#ff9f3f; --danger:#d84b4b;
+  /* Couleurs drapeau */
+  --it-green:#008C45;
+  --it-white:#F4F5F0;
+  --it-red:#CD212A;
+
+  /* Fond & lignes (on garde le dark mais plus neutre) */
+  --bg:#0b0f12;
+  --panel:#111826;
+  --line:#24324f;
+
+  /* Accents dérivés */
+  --txt:var(--it-white);
+  --muted:#cdd7ea;
+  --green:var(--it-green);
+  --accent:var(--it-red);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,Roboto,Arial}
-a{color:#9bbcff}
+a{color:#9fd6ff}
 
 /* header */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(180deg,#0f1623,rgba(15,22,35,.85))}
@@ -12,18 +25,24 @@ a{color:#9bbcff}
 
 /* hero */
 .hero{
+  position:relative;
   min-height:44vh; display:grid; align-items:end;
   background:url('./images/oven.jpg') center/cover no-repeat fixed;
+  border:1px solid #2b3a60;
 }
 .hero .hero-content{
   padding:28px 16px;
-  background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.66) 100%);
+  background:linear-gradient(180deg,rgba(0,0,0,0) 0%, rgba(0,0,0,.72) 100%);
+}
+.hero::after{
+  content:""; display:block; position:absolute; left:0; right:0; bottom:0; height:3px;
+  background:linear-gradient(90deg,var(--it-green) 0 33%, var(--it-white) 33% 66%, var(--it-red) 66% 100%);
 }
 .hero h1{margin:0 0 8px 0;font-size:clamp(24px,5vw,44px)}
 .hero p{margin:0;opacity:.9}
 
 /* banner info */
-.banner{background:#c43d3d;color:#fff;text-align:center;padding:10px 12px;font-weight:700}
+.banner{background:#351818;color:#ffd7d7;text-align:center;padding:10px 12px;font-weight:700;border:1px solid #6c2a2a}
 
 /* sections */
 .section{padding:18px 16px}
@@ -36,14 +55,17 @@ h2{margin:0 0 10px 0;font-size:clamp(20px,3.5vw,28px)}
 .menu-item:last-child{border-bottom:0}
 .mi-title{font-weight:700}
 .mi-desc{color:var(--muted);font-size:.95rem;margin-top:4px}
-.mi-price{color:#31cc7c;font-weight:800;margin-right:12px}
-.btn{cursor:pointer;border-radius:999px;padding:8px 14px;border:1px solid var(--accent);color:var(--accent);background:transparent}
+.mi-price{color:var(--green);font-weight:800;margin-right:12px}
+.btn{cursor:pointer;border-radius:999px;padding:8px 14px;border:1px solid rgba(255,255,255,.22);color:var(--txt);background:transparent}
 .btn:hover{filter:brightness(1.1)}
-.btn.primary{background:var(--green);border:0;color:#000}
+.btn.primary{background:var(--green);border:0;color:#08110c}
+.btn.primary:hover{filter:brightness(1.08)}
 .btn.dark{background:rgba(255,255,255,.1);border:0}
+.btn.orange{border-color:var(--it-red);color:var(--it-red)}
+.btn.orange:hover{filter:brightness(1.08)}
 
 /* cart bar */
-#cart-bar{position:sticky;bottom:0;left:0;right:0;display:flex;gap:12px;align-items:center;justify-content:center;background:rgba(10,12,16,.86);backdrop-filter:blur(6px);padding:10px;border-top:1px solid var(--line)}
+#cart-bar{position:sticky;bottom:0;left:0;right:0;display:flex;gap:12px;align-items:center;justify-content:center;background:rgba(5,8,12,.7);backdrop-filter:blur(6px);padding:10px;border-top:1px solid rgba(255,255,255,.08)}
 #cart-bar.hidden{display:none}
 
 /* modal checkout */
