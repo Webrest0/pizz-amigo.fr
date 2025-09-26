@@ -3,185 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b0f14">
+  <meta name="theme-color" content="#101418">
   <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-.gal{margin:16px 0 22px}
-.gal-wrap{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
-.gal-viewport{position:relative;overflow:hidden}
-.gal-slides{display:flex;transition:transform .35s ease}
-.gal-slide{min-width:100%;height:220px;background:#000 center/cover no-repeat}
-@media (min-width:700px){.gal-slide{height:320px}}
-.gal-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;border:0;border-radius:50%;
-  width:38px;height:38px;cursor:pointer;background:rgba(0,0,0,.4);color:#fff}
-.gal-nav:hover{background:rgba(0,0,0,.55)}
-.gal-nav.prev{left:10px}.gal-nav.next{right:10px}
-.gal-dots{display:flex;gap:8px;justify-content:center;margin:10px 0}
-.gal-dot{width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.35);border:1px solid var(--line);cursor:pointer}
-.gal-dot.active{background:var(--it-green)}
-</style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="container">
+    <!-- HERO -->
     <section class="hero">
-      <img src="images/oven.jpg" alt="Four à bois" loading="lazy">
-      <div class="shade" aria-hidden="true"></div>
-      <div class="tx">
+      <div class="inner">
         <div class="badge"><span class="dot" aria-hidden="true"></span><span>PIZZ’AMIGO</span></div>
         <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-        <p class="sub">Le goût authentique de l’Italie près de chez vous.</p>
+        <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
       </div>
     </section>
 
+    <!-- BANNIÈRE ÉTAT -->
     <div class="banner" id="state-banner" role="status" aria-live="polite">
-      <span class="led" aria-hidden="true"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !
+      <div class="banner-left">
+        <span class="status-dot" aria-hidden="true"></span>
+        <strong>Fermé pour le moment</strong>
+      </div>
+      <div class="tag">— retrouvez-nous ce week-end !</div>
     </div>
 
-    <section id="gallery" class="gal">
-      <div class="gal-wrap">
-        <button class="gal-nav prev" aria-label="Précédent">‹</button>
-        <div class="gal-viewport">
-          <div class="gal-slides" id="gal-slides"><!-- slides injectées --></div>
-        </div>
-        <button class="gal-nav next" aria-label="Suivant">›</button>
-      </div>
-      <div class="gal-dots" id="gal-dots"></div>
-    </section>
+    <!-- CARTE -->
+    <h2 class="section">Notre carte</h2>
+    <p class="hint">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
+      Supplément (viande / poisson / œuf / fromage) : <strong>+1&nbsp;€</strong> par ajout.</p>
 
-    <h2>Notre carte</h2>
-    <p class="lead">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
-      Supplément (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
-
-    <div id="warn" class="warn" role="alert">⚠️ Carte vide — le script n'a pas démarré. Rechargez la page (vider le cache).</div>
     <div id="menu" class="card" role="region" aria-live="polite"></div>
 
+    <!-- INFOS PRATIQUES -->
     <section class="infos" aria-labelledby="infos-title">
       <h3 id="infos-title">Infos pratiques</h3>
-      <p><strong>Nous trouver :</strong></p>
+      <p class="hint">Nous trouver :</p>
       <ul>
         <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 —
-          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?address=Rue%20Nationale%2C%2069600%20Saint-Georges-de-Reneins%2C%20France&ll=46.0429,4.7263">Itinéraire</a></li>
+          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Saint-Georges-de-Reneins%20Parking%20Caisse%20d%E2%80%99%C3%A9pargne">Itinéraire</a></li>
         <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 —
-          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Amareins%2001090">Itinéraire</a></li>
+          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Amareins%20carrefour%20des%20feux">Itinéraire</a></li>
         <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 —
-          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Amareins%2001090">Itinéraire</a></li>
+          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Amareins%20carrefour%20des%20feux">Itinéraire</a></li>
       </ul>
-      <p><strong>Contact</strong> — Tél : <a href="tel:+33680480456">06 80 48 04 56</a></p>
+      <p class="tag">Téléphone : <a href="tel:+33680480456">06 80 48 04 56</a> • <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
     </section>
+
+    <footer>© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
   </div>
 
-  <div id="bar" class="bar hidden">
-    <span class="chip">Panier • <strong id="tot">0,00</strong> €</span>
-    <button class="btn dark" id="view" type="button">Voir panier</button>
-    <button class="btn primary" id="checkout" type="button">Passer commande</button>
+  <!-- BARRE PANIER -->
+  <div id="cartBar" class="cart-bar hidden">
+    <div class="pill">Panier • <span id="cartTotal">0,00</span>&nbsp;€</div>
+    <button class="pill" id="btnView" type="button">Voir panier</button>
+    <button class="pill primary" id="btnCheckout" type="button">Passer commande</button>
   </div>
 
-  <dialog id="dlg" aria-labelledby="modal-title">
-    <div class="md">
-      <div class="head">
-        <h3 id="modal-title">Finaliser la commande</h3>
-        <div id="resume" class="resume"></div>
-        <div id="sum" class="total">Total : 0,00 €</div>
+  <!-- MODAL PANIER / CHECKOUT -->
+  <dialog id="cartModal" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <h3 id="modal-title">Finaliser la commande</h3>
+    </div>
+    <div class="basket" id="basket"></div>
+
+    <div class="basket">
+      <div class="grid-2">
+        <label>Nom*<br><input id="ckName" placeholder="Votre nom" autocomplete="name"></label>
+        <label>Téléphone*<br><input id="ckPhone" placeholder="06…" autocomplete="tel"></label>
       </div>
-      <div class="rows">
-        <div class="col">
-          <label>Nom*
-            <input id="c-name" placeholder="Votre nom" autocomplete="name">
-          </label>
-          <label>Heure de retrait*
-            <input id="c-slot" value="19:00" autocomplete="off">
-          </label>
-          <div class="slots" id="slot-grid" role="listbox" aria-label="Créneaux disponibles"></div>
-        </div>
-        <div class="col">
-          <label>Téléphone*
-            <input id="c-phone" placeholder="06…" autocomplete="tel">
-          </label>
-          <label>Commentaire (optionnel)
-            <textarea id="c-note" placeholder="Sans olives, etc." rows="3"></textarea>
-          </label>
-        </div>
-      </div>
-      <div class="md-foot">
-        <button class="btn dark" id="close" type="button">Fermer</button>
-        <button class="btn primary" id="send" type="button">Envoyer la commande</button>
-      </div>
+      <label class="field">Heure de retrait*<br>
+        <input id="ckSlot" value="19:00" autocomplete="off">
+      </label>
+      <div class="times" id="timeGrid" role="listbox" aria-label="Créneaux disponibles"></div>
+      <label class="field">Commentaire (optionnel)<br><textarea id="ckNote" rows="2" placeholder="Sans olives, etc."></textarea></label>
+    </div>
+
+    <div class="actions">
+      <button class="btn-soft" id="btnClose" type="button">Fermer</button>
+      <button class="btn-primary" id="btnSend" type="button">Envoyer la commande</button>
     </div>
   </dialog>
 
-  <script>
-(function(){
-  // Liste des images potentielles : celles qui n’existent pas seront ignorées automatiquement
-  const CANDIDATES = [
-    "images/oven.jpg",
-    "images/pizza-1.jpg",
-    "images/pizza-2.jpg",
-    "images/truck.jpg"
-  ];
-
-  const slidesEl = document.getElementById('gal-slides');
-  const dotsEl   = document.getElementById('gal-dots');
-  if(!slidesEl || !dotsEl) return;
-
-  // Précharge et garde seulement celles qui existent
-  Promise.allSettled(CANDIDATES.map(src => new Promise((res,rej)=>{
-    const im = new Image();
-    im.onload = ()=>res(src);
-    im.onerror = ()=>rej(src);
-    im.src = src;
-  }))).then(results=>{
-    const ok = results.filter(r=>r.status==="fulfilled").map(r=>r.value);
-    // Toujours au moins oven.jpg
-    const list = ok.length ? ok : ["images/oven.jpg"];
-
-    // Construire les slides
-    list.forEach((src,i)=>{
-      const s = document.createElement('div');
-      s.className = 'gal-slide';
-      s.style.backgroundImage = `url('${src}')`;
-      slidesEl.appendChild(s);
-
-      const d = document.createElement('button');
-      d.className = 'gal-dot' + (i===0?' active':'');
-      d.setAttribute('aria-label','Aller à la diapo ' + (i+1));
-      d.addEventListener('click', ()=>go(i));
-      dotsEl.appendChild(d);
-    });
-
-    // Logique navigation
-    let idx = 0, N = list.length, startX = 0, curX = 0, dragging=false;
-    const viewport = slidesEl.parentElement;
-
-    function update(){ slidesEl.style.transform = `translateX(${-idx*100}%)`;
-      [...dotsEl.children].forEach((dot,i)=>dot.classList.toggle('active', i===idx)); }
-
-    function go(i){ idx = (i+N)%N; update(); }
-    function next(){ go(idx+1); }
-    function prev(){ go(idx-1); }
-
-    document.querySelector('.gal-nav.next')?.addEventListener('click', next);
-    document.querySelector('.gal-nav.prev')?.addEventListener('click', prev);
-
-    // Swipe mobile
-    viewport.addEventListener('touchstart', e=>{dragging=true; startX = e.touches[0].clientX;}, {passive:true});
-    viewport.addEventListener('touchmove',  e=>{ if(!dragging) return; curX = e.touches[0].clientX; }, {passive:true});
-    viewport.addEventListener('touchend',   ()=>{
-      if(!dragging) return; dragging=false;
-      const dx = curX - startX;
-      if(Math.abs(dx) > 40){ dx<0 ? next() : prev(); }
-      startX = curX = 0;
-    });
-
-    // Auto défilement léger (désactivable en commentant)
-    let timer = setInterval(next, 5000);
-    viewport.addEventListener('mouseenter', ()=>clearInterval(timer));
-    viewport.addEventListener('mouseleave', ()=>{ timer = setInterval(next, 5000); });
-
-    update();
-  });
-})();
-</script>
   <script type="module" src="app.js"></script>
 </body>
 </html>
