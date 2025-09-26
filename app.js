@@ -1,199 +1,228 @@
 import { API_URL, ADMIN_KEY } from "./config.js";
 
 const MENU = [
-  { n: "Margharita", p: 7.50, d: "tomate, emmental" },
-  { n: "Chasseur", p: 8.50, d: "tomate, emmental, champignons" },
-  { n: "Sicilienne", p: 8.50, d: "tomate, emmental, anchois" },
-  { n: "Napolitaine", p: 9.00, d: "tomate, emmental, jambon" },
-  { n: "Paysanne", p: 9.50, d: "tomate, emmental, jambon, œuf" },
-  { n: "Capri", p: 9.50, d: "tomate, emmental, jambon, champignons" },
-  { n: "Mozzarella", p: 9.50, d: "tomate, emmental, mozzarella" },
-  { n: "Quatre saisons", p: 9.50, d: "tomate, emmental, oignons, champignons, poivrons, mozzarella" },
-  { n: "Venitienne", p: 9.50, d: "tomate, emmental, roquefort, oignons, crème" },
-  { n: "Oslo", p: 10.00, d: "tomate, emmental, thon, champignons, crème" },
-  { n: "Orientale", p: 10.00, d: "tomate, emmental, merguez, poivrons" },
-  { n: "Bolognaise", p: 10.00, d: "tomate, emmental, viande hachée, crème, mozzarella" },
-  { n: "Fermière", p: 10.00, d: "tomate, emmental, œuf, lardons, champignons" },
-  { n: "Miel", p: 10.50, d: "crème, emmental, chèvre, miel" },
-  { n: "Forestière", p: 10.50, d: "tomate, emmental, poulet, champignons, crème" },
-  { n: "Lyonnaise", p: 11.00, d: "tomate, emmental, saint-marcellin, poulet, crème" },
-  { n: "Quatre fromages", p: 11.00, d: "tomate, emmental, chèvre, roquefort, mozzarella" },
-  { n: "Paradoxe", p: 11.00, d: "tomate, emmental, œuf, jambon, chorizo, mozzarella" },
-  { n: "Boisée", p: 11.00, d: "crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère" },
-  { n: "Savoyarde", p: 11.00, d: "tomate, emmental, lardons, reblochon, pomme de terre, crème" },
-  { n: "Carnivore", p: 11.50, d: "tomate, emmental, viande hachée, merguez, œuf, mozzarella" },
-  { n: "Norvégienne", p: 11.50, d: "emmental, saumon fumé, mozzarella, crème" },
-  { n: "Burger", p: 12.00, d: "tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger" },
-  { n: "Canette 33cl (choisie sur place)", p: 1.50, d: "boisson — saveur sur place" },
-  { n: "Bouteille 50cl (choisie sur place)", p: 3.00, d: "boisson — saveur sur place" }
+  ["Margharita", "tomate, emmental", 7.50],
+  ["Chasseur", "tomate, emmental, champignons", 8.50],
+  ["Sicilienne", "tomate, emmental, anchois", 8.50],
+  ["Napolitaine", "tomate, emmental, jambon", 9.00],
+  ["Paysanne", "tomate, emmental, jambon, œuf", 9.50],
+  ["Capri", "tomate, emmental, jambon, champignons", 9.50],
+  ["Mozzarella", "tomate, emmental, mozzarella", 9.50],
+  ["Quatre saisons", "tomate, emmental, oignons, champignons, poivrons, mozzarella", 9.50],
+  ["Vénitienne", "tomate, emmental, roquefort, oignons, crème", 9.50],
+  ["Oslo", "tomate, emmental, thon, champignons, crème", 10.00],
+  ["Orientale", "tomate, emmental, merguez, poivrons", 10.00],
+  ["Bolognaise", "tomate, emmental, viande hachée, crème, mozzarella", 10.00],
+  ["Fermière", "tomate, emmental, œuf, lardons, champignons", 10.00],
+  ["Miel", "crème, emmental, chèvre frais, miel", 10.50],
+  ["Forestière", "tomate, emmental, poulet, champignons, crème", 10.50],
+  ["Lyonnaise", "tomate, emmental, saint-marcellin, poulet, crème", 11.00],
+  ["Quatre fromages", "tomate, emmental, chèvre, roquefort, mozzarella", 11.00],
+  ["Paradoxe", "tomate, emmental, œuf, jambon, chorizo, mozzarella", 11.00],
+  ["Boisée", "crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère", 11.00],
+  ["Savoyarde", "emmental, lardons, reblochon, pomme de terre, crème", 11.00],
+  ["Carnivore", "tomate, emmental, viande hachée, merguez, œuf, mozzarella", 11.50],
+  ["Norvégienne", "emmental, saumon fumé, mozzarella, crème", 11.50],
+  ["Burger", "tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger", 12.00],
+  ["Canette 33cl (choisie sur place)", "boisson — saveur choisie sur place", 1.50],
+  ["Bouteille 50cl (choisie sur place)", "boisson — saveur choisie sur place", 3.00]
 ];
 
-const € = value => (Number(value) || 0).toFixed(2).replace('.', ',') + " €";
+const SLOTS = ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30"];
 
-function getCart(){
-  try{
-    const stored = JSON.parse(localStorage.getItem('cart') || '{}');
-    if(stored && Array.isArray(stored.items)){
-      return { items: stored.items.filter(item => item && item.name && Number(item.qty) > 0) };
+const cart = {
+  items: [],
+  get total(){
+    return this.items.reduce((sum, item) => sum + (item.price + item.suppl) * item.qty, 0);
+  },
+  add(row){
+    const [name, desc, price] = row;
+    const wantSuppl = window.confirm("Ajouter un supplément (+1 €) ?");
+    const suppl = wantSuppl ? 1 : 0;
+    const existingIndex = this.items.findIndex(item => item.name === name && item.suppl === suppl);
+    if(existingIndex > -1){
+      this.items[existingIndex].qty += 1;
+    }else{
+      this.items.push({ name, desc, price, suppl, qty: 1 });
     }
-  }catch(error){
-    console.warn('Cart parsing error', error);
+    updateBar();
+  },
+  inc(index){
+    if(this.items[index]){
+      this.items[index].qty += 1;
+      updateBar();
+    }
+  },
+  dec(index){
+    if(!this.items[index]) return;
+    this.items[index].qty -= 1;
+    if(this.items[index].qty <= 0){
+      this.items.splice(index, 1);
+    }
+    updateBar();
+  },
+  del(index){
+    if(this.items[index]){
+      this.items.splice(index, 1);
+      updateBar();
+    }
+  },
+  clear(){
+    this.items.length = 0;
+    updateBar();
   }
-  return { items: [] };
-}
+};
 
-function setCart(cart){
-  try{
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }catch(error){
-    console.warn('Cart saving error', error);
-  }
-  renderCartBar();
-  renderCheckout();
-}
-
-function addToCart(name, price){
-  const cart = getCart();
-  const found = cart.items.find(item => item.name === name);
-  if(found){
-    found.qty += 1;
-  }else{
-    cart.items.push({ name, price, qty: 1 });
-  }
-  setCart(cart);
+function formatPrice(value){
+  return value.toFixed(2).replace('.', ',');
 }
 
 function renderMenu(){
-  const list = document.querySelector('#menu-list');
-  if(!list) return;
-  list.innerHTML = '';
-  MENU.forEach(item => {
-    const li = document.createElement('li');
-    li.className = 'item';
-    li.innerHTML = `
+  const host = document.getElementById('menu');
+  if(!host) return;
+  host.innerHTML = '';
+  MENU.forEach(row => {
+    const [name, desc, price] = row;
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `
       <div class="left">
-        <div class="name">${item.n}</div>
-        <div class="desc">${item.d}</div>
+        <div class="name">${name}</div>
+        <div class="desc">${desc}</div>
       </div>
       <div class="right">
-        <div class="price">${€(item.p)}</div>
+        <div class="price">${formatPrice(price)}</div>
         <button class="btn add" type="button">Ajouter</button>
-      </div>`;
-    li.querySelector('.add')?.addEventListener('click', () => addToCart(item.n, item.p));
-    list.appendChild(li);
+      </div>
+    `;
+    item.querySelector('.add')?.addEventListener('click', () => cart.add(row));
+    host.appendChild(item);
+  });
+  document.getElementById('warn')?.style.setProperty('display', host.children.length ? 'none' : 'block');
+}
+
+function updateBar(){
+  const bar = document.getElementById('bar');
+  const totalNode = document.getElementById('tot');
+  if(!bar || !totalNode) return;
+  if(cart.items.length === 0){
+    bar.classList.add('hidden');
+    totalNode.textContent = '0,00';
+    return;
+  }
+  bar.classList.remove('hidden');
+  totalNode.textContent = formatPrice(cart.total);
+}
+
+function openCart(){
+  const resume = document.getElementById('resume');
+  const sum = document.getElementById('sum');
+  if(!resume || !sum) return;
+  const lines = cart.items.map(item => {
+    const suppl = item.suppl ? ' (+1 suppl.)' : '';
+    return `• ${item.name} × ${item.qty}${suppl}`;
+  }).join('<br>');
+  resume.innerHTML = lines || 'Panier vide.';
+  sum.textContent = `Total : ${formatPrice(cart.total)} €`;
+  document.getElementById('dlg')?.showModal();
+}
+
+function buildSlots(){
+  const grid = document.getElementById('slot-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  const input = document.getElementById('c-slot');
+  const current = input?.value.trim();
+  SLOTS.forEach(slot => {
+    const button = document.createElement('div');
+    button.className = 'slot';
+    button.textContent = slot;
+    button.setAttribute('role', 'option');
+    button.tabIndex = -1;
+    button.addEventListener('click', () => selectSlot(slot, button));
+    if(slot === current){
+      button.classList.add('active');
+      button.tabIndex = 0;
+      button.setAttribute('aria-selected', 'true');
+    }
+    grid.appendChild(button);
   });
 }
 
-function renderCartBar(){
-  const bar = document.getElementById('cart-bar');
-  const totalNode = document.getElementById('cart-total');
-  if(!bar || !totalNode) return;
-
-  const cart = getCart();
-  const items = cart.items;
-  const total = items.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.qty) || 0), 0);
-
-  totalNode.textContent = €(total);
-  bar.classList.toggle('hidden', items.length === 0);
-}
-
-function renderCheckout(){
-  const linesContainer = document.getElementById('cart-lines');
-  const totalContainer = document.getElementById('ck-total');
-  if(!linesContainer || !totalContainer) return;
-
-  const cart = getCart();
-  const items = cart.items;
-  const total = items.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.qty) || 0), 0);
-
-  linesContainer.innerHTML = '';
-
-  if(!items.length){
-    const empty = document.createElement('li');
-    empty.className = 'cart-line empty';
-    empty.textContent = 'Votre panier est vide.';
-    linesContainer.appendChild(empty);
-  }else{
-    items.forEach((item, index) => {
-      const line = document.createElement('li');
-      line.className = 'cart-line';
-      const lineTotal = (Number(item.price) || 0) * (Number(item.qty) || 0);
-      line.innerHTML = `
-        <span class="count">${index + 1}</span>
-        <div class="line-name">${item.name}</div>
-        <div class="line-total">${€(lineTotal)}</div>
-        <div class="qtybox">
-          <button class="minus" type="button" aria-label="Retirer">−</button>
-          <span class="qty">${item.qty}</span>
-          <button class="plus" type="button" aria-label="Ajouter">+</button>
-        </div>
-        <button class="remove" type="button" aria-label="Supprimer">✕</button>
-      `;
-
-      line.querySelector('.minus')?.addEventListener('click', () => {
-        item.qty = Math.max(1, (Number(item.qty) || 1) - 1);
-        setCart(cart);
-      });
-      line.querySelector('.plus')?.addEventListener('click', () => {
-        item.qty = (Number(item.qty) || 0) + 1;
-        setCart(cart);
-      });
-      line.querySelector('.remove')?.addEventListener('click', () => {
-        const indexInCart = cart.items.indexOf(item);
-        if(indexInCart > -1){
-          cart.items.splice(indexInCart, 1);
-          setCart(cart);
-        }
-      });
-
-      linesContainer.appendChild(line);
-    });
+function selectSlot(slot, node){
+  const grid = document.getElementById('slot-grid');
+  const input = document.getElementById('c-slot');
+  if(!grid || !input) return;
+  grid.querySelectorAll('.slot').forEach(el => {
+    el.classList.remove('active');
+    el.tabIndex = -1;
+    el.removeAttribute('aria-selected');
+  });
+  node?.classList.add('active');
+  if(node){
+    node.tabIndex = 0;
+    node.setAttribute('aria-selected', 'true');
+    node.focus();
   }
-
-  totalContainer.textContent = €(total);
+  input.value = slot;
 }
 
-function openModal(){
-  const dialog = document.getElementById('checkout');
-  if(!dialog) return;
-
-  renderCheckout();
-  dialog.showModal();
+function handleSlotKeydown(event){
+  if(event.key !== 'Enter' && event.key !== ' '){
+    return;
+  }
+  event.preventDefault();
+  const target = event.target.closest('.slot');
+  if(target){
+    selectSlot(target.textContent.trim(), target);
+  }
 }
 
-function closeModal(){
-  document.getElementById('checkout')?.close();
+function genId(){
+  const now = new Date();
+  const pad = value => String(value).padStart(2, '0');
+  return `PZ-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
 
 async function sendOrder(){
-  const name = document.getElementById('ck-name')?.value.trim();
-  const phone = document.getElementById('ck-phone')?.value.trim();
-  const slot = document.getElementById('ck-slot')?.value.trim();
-  const note = document.getElementById('ck-note')?.value.trim();
-  const cart = getCart();
-
-  const items = cart.items.map(item => ({
-    name: item.name,
-    qty: Number(item.qty) || 1,
-    price: Number(item.price) || 0
-  }));
-  const total = Number(items.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2));
-
-  if(!name || !phone || !slot || !items.length){
-    alert('Merci de compléter nom, téléphone, horaire et panier.');
+  if(cart.items.length === 0){
+    window.alert('Panier vide.');
+    return;
+  }
+  const name = document.getElementById('c-name')?.value.trim();
+  const phone = document.getElementById('c-phone')?.value.trim();
+  const slot = document.getElementById('c-slot')?.value.trim();
+  const note = document.getElementById('c-note')?.value.trim();
+  if(!name || !phone || !slot){
+    window.alert('Merci de compléter nom, téléphone et horaire.');
     return;
   }
 
   if(!API_URL){
-    alert('API non configurée.');
+    window.alert('API non configurée.');
     return;
   }
 
-  const payload = { name, phone, slot, note, items, total, source: 'site' };
-  const url = API_URL + (ADMIN_KEY ? `?key=${encodeURIComponent(ADMIN_KEY)}` : '');
+  const payload = {
+    name,
+    phone,
+    slot,
+    note,
+    items: cart.items.map(item => ({
+      name: item.name,
+      qty: item.qty,
+      price: item.price,
+      suppl: item.suppl
+    })),
+    total: Number(cart.total.toFixed(2)),
+    source: 'site',
+    id: genId()
+  };
+
+  const endpoint = ADMIN_KEY ? `${API_URL}?key=${encodeURIComponent(ADMIN_KEY)}` : API_URL;
 
   try{
-    const response = await fetch(url, {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -207,71 +236,37 @@ async function sendOrder(){
       data = { ok: false, error: 'bad_json', raw };
     }
 
-    if(!response.ok || !data || data.ok !== true){
-      throw new Error(data?.error || `HTTP ${response.status}`);
+    if(!response.ok || !data?.ok){
+      console.error('API error', response.status, data);
+      window.alert("Impossible d'envoyer la commande. Merci de réessayer.");
+      return;
     }
 
-    setCart({ items: [] });
-    closeModal();
-    alert('Commande enregistrée. Merci !');
+    cart.clear();
+    document.getElementById('dlg')?.close();
+    updateBar();
+    window.alert('Commande enregistrée. Merci !');
   }catch(error){
     console.error(error);
-    alert("Impossible d'envoyer la commande. Merci de réessayer.");
-  }
-}
-
-function handleSlotSelection(event){
-  const slot = event.target.closest('.time');
-  if(!slot) return;
-  const grid = document.getElementById('times');
-  const input = document.getElementById('ck-slot');
-  if(!grid || !input) return;
-  grid.querySelectorAll('.time').forEach(node => {
-    node.classList.remove('active');
-    node.removeAttribute('aria-selected');
-    node.tabIndex = -1;
-  });
-  slot.classList.add('active');
-  slot.setAttribute('aria-selected', 'true');
-  slot.tabIndex = 0;
-  input.value = slot.textContent.trim();
-  slot.focus();
-}
-
-function handleSlotKeydown(event){
-  if(event.key !== 'Enter' && event.key !== ' '){
-    return;
-  }
-  event.preventDefault();
-  const slot = event.target.closest('.time');
-  if(slot){
-    handleSlotSelection({ target: slot });
+    window.alert("Impossible d'envoyer la commande. Merci de réessayer.");
   }
 }
 
 function bindEvents(){
-  document.getElementById('btn-view')?.addEventListener('click', openModal);
-  document.getElementById('btn-checkout')?.addEventListener('click', openModal);
-  document.getElementById('close-modal')?.addEventListener('click', closeModal);
-  document.getElementById('btn-send')?.addEventListener('click', sendOrder);
-  const slotGrid = document.getElementById('times');
-  slotGrid?.addEventListener('click', handleSlotSelection);
-  slotGrid?.addEventListener('keydown', handleSlotKeydown);
-
-  const dialog = document.getElementById('checkout');
-  dialog?.addEventListener('cancel', event => {
+  document.getElementById('view')?.addEventListener('click', openCart);
+  document.getElementById('checkout')?.addEventListener('click', openCart);
+  document.getElementById('close')?.addEventListener('click', () => document.getElementById('dlg')?.close());
+  document.getElementById('send')?.addEventListener('click', sendOrder);
+  document.getElementById('dlg')?.addEventListener('cancel', event => {
     event.preventDefault();
-    closeModal();
+    document.getElementById('dlg')?.close();
   });
+  document.getElementById('slot-grid')?.addEventListener('keydown', handleSlotKeydown);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   renderMenu();
-  renderCartBar();
+  buildSlots();
+  updateBar();
   bindEvents();
-});
-
-window.addEventListener('storage', () => {
-  renderCartBar();
-  renderCheckout();
 });
