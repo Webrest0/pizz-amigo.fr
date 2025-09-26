@@ -1,716 +1,402 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
-  <meta name="theme-color" content="#0b0f14">
   <style>
-    /* ===== PALETTE ITALIE (foncé élégant) ===== */
     :root {
-      --bg: #0b0f14;
-      --panel: #111825;
-      --muted: #a9b4c7;
-      --line: #22314f;
-      --green: #1fa84a;
-      --red: #d84a3a;
-      --amber: #ffb54d;
-      --white: #eef2f6;
-      --shadow: 0 12px 40px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .03);
+      --it-red: #d64545;
+      --it-green: #1ea63a;
+      --it-white: #f4f4f4;
+      --bg: #111;
+      --panel: #1a1a1a;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
     body {
       margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
       background: var(--bg);
-      color: #fff;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color: var(--it-white);
     }
 
     a {
-      color: #78a9ff;
+      color: #6dc7ff;
     }
 
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 0 16px;
+    header {
+      padding: 1rem;
+      text-align: center;
+      background: var(--panel);
     }
 
-    /* ===== HEADER / HERO ===== */
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: linear-gradient(180deg, rgba(11, 15, 20, .95), rgba(11, 15, 20, .6) 70%, transparent);
-      backdrop-filter: blur(6px);
-    }
-
-    .brand {
-      font-weight: 800;
-      letter-spacing: .5px;
-    }
-
-    .nav a {
-      color: #cfd8e3;
-      text-decoration: none;
-      margin-left: 14px;
-      padding: 6px 10px;
-      border: 1px solid rgba(255, 255, 255, .12);
-      border-radius: 10px;
-      transition: background .2s ease;
-    }
-
-    .nav a:hover {
-      background: rgba(255, 255, 255, .06);
-    }
-
-    .hero {
-      margin: 14px 16px 10px;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      background: #000;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-img {
-      width: 100%;
-      height: 220px;
-      background: url('./images/oven.jpg') center/cover no-repeat;
-      filter: saturate(1.05) contrast(1.05);
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, .25) 0%, rgba(0, 0, 0, .45) 48%, rgba(0, 0, 0, .65) 100%);
-    }
-
-    .hero-txt {
-      position: absolute;
-      inset: auto 0 14px 0;
-      padding: 0 18px;
-      z-index: 2;
-    }
-
-    .dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 4px rgba(31, 168, 74, .18);
-      margin-right: 8px;
-    }
-
-    /* Bannière état */
-    .banner {
-      margin: 10px 16px 0;
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      background: rgba(216, 74, 58, .14);
-      border: 1px solid rgba(216, 74, 58, .35);
-      color: #ffd7d2;
-    }
-
-    /* ===== CARTE ===== */
-    .section {
-      padding: 18px 16px;
-    }
-
-    .section h2 {
-      margin: 0 0 8px;
+    header h1 {
+      margin: 0;
       font-size: 1.6rem;
+      color: var(--it-green);
     }
 
-    .section p.lead {
-      color: var(--muted);
-      margin: .3rem 0 1rem;
+    header p {
+      margin: .2rem 0 0;
+      font-size: .9rem;
+      color: #ccc;
+    }
+
+    .status {
+      background: var(--it-red);
+      color: white;
+      padding: .6rem;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 6px;
+      margin: 1rem;
+    }
+
+    h2 {
+      margin: 1.5rem 1rem .5rem;
+      color: var(--it-green);
     }
 
     .menu {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+      padding: 0 1rem 4.5rem;
     }
 
     .item {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      align-items: center;
+      padding: .7rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
-    .title {
-      font-weight: 700;
-      font-size: 1.15rem;
+    .item span:first-child {
+      font-size: 1rem;
     }
 
-    .desc {
-      color: #cdd6e8;
+    .item small {
+      color: #bbb;
     }
 
-    .price {
-      color: #2ee07a;
-      font-weight: 800;
-      margin-right: 10px;
-    }
-
-    .btn {
-      padding: 8px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, .18);
-      background: transparent;
-      color: #fff;
+    .item button {
+      background: var(--it-red);
+      border: none;
+      padding: .4rem .8rem;
+      border-radius: 6px;
+      color: white;
       cursor: pointer;
-      transition: background .2s ease, transform .2s ease;
+      transition: background .2s ease;
     }
 
-    .btn:hover {
-      background: rgba(255, 255, 255, .06);
+    .item button:hover {
+      background: #bd3434;
     }
 
-    .btn:active {
-      transform: scale(.98);
+    /* INFOS PRATIQUES */
+    #infos {
+      margin: 2rem 1rem 5rem;
+      padding: 1.2rem 1.4rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      line-height: 1.6;
     }
 
-    .btn.add {
-      border-color: rgba(216, 74, 58, .35);
-      color: #ff9b8f;
+    #infos h2 {
+      font-size: 1.3rem;
+      margin-bottom: .8rem;
+      color: var(--it-green);
     }
 
-    /* ===== INFOS PRATIQUES ===== */
-    .card {
-      margin: 14px 0;
-      padding: 16px;
-      border-radius: 14px;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
+    #infos ul {
+      margin: 0;
+      padding-left: 1.2rem;
     }
 
-    .card h3 {
-      margin: 0 0 10px;
-      color: var(--green);
+    #infos li {
+      margin-bottom: .6rem;
     }
 
-    .card p {
-      margin: .5rem 0;
-      line-height: 1.7;
+    #infos b {
+      color: var(--it-red);
     }
 
-    /* ===== BARRE PANIER ===== */
-    .cartbar {
-      position: sticky;
+    /* PANIER FIXE */
+    .cart-bar {
+      position: fixed;
       bottom: 0;
       left: 0;
-      right: 0;
-      margin-top: 18px;
-      z-index: 60;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      background: rgba(5, 8, 12, .82);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(255, 255, 255, .1);
-    }
-
-    .cartbar.hidden {
-      display: none;
-    }
-
-    .badge {
-      padding: 8px 12px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, .06);
-      border: 1px solid rgba(255, 255, 255, .14);
-    }
-
-    .btn.primary {
-      background: linear-gradient(180deg, #2ac768, #1fa84a);
-      border: 0;
-      color: #051007;
-      font-weight: 700;
-    }
-
-    .btn.secondary {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, .2);
-    }
-
-    /* ===== MODAL ===== */
-    dialog {
-      border: 0;
-      border-radius: 18px;
-      padding: 0;
-      background: var(--panel);
-      color: #fff;
-      box-shadow: var(--shadow);
-      width: min(680px, 92vw);
-    }
-
-    .modal-head {
-      padding: 16px 18px;
-      border-bottom: 1px dashed rgba(255, 255, 255, .15);
-      font-size: 1.3rem;
-      font-weight: 800;
-    }
-
-    .modal-body {
-      padding: 14px 18px;
-    }
-
-    .ck-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    @media (min-width: 640px) {
-      .ck-row {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .input {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: #0e1522;
-      color: #fff;
-      border: 1px solid #233252;
+      background: var(--panel);
+      padding: .7rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      gap: 1rem;
     }
 
-    .input:focus {
-      outline: 0;
-      border-color: #3c79ff;
-      box-shadow: 0 0 0 3px rgba(60, 121, 255, .25);
+    .cart-bar button {
+      background: var(--it-green);
+      border: none;
+      padding: .5rem 1rem;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: background .2s ease;
     }
 
-    .times {
+    .cart-bar button:hover {
+      background: #15802b;
+    }
+
+    /* CHECKOUT */
+    #checkout {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--panel);
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 90%;
+      z-index: 1000;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    #checkout h2 {
+      margin-bottom: 1rem;
+      color: var(--it-green);
+    }
+
+    #checkout form {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+
+    #checkout input,
+    #checkout textarea {
+      width: 100%;
+      padding: .6rem .8rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #222;
+      color: var(--it-white);
+    }
+
+    #checkout textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    #checkout .times {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 10px 0 2px;
+      gap: .5rem;
     }
 
-    .time {
-      border: 1px solid #233252;
-      background: #0e1522;
-      padding: 10px 0;
-      border-radius: 10px;
+    #checkout .chip {
+      padding: .5rem .6rem;
       text-align: center;
+      border-radius: 6px;
       cursor: pointer;
-    }
-
-    .time.active {
-      border-color: #3c79ff;
-      box-shadow: 0 0 0 3px rgba(60, 121, 255, .25);
-    }
-
-    .supps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 8px 0 2px;
-    }
-
-    .pill {
-      border: 1px solid #233252;
-      background: #0e1522;
-      padding: 8px 10px;
-      border-radius: 1000px;
-      cursor: pointer;
+      background: #333;
+      border: 1px solid transparent;
       transition: border .2s ease, background .2s ease;
     }
 
-    .pill.active {
-      border-color: #ffb54d;
-      background: rgba(255, 181, 77, .12);
+    #checkout .chip:hover {
+      border-color: var(--it-green);
+      background: rgba(30,166,58,0.12);
     }
 
-    .modal-foot {
+    #checkout .chip.active {
+      border-color: var(--it-green);
+      background: rgba(30,166,58,0.2);
+    }
+
+    #checkout .actions {
       display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      padding: 14px 18px;
-      border-top: 1px solid rgba(255, 255, 255, .08);
+      justify-content: space-between;
+      margin-top: 1rem;
+      gap: .6rem;
     }
 
-    small.muted {
-      color: var(--muted);
+    #checkout .actions button {
+      flex: 1;
+      padding: .6rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
     }
 
-    /* ===== FOOTER ===== */
-    .footer {
-      padding: 20px 16px;
-      color: #90a1bb;
-      text-align: center;
+    #checkout .actions .cancel {
+      background: #555;
+      color: white;
+    }
+
+    #checkout .actions .submit {
+      background: var(--it-green);
+      color: white;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+    }
+
+    @media (min-width: 640px) {
+      header h1 { font-size: 2rem; }
+      .status { margin: 1.5rem auto; max-width: 640px; }
+      .menu { margin: 0 auto; max-width: 720px; }
+      #infos { margin: 3rem auto 5rem; max-width: 720px; }
     }
   </style>
 </head>
 <body>
-  <header class="nav container">
-    <div class="brand">PIZZ’AMIGO</div>
-    <div>
-      <a href="#carte">Voir la carte</a>
-      <a href="#infos">Commander</a>
-    </div>
+  <header>
+    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+    <p>Le goût authentique de l’Italie près de chez vous.</p>
   </header>
 
-  <section class="hero">
-    <div class="hero-img" role="img" aria-label="Four à bois et pizza sortant du four"></div>
-    <div class="hero-txt container">
-      <div><span class="dot"></span> <strong>PIZZ’AMIGO — Montmerle-sur-Saône</strong></div>
-      <div style="opacity:.85; margin-top:6px">Le goût authentique de l’Italie près de chez vous.</div>
-    </div>
-  </section>
+  <div class="status">🔴 Fermé pour le moment — retrouvez-nous ce week-end !</div>
 
-  <div class="banner container">
-    <div style="width:10px;height:10px;border-radius:50%;background:#ff6262;box-shadow:0 0 0 4px rgba(255,98,98,.15)"></div>
-    <div><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
+  <h2>Notre carte</h2>
+  <p style="padding:0 1rem;">Boissons : réglez en ligne, <b>saveur choisie sur place</b>.<br>
+    <i>Supplément (viande / poisson / œuf / fromage) : +1 € par ajout.</i></p>
+
+  <div class="menu">
+    <div class="item"><span><b>Margharita</b><br><small>tomate, emmental</small></span> <span>7,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Chasseur</b><br><small>tomate, emmental, champignons</small></span> <span>8,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Sicilienne</b><br><small>tomate, emmental, anchois</small></span> <span>8,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Napolitaine</b><br><small>tomate, emmental, jambon</small></span> <span>9,00 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Capri</b><br><small>tomate, emmental, jambon, champignons</small></span> <span>9,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Carnivore</b><br><small>tomate, emmental, viande hachée, merguez, œuf</small></span> <span>11,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Savoyarde</b><br><small>tomate, emmental, lardons, reblochon, PDT, crème</small></span> <span>11,00 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Norvégienne</b><br><small>tomate, emmental, saumon fumé, mozzarella</small></span> <span>11,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Canette 33cl</b><br><small>saveur choisie sur place</small></span> <span>1,50 € <button type="button">Ajouter</button></span></div>
+    <div class="item"><span><b>Bouteille 50cl</b><br><small>saveur choisie sur place</small></span> <span>3,00 € <button type="button">Ajouter</button></span></div>
   </div>
 
-  <main class="container">
-    <section id="carte" class="section">
-      <h2>Notre carte</h2>
-      <p class="lead">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
-        <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
-      <ul id="menu" class="menu"></ul>
-    </section>
-
-    <section id="infos" class="section">
-      <div class="card">
-        <h3>Infos pratiques</h3>
-        <p><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 —
-          <a href="https://maps.app.goo.gl/kjK3x2f7x7m2b71q7" target="_blank" rel="noopener">Itinéraire</a></p>
-        <p><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 —
-          <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></p>
-        <p><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 —
-          <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></p>
-        <hr style="margin:12px 0; border:0; border-top:1px solid rgba(255,255,255,.12)">
-        <p><strong>Téléphone :</strong> <a href="tel:0680480456">06 80 48 04 56</a> •
-          <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
-      </div>
-    </section>
-  </main>
-
-  <div id="cartbar" class="cartbar hidden">
-    <span class="badge">Panier • <strong id="cartTotal">0,00 €</strong></span>
-    <button id="btnView" class="btn secondary">Voir panier</button>
-    <button id="btnCheckout" class="btn primary">Passer commande</button>
+  <div id="infos">
+    <h2>Infos pratiques</h2>
+    <p><b>Nous trouver :</b></p>
+    <ul>
+      <li><b>Vendredi soir</b> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) · 18:00–21:00 — <a href="https://maps.app.goo.gl/kjK3x2f7x7m2b71q7" target="_blank" rel="noopener">Itinéraire</a></li>
+      <li><b>Samedi soir</b> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
+      <li><b>Dimanche soir</b> — Amareins (carrefour des feux) · 18:00–21:00 — <a href="https://maps.app.goo.gl/4o8y9kqHc9FQxB6b7" target="_blank" rel="noopener">Itinéraire</a></li>
+    </ul>
+    <p><b>Téléphone :</b> <a href="tel:0680480456">06 80 48 04 56</a> · <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></p>
   </div>
 
-  <dialog id="checkout">
-    <div class="modal-head">Finaliser la commande</div>
-    <div class="modal-body">
-      <div id="ckItems" style="line-height:1.7; margin-bottom:6px"></div>
-      <div id="ckTotal" style="font-weight:800; margin-bottom:10px"></div>
+  <div class="cart-bar">
+    <span>Panier · 0,00 €</span>
+    <button type="button" id="open-checkout">Commander</button>
+  </div>
 
-      <div class="ck-row">
-        <label>Nom*<input id="ckName" class="input" placeholder="Votre nom"></label>
-        <label>Téléphone*<input id="ckPhone" class="input" placeholder="06…"></label>
+  <div id="overlay"></div>
+
+  <div id="checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <h2 id="checkout-title">Finaliser la commande</h2>
+    <form id="checkout-form">
+      <div><input type="text" placeholder="Votre nom *" required></div>
+      <div><input type="tel" placeholder="Téléphone *" required></div>
+      <div><textarea placeholder="Commentaire (optionnel)"></textarea></div>
+      <div class="times" role="radiogroup" aria-label="Sélection du créneau horaire">
+        <div class="chip" data-time="18:00" role="radio" tabindex="0" aria-checked="false">18:00</div>
+        <div class="chip" data-time="18:30" role="radio" tabindex="-1" aria-checked="false">18:30</div>
+        <div class="chip" data-time="19:00" role="radio" tabindex="-1" aria-checked="false">19:00</div>
+        <div class="chip" data-time="19:30" role="radio" tabindex="-1" aria-checked="false">19:30</div>
+        <div class="chip" data-time="20:00" role="radio" tabindex="-1" aria-checked="false">20:00</div>
+        <div class="chip" data-time="20:30" role="radio" tabindex="-1" aria-checked="false">20:30</div>
       </div>
-
-      <div class="ck-row" style="margin-top:6px">
-        <label>Heure de retrait*<input id="ckSlot" class="input" value="19:00"></label>
-        <label>Commentaire (optionnel)<input id="ckNote" class="input" placeholder="Sans olives, etc."></label>
+      <input type="hidden" name="slot" id="checkout-slot">
+      <div class="actions">
+        <button type="button" class="cancel" id="close-checkout">Fermer</button>
+        <button type="submit" class="submit">Envoyer la commande</button>
       </div>
-
-      <div class="times" id="slotGrid"></div>
-      <small class="muted">Choisis un créneau, tu peux ajuster sur place.</small>
-    </div>
-    <div class="modal-foot">
-      <button class="btn secondary" data-action="close">Fermer</button>
-      <button class="btn primary" id="btnSend">Envoyer la commande</button>
-    </div>
-  </dialog>
-
-  <footer class="footer">© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
+    </form>
+  </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw_cAhR_LZgNRPzyABxZIWgqaYf-mBTPoisV8QgFgYUE-lVgI5pY-9_RFk_Z0w28itu/exec";
-    const ADMIN_KEY = "";
+    const checkout = document.getElementById('checkout');
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('open-checkout');
+    const closeBtn = document.getElementById('close-checkout');
+    const slotInput = document.getElementById('checkout-slot');
 
-    const MENU = [
-      ["Margharita", 7.50, "tomate, emmental"],
-      ["Chasseur", 8.50, "tomate, emmental, champignons"],
-      ["Sicilienne", 8.50, "tomate, emmental, anchois"],
-      ["Napolitaine", 9.00, "tomate, emmental, jambon"],
-      ["Paysanne", 9.50, "tomate, emmental, jambon, œuf"],
-      ["Capri", 9.50, "tomate, emmental, jambon, champignons"],
-      ["Mozzarella", 9.50, "tomate, emmental, mozzarella"],
-      ["Quatre saisons", 9.50, "tomate, emmental, oignons, champignons, poivrons, mozzarella"],
-      ["Vénitienne", 9.50, "tomate, emmental, roquefort, oignons, crème"],
-      ["Oslo", 10.00, "tomate, emmental, thon, champignons, crème"],
-      ["Orientale", 10.00, "tomate, emmental, merguez, poivrons"],
-      ["Bolognaise", 10.00, "tomate, emmental, viande hachée, crème, mozzarella"],
-      ["Fermière", 10.00, "tomate, emmental, œuf, lardons, champignons"],
-      ["Miel", 10.50, "crème, emmental, chèvre frais, miel"],
-      ["Forestière", 10.50, "tomate, emmental, poulet, champignons, crème"],
-      ["Lyonnaise", 11.00, "tomate, emmental, saint-marcellin, poulet, crème"],
-      ["Quatre fromages", 11.00, "tomate, emmental, chèvre, roquefort, mozzarella"],
-      ["Paradoxe", 11.00, "tomate, emmental, œuf, jambon, chorizo, mozzarella"],
-      ["Boisée", 11.00, "crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère"],
-      ["Savoyarde", 11.00, "emmental, lardons, reblochon, pomme de terre, crème"],
-      ["Carnivore", 11.50, "tomate, emmental, viande hachée, merguez, œuf, mozzarella"],
-      ["Norvégienne", 11.50, "emmental, saumon fumé, mozzarella, crème"],
-      ["Burger", 12.00, "tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger"],
-      ["Canette 33cl (choisie sur place)", 1.50, "boisson — saveur choisie sur place"],
-      ["Bouteille 50cl (choisie sur place)", 3.00, "boisson — saveur choisie sur place"]
-    ];
+    function openCheckout() {
+      checkout.style.display = 'block';
+      overlay.style.display = 'block';
+      checkout.querySelector('input')?.focus();
+    }
 
-    const cart = {
-      items: [],
-      add(name) {
-        const entry = MENU.find((item) => item[0] === name);
-        if (!entry) return;
-        openAddModal(name, entry[1]);
-      },
-      push(name, price, suppCount = 0) {
-        const key = `${name}|${suppCount}`;
-        const existing = this.items.find((item) => item.key === key);
-        if (existing) {
-          existing.qty += 1;
-        } else {
-          this.items.push({ key, name, price, qty: 1, supp: suppCount });
+    function closeCheckout() {
+      checkout.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
+    openBtn?.addEventListener('click', openCheckout);
+    closeBtn?.addEventListener('click', closeCheckout);
+    overlay?.addEventListener('click', closeCheckout);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && checkout.style.display === 'block') {
+        closeCheckout();
+      }
+    });
+
+    checkout.querySelectorAll('.chip').forEach((chip, index) => {
+      chip.addEventListener('click', () => selectChip(chip));
+      chip.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectChip(chip);
         }
-        renderCart();
-      },
-      total() {
-        return this.items.reduce((sum, item) => sum + (item.price + item.supp) * item.qty, 0);
-      },
-      clear() {
-        this.items.length = 0;
-        renderCart();
-      },
-      empty() {
-        return this.items.length === 0;
-      }
-    };
-
-    function euro(value) {
-      return value.toFixed(2).replace('.', ',') + ' €';
-    }
-
-    function renderMenu() {
-      const list = document.querySelector('#menu');
-      if (!list) return;
-      list.innerHTML = '';
-      MENU.forEach(([name, price, desc]) => {
-        const li = document.createElement('li');
-        li.className = 'item';
-        li.innerHTML = `
-          <div>
-            <div class="title">${name}</div>
-            <div class="desc">${desc}</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <div class="price">${euro(price)}</div>
-            <button class="btn add" type="button">Ajouter</button>
-          </div>`;
-        li.querySelector('button')?.addEventListener('click', () => cart.add(name));
-        list.appendChild(li);
-      });
-    }
-
-    function renderCart() {
-      const bar = document.getElementById('cartbar');
-      const totalEl = document.getElementById('cartTotal');
-      if (!bar || !totalEl) return;
-      if (cart.empty()) {
-        bar.classList.add('hidden');
-        totalEl.textContent = '0,00 €';
-        return;
-      }
-      bar.classList.remove('hidden');
-      totalEl.textContent = euro(cart.total());
-    }
-
-    const checkoutDialog = document.getElementById('checkout');
-    const defaultModal = {
-      head: checkoutDialog.querySelector('.modal-head').textContent,
-      body: checkoutDialog.querySelector('.modal-body').innerHTML,
-      foot: checkoutDialog.querySelector('.modal-foot').innerHTML
-    };
-
-    function setupSlotGrid() {
-      const grid = checkoutDialog.querySelector('#slotGrid');
-      const slotInput = checkoutDialog.querySelector('#ckSlot');
-      if (!grid || !slotInput) return;
-      const slots = ['18:00', '18:30', '19:00', '19:30', '20:00', '20:30'];
-      grid.innerHTML = slots.map((slot) => `<div class="time" data-slot="${slot}">${slot}</div>`).join('');
-      grid.querySelectorAll('.time').forEach((el) => {
-        el.addEventListener('click', () => {
-          grid.querySelectorAll('.time').forEach((timeEl) => timeEl.classList.remove('active'));
-          el.classList.add('active');
-          slotInput.value = el.dataset.slot || '';
-        });
-      });
-      const initial = grid.querySelector(`[data-slot="${slotInput.value}"]`);
-      if (initial) {
-        initial.classList.add('active');
-      }
-    }
-
-    function bindCheckoutControls() {
-      setupSlotGrid();
-      checkoutDialog.querySelector('[data-action="close"]')?.addEventListener('click', () => {
-        closeModal();
-      });
-      const sendBtn = checkoutDialog.querySelector('#btnSend');
-      if (sendBtn) {
-        sendBtn.addEventListener('click', submitOrder);
-      }
-    }
-
-    function restoreCheckoutLayout() {
-      checkoutDialog.querySelector('.modal-head').textContent = defaultModal.head;
-      checkoutDialog.querySelector('.modal-body').innerHTML = defaultModal.body;
-      checkoutDialog.querySelector('.modal-foot').innerHTML = defaultModal.foot;
-      checkoutDialog.dataset.mode = 'checkout';
-      bindCheckoutControls();
-    }
-
-    function openAddModal(name, basePrice) {
-      const head = checkoutDialog.querySelector('.modal-head');
-      const body = checkoutDialog.querySelector('.modal-body');
-      const foot = checkoutDialog.querySelector('.modal-foot');
-      head.textContent = 'Ajouter au panier';
-      checkoutDialog.dataset.mode = 'add';
-      body.innerHTML = `
-        <div style="margin-bottom:6px"><strong>${name}</strong> — base ${euro(basePrice)}</div>
-        <div>Suppléments (+1 € chacun) :</div>
-        <div class="supps" id="supps">
-          <span class="pill" data-supp="viande">viande</span>
-          <span class="pill" data-supp="poisson">poisson</span>
-          <span class="pill" data-supp="œuf">œuf</span>
-          <span class="pill" data-supp="fromage">fromage</span>
-        </div>
-        <small class="muted">Tu peux ajouter plusieurs suppléments, +1 € par ajout.</small>
-      `;
-      foot.innerHTML = `
-        <button class="btn secondary" data-action="cancel">Annuler</button>
-        <button class="btn primary" id="btnAdd">Ajouter</button>
-      `;
-
-      body.querySelectorAll('.pill').forEach((pill) => {
-        pill.addEventListener('click', () => {
-          pill.classList.toggle('active');
-        });
-      });
-
-      foot.querySelector('[data-action="cancel"]')?.addEventListener('click', () => {
-        closeModal();
-        restoreCheckoutLayout();
-      });
-
-      foot.querySelector('#btnAdd')?.addEventListener('click', () => {
-        const suppCount = body.querySelectorAll('.pill.active').length;
-        cart.push(name, basePrice, suppCount);
-        closeModal();
-        restoreCheckoutLayout();
-      });
-
-      checkoutDialog.showModal();
-    }
-
-    function openModal() {
-      if (cart.empty()) return;
-      restoreCheckoutLayout();
-      const itemsEl = checkoutDialog.querySelector('#ckItems');
-      const totalEl = checkoutDialog.querySelector('#ckTotal');
-      itemsEl.innerHTML = cart.items.map((item) => {
-        const line = `${item.name}${item.supp ? ` (+${item.supp} suppl.)` : ''} × ${item.qty}`;
-        const lineTotal = (item.price + item.supp) * item.qty;
-        return `• ${line} — ${euro(lineTotal)}`;
-      }).join('<br>');
-      totalEl.textContent = 'Total : ' + euro(cart.total());
-      checkoutDialog.showModal();
-    }
-
-    function closeModal() {
-      if (checkoutDialog.open) {
-        checkoutDialog.close();
-      }
-    }
-
-    async function submitOrder() {
-      const name = checkoutDialog.querySelector('#ckName')?.value.trim();
-      const phone = checkoutDialog.querySelector('#ckPhone')?.value.trim();
-      const slot = checkoutDialog.querySelector('#ckSlot')?.value.trim();
-      const note = checkoutDialog.querySelector('#ckNote')?.value.trim();
-      if (!name || !phone || !slot) {
-        alert('Merci de compléter nom, téléphone et horaire.');
-        return;
-      }
-      const items = cart.items.map((item) => ({ name: item.name, qty: item.qty, price: item.price, supp: item.supp }));
-      const payload = {
-        name,
-        phone,
-        slot,
-        note,
-        items,
-        total: Number(cart.total().toFixed(2)),
-        source: 'site'
-      };
-      if (!API_URL) {
-        cart.clear();
-        closeModal();
-        restoreCheckoutLayout();
-        alert('Commande enregistrée (simulation). Merci !');
-        return;
-      }
-      try {
-        const url = ADMIN_KEY ? `${API_URL}?key=${encodeURIComponent(ADMIN_KEY)}` : API_URL;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const text = await response.text();
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (error) {
-          data = { ok: false, error: 'bad_json', raw: text };
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+          event.preventDefault();
+          const next = checkout.querySelectorAll('.chip')[index + 1] || checkout.querySelectorAll('.chip')[0];
+          next.focus();
         }
-        if (!response.ok || !data?.ok) {
-          throw new Error(data?.error || `HTTP ${response.status}`);
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          const chips = checkout.querySelectorAll('.chip');
+          const prev = chips[index - 1] || chips[chips.length - 1];
+          prev.focus();
         }
-        cart.clear();
-        closeModal();
-        restoreCheckoutLayout();
-        alert('Commande enregistrée. Merci !');
-      } catch (error) {
-        console.error(error);
-        alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
-      }
+      });
+    });
+
+    function selectChip(selected) {
+      checkout.querySelectorAll('.chip').forEach((chip) => {
+        const isActive = chip === selected;
+        chip.classList.toggle('active', isActive);
+        chip.setAttribute('aria-checked', isActive);
+        chip.setAttribute('tabindex', isActive ? '0' : '-1');
+        if (!isActive && !chip.classList.contains('active')) {
+          chip.blur();
+        }
+      });
+      slotInput.value = selected.dataset.time || '';
+      selected.focus();
     }
 
-    renderMenu();
-    renderCart();
-    bindCheckoutControls();
-
-    document.getElementById('btnView')?.addEventListener('click', openModal);
-    document.getElementById('btnCheckout')?.addEventListener('click', openModal);
+    document.getElementById('checkout-form')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      alert("Commande envoyée ! (démo)");
+      closeCheckout();
+    });
   </script>
 </body>
 </html>
