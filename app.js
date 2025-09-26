@@ -9,7 +9,7 @@ const MENU = [
   { name: "Capri", price: 9.50, desc: "tomate, emmental, jambon, champignons" },
   { name: "Mozzarella", price: 9.50, desc: "tomate, emmental, mozzarella" },
   { name: "Quatre saisons", price: 9.50, desc: "tomate, emmental, oignons, champignons, poivrons, mozzarella" },
-  { name: "Venitienne", price: 9.50, desc: "tomate, emmental, roquefort, oignons, crème" },
+  { name: "Vénitienne", price: 9.50, desc: "tomate, emmental, roquefort, oignons, crème" },
   { name: "Oslo", price: 10.00, desc: "tomate, emmental, thon, champignons, crème" },
   { name: "Orientale", price: 10.00, desc: "tomate, emmental, merguez, poivrons" },
   { name: "Bolognaise", price: 10.00, desc: "tomate, emmental, viande hachée, crème, mozzarella" },
@@ -28,213 +28,212 @@ const MENU = [
   { name: "Bouteille 50cl (choisie sur place)", price: 3.00, desc: "boisson — saveur choisie sur place" }
 ];
 
-const SUPPS = ["viande", "poisson", "œuf", "fromage"];
 const SLOTS = ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30"];
 
 const cart = {
   items: [],
   get total(){
-    return this.items.reduce((sum, item) => sum + (item.price + (item.supp || 0)) * item.qty, 0);
+    return this.items.reduce((sum, item) => sum + item.qty * (item.price + (item.suppl || 0)), 0);
   }
 };
 
-function formatEUR(value){
-  return value.toFixed(2).replace(".", ",");
+const formatEUR = value => value.toFixed(2).replace(".", ",");
+
+function renderMenu(){
+  const host = document.getElementById("menu");
+  if(!host) return;
+
+  host.innerHTML = "";
+  MENU.forEach(product => {
+    const node = document.createElement("div");
+    node.className = "item";
+    node.innerHTML = `
+      <div>
+        <div class="it-name">${product.name}</div>
+        <div class="it-desc">${product.desc}</div>
+      </div>
+      <div class="right">
+        <div class="price">${formatEUR(product.price)}<span class="eur">€</span></div>
+        <button class="btn" type="button" data-add="${product.name}">Ajouter</button>
+      </div>
+    `;
+    host.appendChild(node);
+  });
 }
 
-function cssEscape(value){
-  return value.replace(/["\\]/g, "");
+function refreshBar(){
+  const totalButton = document.getElementById("cart-total");
+  const viewButton = document.getElementById("btn-view-cart");
+  const checkoutButton = document.getElementById("btn-checkout");
+
+  if(totalButton){
+    totalButton.innerHTML = `Panier • ${formatEUR(cart.total)}&nbsp;€`;
+    totalButton.disabled = true;
+    totalButton.setAttribute("aria-disabled", cart.items.length === 0 ? "true" : "false");
+  }
+
+  const disabled = cart.items.length === 0;
+  [viewButton, checkoutButton].forEach(button => {
+    if(button){
+      button.disabled = disabled;
+    }
+  });
 }
 
-function addToCart(name){
+function addItem(name){
   const product = MENU.find(item => item.name === name);
   if(!product) return;
 
-  const wrapper = document.querySelector(`[data-prod="${cssEscape(name)}"]`);
-  let suppCount = 0;
-  if(wrapper){
-    wrapper.querySelectorAll(".supp .chip.active").forEach(() => {
-      suppCount += 1;
-    });
-  }
-  const extra = suppCount * 1.00;
-
-  const existing = cart.items.find(item => item.name === name && (item.supp || 0) === extra);
+  const existing = cart.items.find(item => item.name === product.name && (item.suppl || 0) === 0);
   if(existing){
     existing.qty += 1;
   }else{
-    cart.items.push({ name: product.name, price: product.price, supp: extra, qty: 1 });
+    cart.items.push({ name: product.name, price: product.price, qty: 1, suppl: 0 });
   }
 
-  renderCartBar();
+  refreshBar();
 }
 
-function inc(index){
-  if(!cart.items[index]) return;
-  cart.items[index].qty += 1;
-  renderBasket();
-  renderCartBar();
-}
+function openCart(){
+  const modal = document.getElementById("dlg-cart");
+  const host = document.getElementById("cart-lines");
+  if(!modal || !host) return;
 
-function dec(index){
-  if(!cart.items[index]) return;
-  cart.items[index].qty -= 1;
-  if(cart.items[index].qty <= 0){
-    cart.items.splice(index, 1);
+  host.innerHTML = "";
+  if(cart.items.length === 0){
+    host.innerHTML = `<div class="small">Panier vide.</div>`;
+  }else{
+    cart.items.forEach((item, index) => {
+      const line = document.createElement("div");
+      line.className = "cart-line";
+      line.innerHTML = `
+        <div>
+          <strong>${item.name}</strong>
+          <div class="small">Suppléments : ${(item.suppl || 0).toFixed(0)} € (par pizza)</div>
+        </div>
+        <div>
+          <div class="qty">
+            <span class="chip" data-action="minus" data-index="${index}">−</span>
+            <span>${item.qty}</span>
+            <span class="chip" data-action="plus" data-index="${index}">+</span>
+          </div>
+          <div class="suppl mt8">
+            <span class="chip" data-action="suppl-minus" data-index="${index}">−</span>
+            <span>+${(item.suppl || 0).toFixed(0)} €</span>
+            <span class="chip" data-action="suppl-plus" data-index="${index}">+</span>
+          </div>
+        </div>
+        <button class="btn trash" type="button" data-action="delete" data-index="${index}">🗑</button>
+      `;
+      host.appendChild(line);
+    });
   }
-  renderBasket();
-  renderCartBar();
+
+  if(!modal.open){
+    modal.showModal();
+  }
 }
 
-function del(index){
-  if(!cart.items[index]) return;
-  cart.items.splice(index, 1);
-  renderBasket();
-  renderCartBar();
+function mutateCart(event){
+  const target = event.target;
+  if(!(target instanceof HTMLElement)) return;
+  const action = target.getAttribute("data-action");
+  if(!action) return;
+
+  const index = Number(target.getAttribute("data-index"));
+  if(Number.isNaN(index) || !cart.items[index]) return;
+
+  const item = cart.items[index];
+  switch(action){
+    case "plus":
+      item.qty += 1;
+      break;
+    case "minus":
+      item.qty -= 1;
+      if(item.qty <= 0){
+        cart.items.splice(index, 1);
+      }
+      break;
+    case "suppl-plus":
+      item.suppl = Math.min((item.suppl || 0) + 1, 5);
+      break;
+    case "suppl-minus":
+      item.suppl = Math.max((item.suppl || 0) - 1, 0);
+      break;
+    case "delete":
+      cart.items.splice(index, 1);
+      break;
+    default:
+      return;
+  }
+
+  refreshBar();
+  openCart();
 }
 
 function resetCart(){
   cart.items.length = 0;
-  renderBasket();
-  renderCartBar();
+  refreshBar();
 }
 
-function renderMenu(){
-  const root = document.getElementById("menu");
-  if(!root) return;
-  root.innerHTML = "";
-
-  MENU.forEach(product => {
-    const row = document.createElement("div");
-    row.className = "item";
-    row.dataset.prod = product.name;
-    row.innerHTML = `
-      <div>
-        <div class="name">${product.name}</div>
-        <div class="desc">${product.desc}</div>
-        <div class="supp">
-          ${SUPPS.map(supp => `<span class="chip" data-s="${supp}">+1€ ${supp}</span>`).join("")}
-        </div>
-      </div>
-      <div>
-        <div class="price"><span>${formatEUR(product.price)}</span><span class="eur">€</span></div>
-        <div class="actions-add">
-          <button class="btn btn-pill" type="button">Ajouter</button>
-        </div>
-      </div>
-    `;
-
-    row.querySelector(".btn-pill")?.addEventListener("click", () => addToCart(product.name));
-    row.querySelectorAll(".chip").forEach(chip => {
-      chip.addEventListener("click", () => {
-        chip.classList.toggle("active");
-      });
-    });
-
-    root.appendChild(row);
-  });
-}
-
-function renderCartBar(){
-  const bar = document.getElementById("cartBar");
-  const totalNode = document.getElementById("cartTotal");
-  if(!bar || !totalNode) return;
-
-  totalNode.textContent = formatEUR(cart.total);
+function openCheckout(){
   if(cart.items.length === 0){
-    bar.classList.add("hidden");
-  }else{
-    bar.classList.remove("hidden");
-  }
-}
-
-function renderBasket(){
-  const box = document.getElementById("basket");
-  if(!box) return;
-
-  if(cart.items.length === 0){
-    box.innerHTML = `<div class="hint">Votre panier est vide.</div>`;
+    openCart();
     return;
   }
 
-  const rows = cart.items.map((item, index) => {
-    const extra = (item.supp || 0) > 0 ? `<span class="hint">(+${formatEUR(item.supp)} € suppl.)</span>` : "";
-    const unit = item.price + (item.supp || 0);
-    return `
-      <div class="row">
-        <div><strong>${item.name}</strong> ${extra}</div>
-        <div class="qty">
-          <button type="button" data-action="dec" data-index="${index}">−</button>
-          <div>${item.qty}</div>
-          <button type="button" data-action="inc" data-index="${index}">+</button>
-        </div>
-        <div class="line-total">${formatEUR(unit * item.qty)} €</div>
-        <button class="trash" type="button" data-action="del" data-index="${index}">Suppr.</button>
-      </div>
-    `;
-  }).join("");
+  const modal = document.getElementById("dlg-ck");
+  const summary = document.getElementById("ck-summary");
+  if(!modal || !summary) return;
 
-  box.innerHTML = `${rows}
-    <div class="total"><span>Total :</span> <span>${formatEUR(cart.total)} €</span></div>`;
-
-  box.querySelectorAll("button[data-action]").forEach(button => {
-    button.addEventListener("click", handleBasketAction);
+  const lines = cart.items.map(item => {
+    const extra = item.suppl ? ` (+${item.suppl.toFixed(0)} € / pizza)` : "";
+    return `• ${item.name} × ${item.qty}${extra}`;
   });
-}
+  lines.push(`<br><strong>Total : ${formatEUR(cart.total)} €</strong>`);
+  summary.innerHTML = lines.join("<br>");
 
-function handleBasketAction(event){
-  const target = event.currentTarget;
-  const index = Number(target.dataset.index);
-  const action = target.dataset.action;
-  if(Number.isNaN(index) || !action) return;
-
-  if(action === "inc") inc(index);
-  else if(action === "dec") dec(index);
-  else if(action === "del") del(index);
-}
-
-function openModal(){
-  const modal = document.getElementById("cartModal");
-  if(!modal) return;
-  renderBasket();
+  buildSlotList();
   modal.showModal();
 }
 
-function buildTimeGrid(){
-  const grid = document.getElementById("timeGrid");
-  const input = document.getElementById("ckSlot");
-  if(!grid || !input) return;
+function buildSlotList(){
+  const container = document.getElementById("slot-list");
+  const input = document.getElementById("ck-slot");
+  if(!container || !(input instanceof HTMLInputElement)) return;
 
   const current = input.value.trim();
-  grid.innerHTML = "";
+  container.innerHTML = "";
 
   SLOTS.forEach(slot => {
     const node = document.createElement("div");
-    node.className = "time" + (slot === current ? " active" : "");
+    node.className = "slot" + (slot === current ? " active" : "");
     node.textContent = slot;
     node.tabIndex = 0;
     node.setAttribute("role", "option");
     if(slot === current){
       node.setAttribute("aria-selected", "true");
     }
+
     node.addEventListener("click", () => selectSlot(slot));
     node.addEventListener("keydown", event => {
       if(event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
       selectSlot(slot);
     });
-    grid.appendChild(node);
+
+    container.appendChild(node);
   });
 }
 
 function selectSlot(slot){
-  const grid = document.getElementById("timeGrid");
-  const input = document.getElementById("ckSlot");
-  if(!grid || !input) return;
+  const container = document.getElementById("slot-list");
+  const input = document.getElementById("ck-slot");
+  if(!container || !(input instanceof HTMLInputElement)) return;
 
   input.value = slot;
-  grid.querySelectorAll(".time").forEach(node => {
-    const active = node.textContent.trim() === slot;
+  container.querySelectorAll(".slot").forEach(node => {
+    const active = node.textContent?.trim() === slot;
     node.classList.toggle("active", active);
     if(active){
       node.setAttribute("aria-selected", "true");
@@ -244,10 +243,21 @@ function selectSlot(slot){
   });
 }
 
-function genId(){
-  const now = new Date();
-  const pad = value => String(value).padStart(2, "0");
-  return `PZ-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+function buildPayload(){
+  return {
+    name: document.getElementById("ck-name")?.value.trim() || "",
+    phone: document.getElementById("ck-phone")?.value.trim() || "",
+    slot: document.getElementById("ck-slot")?.value.trim() || "",
+    note: document.getElementById("ck-note")?.value.trim() || "",
+    items: cart.items.map(item => ({
+      name: item.name,
+      qty: item.qty,
+      price: Number(item.price.toFixed(2)),
+      suppl: Number((item.suppl || 0).toFixed(2))
+    })),
+    total: Number(cart.total.toFixed(2)),
+    source: "site"
+  };
 }
 
 async function sendOrder(){
@@ -256,12 +266,8 @@ async function sendOrder(){
     return;
   }
 
-  const name = document.getElementById("ckName")?.value.trim();
-  const phone = document.getElementById("ckPhone")?.value.trim();
-  const slot = document.getElementById("ckSlot")?.value.trim();
-  const note = document.getElementById("ckNote")?.value.trim();
-
-  if(!name || !phone || !slot){
+  const payload = buildPayload();
+  if(!payload.name || !payload.phone || !payload.slot){
     window.alert("Merci de compléter nom, téléphone et horaire.");
     return;
   }
@@ -270,21 +276,6 @@ async function sendOrder(){
     window.alert("API non configurée.");
     return;
   }
-
-  const payload = {
-    name,
-    phone,
-    slot,
-    note,
-    items: cart.items.map(item => ({
-      name: item.name,
-      qty: item.qty,
-      price: Number((item.price + (item.supp || 0)).toFixed(2))
-    })),
-    total: Number(cart.total.toFixed(2)),
-    source: "site",
-    id: genId()
-  };
 
   const endpoint = ADMIN_KEY ? `${API_URL}?key=${encodeURIComponent(ADMIN_KEY)}` : API_URL;
 
@@ -310,7 +301,8 @@ async function sendOrder(){
     }
 
     resetCart();
-    document.getElementById("cartModal")?.close();
+    document.getElementById("dlg-ck")?.close();
+    document.getElementById("dlg-cart")?.close();
     window.alert("Commande enregistrée. Merci !");
   }catch(error){
     console.error(error);
@@ -318,22 +310,30 @@ async function sendOrder(){
   }
 }
 
-function bindUi(){
-  document.getElementById("btnView")?.addEventListener("click", openModal);
-  document.getElementById("btnCheckout")?.addEventListener("click", openModal);
-  document.getElementById("btnClose")?.addEventListener("click", () => document.getElementById("cartModal")?.close());
-  document.getElementById("btnSend")?.addEventListener("click", sendOrder);
-
-  const modal = document.getElementById("cartModal");
-  modal?.addEventListener("cancel", event => {
-    event.preventDefault();
-    modal.close();
+function bindEvents(){
+  document.getElementById("menu")?.addEventListener("click", event => {
+    const target = event.target;
+    if(!(target instanceof HTMLElement)) return;
+    const name = target.getAttribute("data-add");
+    if(name){
+      addItem(name);
+    }
   });
+
+  document.getElementById("btn-view-cart")?.addEventListener("click", openCart);
+  document.getElementById("btn-checkout")?.addEventListener("click", openCheckout);
+  document.getElementById("cart-lines")?.addEventListener("click", mutateCart);
+  document.getElementById("close-cart")?.addEventListener("click", () => document.getElementById("dlg-cart")?.close());
+  document.getElementById("go-checkout")?.addEventListener("click", () => {
+    document.getElementById("dlg-cart")?.close();
+    openCheckout();
+  });
+  document.getElementById("close-ck")?.addEventListener("click", () => document.getElementById("dlg-ck")?.close());
+  document.getElementById("send-order")?.addEventListener("click", sendOrder);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   renderMenu();
-  renderCartBar();
-  buildTimeGrid();
-  bindUi();
+  refreshBar();
+  bindEvents();
 });
