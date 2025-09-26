@@ -5,229 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
   <link rel="stylesheet" href="styles.css">
-  <script>
-    window.APP = {
-      API_URL: "https://script.google.com/macros/s/AKfycbw_cAhR_LZgNRPzyABxZIWgqaYf-mBTPoisV8QgFgYUE-lVgI5pY-9_RFk_Z0w28itu/exec",
-      ADMIN_KEY: ""
-    };
-  </script>
 </head>
 <body>
-  <div class="ribbon"></div>
+  <div class="container">
 
-  <header class="nav container">
-    <div class="brand">PIZZ’AMIGO</div>
-    <nav class="nav-links" aria-label="Navigation principale">
-      <a href="#carte">Voir la carte</a>
-      <a href="#infos">Infos</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-img" role="img" aria-label="Four à bois et pizza sortant du four"></div>
-    <div class="hero-txt container">
-      <div><span class="dot" aria-hidden="true"></span><strong>PIZZ’AMIGO — Montmerle-sur-Saône</strong></div>
-      <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+    <!-- HERO -->
+    <div class="hero">
+      <img src="./images/oven.jpg" alt="Four à pizza" />
+      <div class="overlay" aria-hidden="true"></div>
+      <div class="content">
+        <div class="badge-online"><span class="dot" aria-hidden="true"></span> <span class="pill">PIZZ’AMIGO</span></div>
+        <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+        <div class="subtitle">Le goût authentique de l’Italie près de chez vous.</div>
+      </div>
     </div>
-  </section>
 
-  <div class="banner container" role="status" aria-live="polite">
-    <div class="status-dot" aria-hidden="true"></div>
-    <p><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end&nbsp;!</p>
-  </div>
+    <!-- ÉTAT -->
+    <div class="banner" role="status" aria-live="polite">
+      <div class="banner-left"><span class="led" aria-hidden="true"></span> <strong>Fermé pour le moment</strong></div>
+      <div class="banner-right">— retrouvez-nous ce week-end&nbsp;!</div>
+    </div>
 
-  <main class="container">
-    <section id="carte" class="section">
-      <h1>Notre carte</h1>
-      <p class="lead">Boissons&nbsp;: réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
-        <em>Supplément</em> (viande / poisson / œuf / fromage)&nbsp;: <strong>+1&nbsp;€</strong> par ajout.</p>
-      <ul id="menu" class="menu" aria-live="polite"></ul>
-    </section>
+    <!-- CARTE -->
+    <section aria-labelledby="menu-title">
+      <h2 id="menu-title">Notre carte</h2>
+      <p class="muted">Boissons&nbsp;: réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
+        <span class="pill">Supplément (viande / poisson / œuf / fromage) : +1&nbsp;€ par ajout.</span>
+      </p>
 
-    <section id="infos" class="section">
-      <div class="card">
-        <h2>Infos pratiques</h2>
-        <p><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins">Itinéraire</a></p>
-        <p><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Amareins+carrefour+des+feux">Itinéraire</a></p>
-        <p><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Amareins+carrefour+des+feux">Itinéraire</a></p>
-        <hr>
-        <p><strong>Téléphone&nbsp;:</strong> <a href="tel:0680480456">06&nbsp;80&nbsp;48&nbsp;04&nbsp;56</a> • <a href="https://www.facebook.com/profile.php?id=100070204571227" target="_blank" rel="noopener">Facebook</a></p>
+      <div class="card" role="region" aria-live="polite">
+        <ul id="menu" class="menu"></ul>
       </div>
     </section>
-  </main>
 
-  <div id="cartbar" class="cartbar" role="region" aria-live="polite">
-    <span class="tag">Panier • <strong id="cartTotal">0,00&nbsp;€</strong></span>
-    <button id="btnView" class="btn secondary" type="button">Voir panier</button>
-    <button id="btnCheckout" class="btn primary" type="button">Passer commande</button>
+    <!-- INFOS PRATIQUES -->
+    <section class="infos" id="infos">
+      <div class="panel">
+        <h2>Infos pratiques</h2>
+        <div class="item">
+          <strong>Nous trouver&nbsp;:</strong>
+          <ul>
+            <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a href="https://maps.apple.com/?q=Saint-Georges-de-Reneins%20Caisse%20d%27epargne" target="_blank" rel="noopener">Itinéraire</a></li>
+            <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.apple.com/?q=Amareins%20carrefour%20des%20feux" target="_blank" rel="noopener">Itinéraire</a></li>
+            <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.apple.com/?q=Amareins%20carrefour%20des%20feux" target="_blank" rel="noopener">Itinéraire</a></li>
+          </ul>
+        </div>
+        <div class="item">Téléphone&nbsp;: <a href="tel:+33680480456">06&nbsp;80&nbsp;48&nbsp;04&nbsp;56</a> • <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></div>
+      </div>
+    </section>
+
   </div>
 
-  <dialog id="checkout" aria-labelledby="modalTitle">
-    <div class="modal-head" id="modalTitle">Finaliser la commande</div>
-    <div class="modal-body"></div>
-    <div class="modal-foot"></div>
+  <!-- BARRE PANIER (collée en bas) -->
+  <div id="cart-bar">
+    <div class="bar container">
+      <div class="cart-list"></div>
+      <div class="footer">
+        <div class="footer-left"><span class="flag" aria-hidden="true"><span class="g"></span><span class="w"></span><span class="r"></span></span> &nbsp;
+          <strong>Total&nbsp;: <span class="cart-total">0,00&nbsp;€</span></strong></div>
+        <div class="footer-right">
+          <button id="btn-view" class="btn dark" type="button">Voir panier</button>
+          <button id="btn-checkout" class="btn primary" type="button">Passer commande</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COMMANDE -->
+  <dialog id="checkout" aria-labelledby="modal-title">
+    <div class="ck">
+      <h3 id="modal-title" style="margin:0 0 8px 0">Finaliser la commande</h3>
+      <div id="ck-lines" class="panel" style="margin-bottom:10px"></div>
+      <div><strong>Total&nbsp;: <span id="ck-total">0,00&nbsp;€</span></strong></div>
+
+      <div class="form grid2" style="margin-top:10px">
+        <div>
+          <label>Nom*<input id="ck-name" placeholder="Votre nom" autocomplete="name"></label>
+        </div>
+        <div>
+          <label>Téléphone*<input id="ck-phone" placeholder="06…" autocomplete="tel"></label>
+        </div>
+        <div>
+          <label>Heure de retrait*<input id="ck-slot" placeholder="19:00" value="19:00"></label>
+          <div class="slots" id="slot-grid" role="listbox" aria-label="Créneaux disponibles">
+            <div class="slot" role="option" tabindex="0">18:00</div>
+            <div class="slot" role="option" tabindex="-1">18:30</div>
+            <div class="slot active" role="option" aria-selected="true" tabindex="-1">19:00</div>
+            <div class="slot" role="option" tabindex="-1">19:30</div>
+            <div class="slot" role="option" tabindex="-1">20:00</div>
+            <div class="slot" role="option" tabindex="-1">20:30</div>
+          </div>
+        </div>
+        <div>
+          <label>Commentaire (optionnel)
+            <textarea id="ck-note" rows="2" placeholder="Sans olives, etc."></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="footer">
+        <button id="close-modal" class="btn dark" type="button">Fermer</button>
+        <button id="btn-send" class="btn primary" type="button">Envoyer la commande</button>
+      </div>
+    </div>
   </dialog>
 
-  <footer class="footer">© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
-
   <script type="module" src="app.js"></script>
-  <script>
-  (function(){
-    function parseCartFromUI(){
-      const container = document.querySelector('#ckItems');
-      const items = [];
-      if(!container) return { items };
-      const html = container.innerHTML || '';
-      const rows = html.split(/<br\s*\/?>/i).map(row => row.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
-      rows.forEach(row => {
-        const cleaned = row.replace(/^•\s*/, '').trim();
-        if(!cleaned) return;
-        const parts = cleaned.split('—').map(part => part.trim());
-        if(parts.length < 2) return;
-        const left = parts[0];
-        const right = parts.slice(1).join(' — ');
-        const qtyMatch = left.match(/×\s*(\d+)/i);
-        const qty = qtyMatch ? Number(qtyMatch[1]) || 1 : 1;
-        const name = left.split('×')[0].trim();
-        const totalPrice = (() => {
-          const normalized = right.replace(/[^0-9,.-]/g, '').replace(',', '.');
-          const value = Number.parseFloat(normalized);
-          return Number.isFinite(value) ? value : 0;
-        })();
-        const price = qty > 0 ? Number((totalPrice / qty).toFixed(2)) : 0;
-        if(!name) return;
-        items.push({ name, qty, price });
-      });
-      return { items };
-    }
-
-    function getCart(){
-      try{
-        const stored = JSON.parse(localStorage.getItem('cart') || '{}');
-        if(stored && Array.isArray(stored.items) && stored.items.length){
-          return stored;
-        }
-      }catch(err){ /* ignore */ }
-      return parseCartFromUI();
-    }
-
-    function setCart(value){
-      try{
-        localStorage.setItem('cart', JSON.stringify(value || {}));
-      }catch(err){ /* ignore */ }
-    }
-
-    async function sendOrder(){
-      const API_URL = window.APP?.API_URL;
-      const ADMIN_KEY = window.APP?.ADMIN_KEY || '';
-      if(!API_URL){
-        alert('API non configurée.');
-        return { ok:false, error:'no_api' };
-      }
-
-      const $ = selector => document.querySelector(selector);
-      const name = ($('#ck-name') || $('#ckName'))?.value?.trim() || '';
-      const phone = ($('#ck-phone') || $('#ckPhone'))?.value?.trim() || '';
-      const slot = ($('#ck-slot') || $('#ckSlot'))?.value?.trim() || '';
-      const note = ($('#ck-note') || $('#ckNote'))?.value?.trim() || '';
-
-      const cart = getCart();
-      const items = Array.isArray(cart.items) ? cart.items : [];
-      const total = Number(items.reduce((sum, item) => {
-        const price = Number(item.price) || 0;
-        const qty = Number(item.qty) || 0;
-        return sum + price * qty;
-      }, 0).toFixed(2));
-
-      if(!name || !phone || !slot || items.length === 0){
-        alert('Merci de compléter nom, téléphone, horaire et panier.');
-        return { ok:false, error:'invalid_form' };
-      }
-
-      const payload = {
-        name,
-        phone,
-        slot,
-        note,
-        items: items.map(item => ({
-          name: item.name,
-          qty: Number(item.qty) || 1,
-          price: Number(item.price) || 0
-        })),
-        total,
-        source: 'site'
-      };
-
-      const url = API_URL + (ADMIN_KEY ? `?key=${encodeURIComponent(ADMIN_KEY)}` : '');
-      const DEV = /[?&]dev=1/.test(location.search);
-
-      try{
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const raw = await response.text();
-        let data;
-        try{
-          data = JSON.parse(raw);
-        }catch(err){
-          data = { ok:false, error:'bad_json', raw };
-        }
-
-        if(DEV) console.log('API status', response.status, data);
-
-        if(!response.ok || !data || data.ok !== true){
-          const msg = (data && (data.error || data.message)) || `HTTP ${response.status}`;
-          alert("Impossible d'envoyer la commande. Merci de réessayer." + (DEV ? `\n[${msg}]` : ''));
-          return { ok:false, error: msg };
-        }
-
-        setCart({ items: [] });
-        document.querySelector('#checkout')?.close();
-        alert('Commande enregistrée. Merci !');
-        setTimeout(() => { try{ location.reload(); }catch(err){ /* ignore */ } }, 0);
-        return { ok:true };
-      }catch(error){
-        if(DEV) console.error(error);
-        alert("Impossible d'envoyer la commande. Merci de réessayer.");
-        return { ok:false, error: error?.message || 'network_error' };
-      }
-    }
-
-    const handler = event => {
-      const target = event.target instanceof Element ? event.target.closest('#btn-send, #ck-send, .btn-send, #btnSend') : null;
-      if(!target) return;
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      sendOrder();
-    };
-
-    document.addEventListener('click', handler, true);
-    window.sendOrder = sendOrder;
-  })();
-  </script>
-  <script>
-  (function(){
-    if(!/[?&]dev=1/.test(location.search)) return;
-    const button = document.createElement('button');
-    button.textContent = 'Test API';
-    button.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;padding:6px 10px;border-radius:8px;border:1px solid #444;background:#222;color:#fff';
-    button.onclick = () => {
-      const cart = { items:[{ name:'TEST Pizza', qty:1, price:9.5 }] };
-      try{ localStorage.setItem('cart', JSON.stringify(cart)); }catch(err){ /* ignore */ }
-      const nameInput = document.querySelector('#ck-name, #ckName');
-      const phoneInput = document.querySelector('#ck-phone, #ckPhone');
-      const slotInput = document.querySelector('#ck-slot, #ckSlot');
-      if(nameInput) nameInput.value = 'Test';
-      if(phoneInput) phoneInput.value = '0600000000';
-      if(slotInput) slotInput.value = '19:00';
-      if(window.sendOrder) window.sendOrder(); else alert('sendOrder indisponible');
-    };
-    document.body.appendChild(button);
-  })();
-  </script>
 </body>
 </html>
