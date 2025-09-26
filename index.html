@@ -1,106 +1,302 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
-  <style>
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b0f14;color:#fff;line-height:1.5}
-    h1,h2,h3{margin:0;font-weight:700}
-    a{color:#4da3ff;text-decoration:none}
-    a:hover{text-decoration:underline}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PIZZ’AMIGO — Montmerle-sur-Saône</title>
+<meta name="color-scheme" content="dark">
+<style>
+:root{--bg:#0b0f14;--panel:#121a2b;--line:#243156;--muted:#b9c2d6;--green:#19c37d;--orange:#ff9f3f}
+html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
+a{color:#9ec5ff}
+.container{max-width:1050px;margin:0 auto;padding:0 14px}
+header.hero{min-height:44vh;display:grid;align-items:end;background:url('./images/oven.jpg') center/cover no-repeat fixed}
+.hero-inner{background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.65) 100%);padding:26px 14px}
+h1{font-size:clamp(24px,4.5vw,44px);line-height:1.05;margin:0 0 6px}
+.lead{opacity:.9;margin:0 0 10px}
 
-    /* ===== HERO four ===== */
-    .hero{
-      position:relative;
-      height:260px;
-      overflow:hidden;
-      border-radius:14px;
-      margin:14px 12px 18px;
-      background:#0c0f14;
-      isolation:isolate;
-    }
-    .hero img{
-      position:absolute;inset:0;
-      width:100%;height:100%;
-      object-fit:cover;
-      object-position:50% 45%;
-      transform:scale(1.1);
-      filter:contrast(1.05) saturate(1.05);
-    }
-    .hero-overlay{
-      position:absolute;inset:auto 0 0 0;
-      padding:18px 16px 16px;
-      background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.55) 70%,rgba(0,0,0,.75) 100%);
-    }
-    .hero-overlay h1{font-size:1.5rem;margin-bottom:6px}
-    .hero-overlay p{margin:0;opacity:.9}
+.badge{display:inline-flex;gap:8px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:10px 14px;border-radius:10px;margin:14px 0}
+.badge .dot{width:9px;height:9px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
 
-    /* ===== Bandeau état ===== */
-    .banner{
-      margin:6px auto 18px;
-      max-width:1100px;
-      padding:12px 14px;
-      border-radius:10px;
-      font-weight:600;
-      text-align:center;
-    }
-    .banner.closed{background:rgba(210,80,80,.18);color:#ffb3b3;border:1px solid rgba(255,120,120,.25)}
+section{padding:18px 0}
+h2{font-size:26px;margin:8px 0 6px}
+.note{color:var(--muted)}
 
-    /* ===== Carte ===== */
-    section{padding:0 16px;max-width:1100px;margin:auto}
-    #menu-list{list-style:none;margin:0;padding:0}
-    .menu-item{display:flex;justify-content:space-between;gap:12px;padding:14px 8px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .mi-title{font-weight:600}
-    .mi-desc{opacity:.8;font-size:.95rem}
-    .mi-price{color:#32a852;font-weight:700;margin-right:12px}
-    .btn{cursor:pointer;border-radius:8px;padding:6px 12px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff}
-    .btn.add{border-color:#ff9f3f;color:#ff9f3f}
+.list{list-style:none;margin:10px 0 26px;padding:0}
+.item{display:flex;justify-content:space-between;gap:16px;padding:16px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
+.it-left{max-width:72%}
+.it-title{font-weight:700;font-size:18px}
+.it-desc{opacity:.85;margin-top:4px}
+.it-right{text-align:right;display:flex;gap:12px;align-items:center}
+.price{color:#32a852;font-weight:700;min-width:72px}
+.btn{cursor:pointer;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff}
+.btn.primary{background:var(--green);border:0;color:#000}
+.btn.orange{border-color:var(--orange);color:var(--orange)}
+.btn.small{padding:6px 10px;font-size:13px}
+.btn.link{border:0;color:#9ec5ff;background:transparent;padding:0}
 
-    /* ===== Infos pratiques ===== */
-    .infos{background:#121a2b;border:1px solid #243156;border-radius:10px;padding:16px;margin:20px auto;max-width:1100px}
-    .infos h3{margin-bottom:8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.card h3{margin:0 0 10px}
 
-    footer{margin:40px auto;text-align:center;font-size:.9rem;opacity:.7}
-  </style>
+#cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08)}
+#cartBar.show{display:flex}
+
+dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;max-width:720px;width:95%}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+#ck-list{white-space:pre-wrap;background:#0e1420;border:1px dashed #2a3d6b;border-radius:10px;padding:10px;margin:10px 0}
+.form label{display:block;margin:10px 0 4px}
+.form input,.form textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
+
+.small{opacity:.8}
+.footer{padding:30px 0 80px;color:#cfd6e6}
+.brand{display:flex;align-items:center;gap:8px}
+.brand .dot{width:10px;height:10px;border-radius:99px;background:#2bff8a;box-shadow:0 0 10px #1ee07a}
+</style>
 </head>
 <body>
-  <!-- HERO -->
-  <header class="hero">
-    <img src="./images/oven.jpg" alt="Four à pizza">
-    <div class="hero-overlay">
-      <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-      <p>Le goût authentique de l’Italie près de chez vous.</p>
-    </div>
-  </header>
 
-  <!-- Bandeau état -->
-  <div class="banner closed">Fermé pour le moment — retrouvez-nous ce week-end !</div>
+<header class="hero">
+  <div class="hero-inner container">
+    <div class="brand"><span class="dot"></span><strong>PIZZ’AMIGO</strong></div>
+    <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
+    <p class="lead">Le goût authentique de l’Italie près de chez vous.</p>
+  </div>
+</header>
 
-  <!-- Carte -->
+<div class="container">
+  <div class="badge"><span class="dot"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !</div>
+
   <section>
     <h2>Notre carte</h2>
-    <p>Boissons : réglez en ligne, <b>saveur choisie sur place</b>.</p>
-    <ul id="menu-list">
-      <li class="menu-item"><div><div class="mi-title">Margharita</div><div class="mi-desc">tomate, emmental</div></div><div><div class="mi-price">7,50 €</div><button class="btn add">Ajouter</button></div></li>
-      <li class="menu-item"><div><div class="mi-title">Chasseur</div><div class="mi-desc">tomate, emmental, champignons</div></div><div><div class="mi-price">8,50 €</div><button class="btn add">Ajouter</button></div></li>
-      <li class="menu-item"><div><div class="mi-title">Sicilienne</div><div class="mi-desc">tomate, emmental, anchois</div></div><div><div class="mi-price">8,50 €</div><button class="btn add">Ajouter</button></div></li>
-      <li class="menu-item"><div><div class="mi-title">Napolitaine</div><div class="mi-desc">tomate, emmental, jambon</div></div><div><div class="mi-price">9,00 €</div><button class="btn add">Ajouter</button></div></li>
-      <li class="menu-item"><div><div class="mi-title">Canette 33cl</div><div class="mi-desc">choisie sur place</div></div><div><div class="mi-price">1,50 €</div><button class="btn add">Ajouter</button></div></li>
-      <li class="menu-item"><div><div class="mi-title">Bouteille 50cl</div><div class="mi-desc">choisie sur place</div></div><div><div class="mi-price">3,00 €</div><button class="btn add">Ajouter</button></div></li>
-    </ul>
+    <p class="note">Boissons : réglez en ligne, <strong>savour choisie sur place</strong>. <br>
+    <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
+
+    <ul id="menu" class="list"></ul>
+
+    <div class="card">
+      <h3>Infos pratiques</h3>
+      <div class="small">Nous trouver :</div>
+      <ul>
+        <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a href="https://maps.google.com/?q=Caisse+d'épargne+Saint-Georges-de-Reneins" target="_blank">Itinéraire</a></li>
+        <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank">Itinéraire</a></li>
+        <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="https://maps.google.com/?q=Amareins+carrefour+des+feux" target="_blank">Itinéraire</a></li>
+      </ul>
+      <div style="margin-top:8px">Téléphone : <a href="tel:0680480456">06 80 48 04 56</a> • <a href="https://facebook.com" target="_blank">Facebook</a></div>
+    </div>
   </section>
 
-  <!-- Infos pratiques -->
-  <div class="infos">
-    <h3>Infos pratiques</h3>
-    <p><b>Vendredi soir</b> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a href="#">Itinéraire</a></p>
-    <p><b>Samedi soir</b> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="#">Itinéraire</a></p>
-    <p><b>Dimanche soir</b> — Amareins (carrefour des feux) • 18:00–21:00 — <a href="#">Itinéraire</a></p>
-    <h3>Contact</h3>
-    <p>Téléphone : <a href="tel:0680480456">06 80 48 04 56</a> • <a href="#">Facebook</a></p>
-  </div>
+  <footer class="footer small">© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
+</div>
 
-  <footer>© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
+<!-- BARRE PANIER -->
+<div id="cartBar">
+  <span>Panier • <strong id="cartTotal">0,00</strong> €</span>
+  <button id="btnView" class="btn">Voir panier</button>
+  <button id="btnCheckout" class="btn primary">Passer commande</button>
+</div>
+
+<!-- MODAL PANIER / CHECKOUT -->
+<dialog id="checkout">
+  <form method="dialog">
+    <h3>Finaliser la commande</h3>
+    <div id="ck-list" class="small"></div>
+
+    <div class="two">
+      <div>
+        <label>Nom*</label>
+        <input id="ck-name" placeholder="Votre nom" autocomplete="name">
+      </div>
+      <div>
+        <label>Téléphone*</label>
+        <input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel">
+      </div>
+    </div>
+    <div class="two">
+      <div>
+        <label>Heure de retrait*</label>
+        <input id="ck-slot" value="19:00">
+      </div>
+      <div>
+        <label>Commentaire (optionnel)</label>
+        <input id="ck-note" placeholder="Sans olives, etc.">
+      </div>
+    </div>
+
+    <hr class="sep">
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" id="btnClose">Fermer</button>
+      <button class="btn primary" id="btnSend">Envoyer la commande</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* ====== CONFIG API (mets ton URL Apps Script ici) ====== */
+const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec" (laisser vide = simulation)
+
+/* ====== DONNÉES CARTE ====== */
+const PIZZAS = [
+  ["Margharita","tomate, emmental",7.50],
+  ["Chasseur","tomate, emmental, champignons",8.50],
+  ["Sicilienne","tomate, emmental, anchois",8.50],
+  ["Napolitaine","tomate, emmental, jambon",9.00],
+  ["Paysanne","tomate, emmental, jambon, œuf",9.50],
+  ["Capri","tomate, emmental, jambon, champignons",9.50],
+  ["Mozzarella","tomate, emmental, mozzarella",9.50],
+  ["Quatre Saisons","tomate, emmental, oignons, champignons, poivrons, mozzarella",9.50],
+  ["Vénitienne","tomate, emmental, roquefort, oignons, crème",9.50],
+  ["Oslo","tomate, emmental, thon, champignons, crème",10.00],
+  ["Orientale","tomate, emmental, merguez, poivrons",10.00],
+  ["Bolognaise","tomate, emmental, viande hachée, crème, mozzarella",10.00],
+  ["Fermière","tomate, emmental, œuf, lardons, champignons",10.00],
+  ["Miel","crème, emmental, chèvre frais, miel",10.50],
+  ["Forestière","tomate, emmental, poulet, champignons, crème",10.50],
+  ["Lyonnaise","tomate, emmental, saint-marcellin, poulet, crème",11.00],
+  ["Quatre Fromages","tomate, emmental, chèvre, roquefort, mozzarella",11.00],
+  ["Paradoxe","tomate, emmental, œuf, jambon, chorizo, mozzarella",11.00],
+  ["Boisée","crème, emmental, pomme de terre, poulet, poivrons, sauce gruyère",11.00],
+  ["Savoyarde","emmental, lardons, reblochon, pomme de terre, crème",11.00],
+  ["Carnivore","tomate, emmental, viande hachée, merguez, œuf, mozzarella",11.50],
+  ["Norvégienne","emmental, saumon fumé, mozzarella, crème",11.50],
+  ["Burger","tomate, emmental, viande hachée, oignons, cheddar, tomate cerise, sauce burger",12.00]
+];
+const DRINKS = [
+  ["Canette 33cl (choix sur place)","boisson",1.50],
+  ["Bouteille 50cl (choix sur place)","boisson",3.00]
+];
+const SUP_TYPES = ["viande","+ poisson","+ œuf","+ fromage"]; // affichage badge
+
+/* ====== PANIER ====== */
+const cart = {
+  items: [], // {name, price, qty, note?, sups: number, supsList: []}
+  addPizza(name, price){
+    // prompt supplément ?
+    const want = confirm("Ajouter un supplément (+1 €) ?\n(viande / poisson / œuf / fromage)");
+    let sups = 0, supsList = [];
+    if(want){
+      const type = prompt("Type de supplément ? (viande / poisson / œuf / fromage)","");
+      if(type){
+        sups = 1; supsList=[type.trim()];
+      }
+    }
+    const key=(name+"|"+supsList.join(",")).toLowerCase();
+    const ex = cart.items.find(i=>i.key===key && i.kind==="pizza");
+    if(ex){ ex.qty++; }
+    else cart.items.push({kind:"pizza", key, name, price, qty:1, sups, supsList});
+    renderCartBar();
+  },
+  addDrink(name, price){
+    const ex = cart.items.find(i=>i.name===name && i.kind==="drink");
+    if(ex){ ex.qty++; } else cart.items.push({kind:"drink", name, price, qty:1});
+    renderCartBar();
+  },
+  total(){
+    return cart.items.reduce((s,i)=> s + i.price*i.qty + (i.sups||0)*1*i.qty, 0);
+  },
+  clear(){ cart.items.length=0; renderCartBar(); }
+};
+
+/* ====== RENDU ====== */
+function €(v){ return v.toFixed(2).replace(".",","); }
+
+function renderMenu(){
+  const ul = document.getElementById("menu"); ul.innerHTML="";
+  [...PIZZAS.map(p=>({...p})), ...DRINKS.map(d=>({...d}))]
+  PIZZAS.forEach(([name,desc,price])=>{
+    const li=document.createElement("li"); li.className="item";
+    li.innerHTML = `
+      <div class="it-left">
+        <div class="it-title">${name}</div>
+        <div class="it-desc">${desc}</div>
+      </div>
+      <div class="it-right">
+        <div class="price">${€(price)} €</div>
+        <button class="btn orange">Ajouter</button>
+      </div>`;
+    li.querySelector("button").onclick = ()=>cart.addPizza(name,price);
+    ul.appendChild(li);
+  });
+  DRINKS.forEach(([name,desc,price])=>{
+    const li=document.createElement("li"); li.className="item";
+    li.innerHTML = `
+      <div class="it-left">
+        <div class="it-title">${name}</div>
+        <div class="it-desc">${desc} — saveur choisie sur place</div>
+      </div>
+      <div class="it-right">
+        <div class="price">${€(price)} €</div>
+        <button class="btn orange">Ajouter</button>
+      </div>`;
+    li.querySelector("button").onclick = ()=>cart.addDrink(name,price);
+    ul.appendChild(li);
+  });
+}
+
+function renderCartBar(){
+  const bar=document.getElementById("cartBar");
+  const tot=document.getElementById("cartTotal");
+  const t = cart.total();
+  tot.textContent = €(t);
+  bar.classList.toggle("show", cart.items.length>0);
+}
+
+function openCheckout(){
+  const dlg=document.getElementById("checkout");
+  const box=document.getElementById("ck-list");
+  if(cart.items.length===0){ alert("Votre panier est vide."); return; }
+  const lines = cart.items.map(i=>{
+    const supTxt = i.sups?` (+${i.sups} suppl. ${i.supsList.join(", ")})`:"";
+    return `• ${i.name} × ${i.qty}${supTxt} — ${€(i.price)} €`;
+  }).join("\n");
+  box.textContent = lines + `\n\nTotal : ${€(cart.total())} €`;
+  dlg.showModal();
+}
+function closeCheckout(){ document.getElementById("checkout").close(); }
+
+/* ====== ENVOI API ====== */
+async function sendOrder(){
+  const name = document.getElementById("ck-name").value.trim();
+  const phone= document.getElementById("ck-phone").value.trim();
+  const slot = document.getElementById("ck-slot").value.trim();
+  const note = document.getElementById("ck-note").value.trim();
+  if(!name || !phone || !slot){ alert("Merci de compléter nom, téléphone et heure."); return; }
+
+  const items = cart.items.map(i=>({
+    name: i.name + (i.sups?` (+${i.sups} suppl.)`:""),
+    qty: i.qty,
+    price: i.price + (i.sups?1:0) // prix unitaire avec supplément
+  }));
+  const payload = { name, phone, slot, note, items, total:Number(cart.total().toFixed(2)), source:"site" };
+
+  if(!API_URL){
+    alert("Commande enregistrée (simulation). Merci !");
+    cart.clear(); closeCheckout(); return;
+  }
+  try{
+    const res = await fetch(API_URL, { method:"POST", headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    const data = await res.json().catch(()=>({ok:false}));
+    if(res.ok && data && data.ok){
+      cart.clear(); closeCheckout();
+      alert("Commande enregistrée. Merci !");
+    }else{
+      throw new Error((data&&data.error)||"api_error");
+    }
+  }catch(err){
+    console.error(err);
+    alert("Impossible d'envoyer la commande. Merci de réessayer ou de contacter le food-truck.");
+  }
+}
+
+/* ====== HOOKS ====== */
+window.addEventListener("DOMContentLoaded",()=>{
+  renderMenu(); renderCartBar();
+  document.getElementById("btnView").onclick = openCheckout;
+  document.getElementById("btnCheckout").onclick = openCheckout;
+  document.getElementById("btnSend").onclick = (e)=>{e.preventDefault(); sendOrder();};
+  document.getElementById("btnClose").onclick = (e)=>{e.preventDefault(); closeCheckout();};
+});
+</script>
 </body>
 </html>
