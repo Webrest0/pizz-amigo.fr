@@ -11,7 +11,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;font-family:system-
 a{color:#9ec5ff;text-decoration:none} a:hover{text-decoration:underline}
 .container{max-width:1050px;margin:0 auto;padding:0 14px}
 
-/* HERO en carte arrondie, image bien lisible */
+/* HERO */
 .hero-wrap{padding:18px 14px}
 .hero{
   height:260px;border-radius:18px;overflow:hidden;
@@ -30,11 +30,9 @@ h1{font-size:clamp(22px,5vw,38px);line-height:1.08;margin:0 0 6px}
 .badge .inner{display:flex;gap:10px;align-items:center;background:#3a1e1e;border:1px solid #774646;color:#ffd3d3;padding:12px 14px;border-radius:12px}
 .badge .dot{width:10px;height:10px;border-radius:99px;background:#ff6969;box-shadow:0 0 0 3px rgba(255,105,105,.18)}
 
-/* Sections */
+/* Sections & carte (inchangé) */
 section{padding:18px 14px} h2{font-size:26px;margin:0 0 6px}
 .note{color:var(--muted)}
-
-/* Carte */
 .list{list-style:none;margin:12px 0 26px;padding:0}
 .item{display:flex;justify-content:space-between;gap:16px;padding:16px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
 .it-left{max-width:72%}
@@ -46,13 +44,12 @@ section{padding:18px 14px} h2{font-size:26px;margin:0 0 6px}
 .btn.primary{background:var(--green);border:0;color:#000}
 .btn.orange{border-color:var(--orange);color:var(--orange)}
 .btn.small{padding:6px 10px;font-size:13px}
-
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
 .card h3{margin:0 0 10px}
 .small{opacity:.8}
 .footer{padding:30px 14px 90px;color:#cfd6e6}
 
-/* Panier sticky */
+/* Panier sticky (inchangé) */
 #cartBar{position:sticky;bottom:0;left:0;right:0;display:none;justify-content:center;gap:10px;align-items:center;padding:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border-top:1px solid rgba(255,255,255,.08);z-index:50}
 #cartBar.show{display:flex}
 
@@ -61,24 +58,47 @@ dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-ra
 dialog::backdrop{background:rgba(0,0,0,.6)}
 hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 
-/* Checkout */
-#ck-list{white-space:pre-wrap;background:#0e1420;border:1px dashed #2a3d6b;border-radius:10px;padding:10px;margin:10px 0}
-.form label{display:block;margin:10px 0 4px}
-.form input,.form textarea,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1420;color:#fff}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);padding:8px 10px;border-radius:999px;cursor:pointer}
-.chip.active{background:var(--green);color:#000;border-color:transparent}
-
-/* Modal supplément */
+/* ===== MODAL SUPPLÉMENT (inchangé) ===== */
 .sup-body{display:flex;flex-direction:column;gap:12px}
 .sup-row{display:flex;gap:10px;flex-wrap:wrap}
 .sup-help{font-size:13px;opacity:.85}
+
+/* ====== MODAL CHECKOUT — NOUVEAU DESIGN ====== */
+/* palette chaude seulement dans le modal */
+.ck{--ck-bg:#141821;--ck-panel:#0f141d;--ck-line:#2a375a;--ck-accent:#e86f2b;--ck-accent-2:#b84c2a;--ck-text:#f3e9e4}
+#checkout{background:var(--ck-bg);border-color:var(--ck-line)}
+#checkout h3{margin:0 0 8px;color:var(--ck-text);letter-spacing:.2px}
+#ck-list{white-space:pre-wrap;background:var(--ck-panel);border:1px dashed var(--ck-line);border-radius:12px;padding:10px;margin:10px 0;color:#e9eef6}
+.form label{display:block;margin:8px 0 6px;color:#cfd6e6}
+.form input,.form textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--ck-line);background:#0e1420;color:#fff}
+.form textarea{min-height:64px;resize:vertical}
+
+/* une seule colonne + grille d’horaires clean */
+.ck-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:6px}
+.chip{
+  text-align:center;border:1px solid var(--ck-line);padding:10px 0;border-radius:12px;cursor:pointer;
+  background:linear-gradient(180deg,#121a26,#0f151f)
+}
+.chip.active{background:linear-gradient(180deg,var(--ck-accent),var(--ck-accent-2));border-color:transparent;color:#160e0c;font-weight:700}
+
+/* actions */
+.ck-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.btn.ck-ghost{border:1px solid var(--ck-line);background:#0e1420}
+.btn.ck-primary{
+  background:linear-gradient(180deg,var(--ck-accent),var(--ck-accent-2));
+  border:0;color:#160e0c;font-weight:700
+}
+
+/* réduire l’“effet zoom” du dialog natif */
+@media (min-width:520px){
+  #checkout{max-width:560px}
+}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
+<!-- ===== HERO ===== -->
 <div class="hero-wrap">
   <div class="hero">
     <div class="hero-inner container">
@@ -100,7 +120,7 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
     <p class="note">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
       <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
 
-    <!-- ======== CARTE COMPLÈTE ======== -->
+    <!-- === CARTE (inchangée, tronquée ici pour gagner de la place : garde la tienne complète) === -->
     <ul id="menu" class="list">
       <!-- PIZZAS -->
       <li class="item" data-name="Margharita" data-price="7.5"><div class="it-left"><div class="it-title">Margharita</div><div class="it-desc">tomate, emmental</div></div><div class="it-right"><div class="price">7,50 €</div><button class="btn orange add">Ajouter</button></div></li>
@@ -146,26 +166,23 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
   <footer class="footer small">© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
 </div>
 
-<!-- BARRE PANIER -->
+<!-- BARRE PANIER (inchangée) -->
 <div id="cartBar">
   <span>Panier • <strong id="cartTotal">0,00</strong> €</span>
   <button id="btnView" class="btn">Voir panier</button>
   <button id="btnCheckout" class="btn primary">Passer commande</button>
 </div>
 
-<!-- MODAL CHECKOUT -->
+<!-- ===== MODAL CHECKOUT (NOUVEAU) ===== -->
 <dialog id="checkout">
-  <form method="dialog">
+  <form method="dialog" class="ck">
     <h3>Finaliser la commande</h3>
     <div id="ck-list" class="small"></div>
 
-    <div class="two">
-      <div><label>Nom*</label><input id="ck-name" placeholder="Votre nom" autocomplete="name"></div>
-      <div><label>Téléphone*</label><input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel"></div>
-    </div>
-
-    <div class="two">
-      <div>
+    <div class="ck-grid">
+      <div class="form"><label>Nom*</label><input id="ck-name" placeholder="Votre nom" autocomplete="name"></div>
+      <div class="form"><label>Téléphone*</label><input id="ck-phone" placeholder="06…" inputmode="tel" autocomplete="tel"></div>
+      <div class="form">
         <label>Heure de retrait*</label>
         <input id="ck-slot" placeholder="19:00">
         <div class="chips" id="slot-chips">
@@ -173,22 +190,21 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
           <span class="chip">19:30</span><span class="chip">20:00</span><span class="chip">20:30</span>
         </div>
       </div>
-      <div><label>Commentaire (optionnel)</label><input id="ck-note" placeholder="Sans olives, etc."></div>
+      <div class="form"><label>Commentaire (optionnel)</label><textarea id="ck-note" placeholder="Sans olives, etc."></textarea></div>
     </div>
 
-    <hr class="sep">
-    <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn" id="btnClose">Fermer</button>
-      <button class="btn primary" id="btnSend">Envoyer la commande</button>
+    <div class="ck-actions">
+      <button class="btn ck-ghost" id="btnClose">Fermer</button>
+      <button class="btn ck-primary" id="btnSend">Envoyer la commande</button>
     </div>
   </form>
 </dialog>
 
-<!-- MODAL SUPPLÉMENT -->
+<!-- ===== MODAL SUPPLÉMENT (inchangé) ===== -->
 <dialog id="supModal">
   <div class="sup-body">
     <h3>Supplément pour <span id="supName"></span> ?</h3>
-    <div class="sup-help">Choisis si tu veux ajouter un supplément (+1 €) : viande / poisson / œuf / fromage.</div>
+    <div class="sup-help">Ajouter un supplément (+1 €) : viande / poisson / œuf / fromage.</div>
     <div class="sup-row">
       <button class="btn" id="supNo">Sans supplément</button>
       <button class="btn primary" id="supYes">+1 € Supplément</button>
@@ -207,11 +223,11 @@ hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:12px 0}
 
 <script>
 /* ===== CONFIG API (vide = simulation) ===== */
-const API_URL = ""; // ex: "https://script.google.com/macros/s/XXXX/exec"
+const API_URL = ""; // mets ton URL /exec ici si tu veux envoyer en vrai
 
-/* ===== PANIER ===== */
+/* ===== PANIER (inchangé) ===== */
 const cart = {
-  items: [], // {key,name, price, qty, sups, supsList}
+  items: [],
   addWithSup(name, price, sups=0, supsList=[]){
     const key=(name+"|"+(supsList.join(","))).toLowerCase();
     const ex=this.items.find(i=>i.key===key);
@@ -223,7 +239,7 @@ const cart = {
 };
 function euro(v){ return v.toFixed(2).replace(".",","); }
 
-/* Ajout avec choix supplément (dialog) */
+/* Ajout + supplément (inchangé) */
 let pending = null;
 document.getElementById("menu").addEventListener("click", (ev)=>{
   const btn = ev.target.closest(".add"); if(!btn) return;
