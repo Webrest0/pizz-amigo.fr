@@ -8,105 +8,78 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <!-- HERO -->
+  <div class="wrap">
     <section class="hero">
-      <div class="frame">
-        <div class="img" aria-label="Four à bois — PIZZ’AMIGO"></div>
-      </div>
-      <div class="txt">
-        <div class="badge"><span class="dot" aria-hidden="true"></span> PIZZ’AMIGO</div>
+      <img src="images/oven.jpg" alt="Four à bois" loading="lazy">
+      <div class="shade" aria-hidden="true"></div>
+      <div class="tx">
+        <div class="badge"><span class="dot" aria-hidden="true"></span><span>PIZZ’AMIGO</span></div>
         <h1>PIZZ’AMIGO — Montmerle-sur-Saône</h1>
-        <p>Le goût authentique de l’Italie près de chez vous.</p>
+        <p class="sub">Le goût authentique de l’Italie près de chez vous.</p>
       </div>
     </section>
 
-    <!-- BANDEAU ETAT -->
     <div class="banner" id="state-banner" role="status" aria-live="polite">
-      <span class="led" aria-hidden="true"></span>
-      <strong>Fermé pour le moment</strong>
-      <span>— retrouvez-nous ce week-end !</span>
+      <span class="led" aria-hidden="true"></span><strong>Fermé pour le moment</strong> — retrouvez-nous ce week-end !
     </div>
 
-    <!-- CARTE -->
-    <section aria-labelledby="menu-title">
-      <h2 class="section-title" id="menu-title">Notre carte</h2>
-      <p class="note">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
-        <em>Supplément</em> (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
+    <h2>Notre carte</h2>
+    <p class="lead">Boissons : réglez en ligne, <strong>saveur choisie sur place</strong>.<br>
+      Supplément (viande / poisson / œuf / fromage) : <strong>+1 €</strong> par ajout.</p>
 
-      <div class="card" role="region" aria-live="polite">
-        <ul class="menu" id="menu-list"></ul>
-      </div>
-    </section>
+    <div id="warn" class="warn" role="alert">⚠️ Carte vide — le script n'a pas démarré. Rechargez la page (vider le cache).</div>
+    <div id="menu" class="card" role="region" aria-live="polite"></div>
 
-    <!-- INFOS PRATIQUES -->
-    <section aria-labelledby="infos-title">
-      <div class="card info">
-        <h2 id="infos-title">Infos pratiques <span class="badge-italy" title="Couleurs d’Italie"><i class="g"></i><i class="w"></i><i class="r"></i></span></h2>
-        <p class="small">Nous trouver :</p>
-        <ul>
-          <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Saint-Georges-de-Reneins+Caisse+d%27%C3%A9pargne">Itinéraire</a></li>
-          <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Amareins+carrefour+des+feux">Itinéraire</a></li>
-          <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 — <a target="_blank" rel="noopener" href="https://maps.google.com/?q=Amareins+carrefour+des+feux">Itinéraire</a></li>
-        </ul>
-        <p class="small">Téléphone : <a href="tel:+33680480456">06 80 48 04 56</a> • <a target="_blank" rel="noopener" href="https://facebook.com">Facebook</a></p>
-      </div>
+    <section class="infos" aria-labelledby="infos-title">
+      <h3 id="infos-title">Infos pratiques</h3>
+      <p><strong>Nous trouver :</strong></p>
+      <ul>
+        <li><strong>Vendredi soir</strong> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 —
+          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?address=Rue%20Nationale%2C%2069600%20Saint-Georges-de-Reneins%2C%20France&ll=46.0429,4.7263">Itinéraire</a></li>
+        <li><strong>Samedi soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 —
+          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Amareins%2001090">Itinéraire</a></li>
+        <li><strong>Dimanche soir</strong> — Amareins (carrefour des feux) • 18:00–21:00 —
+          <a class="route" target="_blank" rel="noopener" href="https://maps.apple.com/?q=Amareins%2001090">Itinéraire</a></li>
+      </ul>
+      <p><strong>Contact</strong> — Tél : <a href="tel:+33680480456">06 80 48 04 56</a></p>
     </section>
   </div>
 
-  <!-- BARRE PANIER -->
-  <div class="cartbar hidden" id="cart-bar">
-    <span class="pill">Panier • <strong id="cart-total">0,00 €</strong></span>
-    <button class="btn dark" id="btn-view" type="button">Voir panier</button>
-    <button class="btn primary" id="btn-checkout" type="button">Passer commande</button>
+  <div id="bar" class="bar hidden">
+    <span class="chip">Panier • <strong id="tot">0,00</strong> €</span>
+    <button class="btn dark" id="view" type="button">Voir panier</button>
+    <button class="btn primary" id="checkout" type="button">Passer commande</button>
   </div>
 
-  <!-- MODAL COMMANDE -->
-  <dialog id="checkout" aria-labelledby="modal-title">
-    <div class="modal">
-      <h3 id="modal-title">Finaliser la commande</h3>
-      <div class="sep"></div>
-
-      <ul class="cart-lines" id="cart-lines"></ul>
-      <p class="total">Total : <strong id="ck-total">0,00 €</strong></p>
-
-      <div class="row">
-        <div>
-          <label class="small">Nom*
-            <input id="ck-name" placeholder="Votre nom" autocomplete="name">
+  <dialog id="dlg" aria-labelledby="modal-title">
+    <div class="md">
+      <div class="head">
+        <h3 id="modal-title">Finaliser la commande</h3>
+        <div id="resume" class="resume"></div>
+        <div id="sum" class="total">Total : 0,00 €</div>
+      </div>
+      <div class="rows">
+        <div class="col">
+          <label>Nom*
+            <input id="c-name" placeholder="Votre nom" autocomplete="name">
           </label>
+          <label>Heure de retrait*
+            <input id="c-slot" value="19:00" autocomplete="off">
+          </label>
+          <div class="slots" id="slot-grid" role="listbox" aria-label="Créneaux disponibles"></div>
         </div>
-        <div>
-          <label class="small">Téléphone*
-            <input id="ck-phone" placeholder="06…" autocomplete="tel">
+        <div class="col">
+          <label>Téléphone*
+            <input id="c-phone" placeholder="06…" autocomplete="tel">
+          </label>
+          <label>Commentaire (optionnel)
+            <textarea id="c-note" placeholder="Sans olives, etc." rows="3"></textarea>
           </label>
         </div>
       </div>
-
-      <div class="row">
-        <div>
-          <label class="small">Heure de retrait*
-            <input id="ck-slot" value="19:00" placeholder="19:00">
-          </label>
-          <div class="grid-times" id="times" role="listbox" aria-label="Créneaux disponibles">
-            <button class="time" type="button" role="option" tabindex="-1">18:00</button>
-            <button class="time" type="button" role="option" tabindex="-1">18:30</button>
-            <button class="time active" type="button" role="option" aria-selected="true" tabindex="0">19:00</button>
-            <button class="time" type="button" role="option" tabindex="-1">19:30</button>
-            <button class="time" type="button" role="option" tabindex="-1">20:00</button>
-            <button class="time" type="button" role="option" tabindex="-1">20:30</button>
-          </div>
-        </div>
-        <div>
-          <label class="small">Commentaire (optionnel)
-            <textarea id="ck-note" rows="3" placeholder="Sans olives, etc."></textarea>
-          </label>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="btn ghost" id="close-modal" type="button">Fermer</button>
-        <button class="btn green" id="btn-send" type="button">Envoyer la commande</button>
+      <div class="md-foot">
+        <button class="btn dark" id="close" type="button">Fermer</button>
+        <button class="btn primary" id="send" type="button">Envoyer la commande</button>
       </div>
     </div>
   </dialog>
