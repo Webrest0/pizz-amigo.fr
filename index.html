@@ -111,7 +111,7 @@
   <h2>Notre carte</h2>
   <section id="menu" class="menu"></section>
 
-  <!-- Note boissons déplacée sous la carte -->
+  <!-- Note boissons sous la carte -->
   <p class="card" style="margin-top:6px">
     <b>Boissons :</b> réglez en ligne, <b>saveur choisie sur place</b>. Supplément (viande / poisson / œuf / fromage) : <b>+1 €</b> par ajout.
   </p>
@@ -162,7 +162,7 @@
 
   <footer>© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
 
-  <!-- Panneau erreurs JS (anti page blanche) -->
+  <!-- Panneau erreurs JS -->
   <div id="err"><b>Erreur JavaScript</b><pre id="err-msg"></pre></div>
 </div>
 
@@ -172,7 +172,7 @@
   window.addEventListener('error', e=>showErr(e.message+'\\n'+(e.error&&e.error.stack||'')));
   window.addEventListener('unhandledrejection', e=>showErr('Promise rejetée: '+(e.reason&&e.reason.message||e.reason)));
 
-  /* ==== CONFIG ==== */
+  /* ==== CONFIG (change seulement API_URL si besoin) ==== */
   const API_URL = "https://script.google.com/macros/s/AKfycbyePXcqPFPs0uhNOcVM5J5Nq3LCgsrB9UKVOmit1HVoTBzCdZRDCxEntrydbXSyQMXu/exec";
   const SUPPL_PRICE = 1.00;
   const SUPPL_CHOICES = ["viande","poisson","œuf","fromage"];
@@ -291,11 +291,20 @@
   }
   function closeModal(){ document.getElementById('checkout').close(); }
 
-  /* ==== ENVOI API (text/plain pour éviter CORS) ==== */
+  /* ==== util : accepte JSON OU texte ("ok") ==== */
+  async function parseApiResponse(res){
+    const raw = await res.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { data = { ok: /^(ok|true)$/i.test(raw.trim()) }; }
+    return { ok: !!data.ok, raw, status: res.status };
+  }
+
+  /* ==== ENVOI COMMANDE robuste ==== */
   async function sendOrder(){
     try{
       const name=document.getElementById('ck-name').value.trim();
-      const phone=document.getElementById('ck-phone').value.trim();
+      const phone=document.getElementById('ck-phone').value.replace(/\s+/g,'').trim();
       const slot=document.getElementById('ck-slot').value.trim();
       const note=document.getElementById('ck-note').value.trim();
       if(!name||!phone||!slot||cart.items.length===0){ alert("Merci de compléter nom, téléphone, horaire et panier."); return; }
@@ -307,12 +316,27 @@
         source: "site"
       };
 
-      const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
-      const txt=await res.text(); let data; try{data=JSON.parse(txt);}catch{data={ok:false,raw:txt};}
-      if(!res.ok||!data.ok){ console.error('API fail',res.status,data); alert("Impossible d'envoyer la commande. Merci de réessayer."); return; }
+      // essai 1 : text/plain (souvent le plus tolérant)
+      let res  = await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+      let pr   = await parseApiResponse(res);
+
+      // essai 2 : sans header strict (si le script n'aime pas)
+      if(!res.ok || !pr.ok){
+        res = await fetch(API_URL,{method:"POST",body:JSON.stringify(payload)});
+        pr  = await parseApiResponse(res);
+      }
+
+      if(!res.ok || !pr.ok){
+        console.error("Échec API", pr.status, pr.raw);
+        alert("Impossible d'envoyer la commande. Merci de réessayer.");
+        return;
+      }
 
       cart.clear(); closeModal(); alert("Commande enregistrée. Merci !");
-    }catch(err){ showErr(String(err)); alert("Impossible d'envoyer la commande. Merci de réessayer."); }
+    }catch(err){
+      console.error(err);
+      alert("Impossible d'envoyer la commande. Merci de réessayer.");
+    }
   }
 
   /* ==== Bandeau horaires (Europe/Paris) ==== */
