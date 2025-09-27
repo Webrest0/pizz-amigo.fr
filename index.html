@@ -13,18 +13,20 @@
   html,body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
   .wrap{max-width:980px;margin:18px auto;padding:0 14px}
 
-  .brand{display:flex;align-items:center;gap:10px;margin:6px 0 8px}
+  /* entête */
+  .brand{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
   .brand .dot{width:10px;height:10px;border-radius:50%;background:#37d36a;box-shadow:0 0 8px #37d36a}
   .brand .name{font-weight:800;letter-spacing:.5px}
 
-  /* petit statut compact (remplace le grand bandeau) */
-  .status{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.26);
-    padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.28);backdrop-filter:blur(4px);width:max-content}
-  .status .b-dot{width:8px;height:8px;border-radius:50%}
-  .st-closed .b-dot{background:#e55252}
-  .st-soon   .b-dot{background:#ffb54c}
-  .st-open   .b-dot{background:#36d36a}
+  /* bandeau horaires compact */
+  .status{display:flex;align-items:center;gap:10px;max-width:max-content;
+    border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;background:rgba(0,0,0,.28);backdrop-filter:blur(4px)}
+  .status .led{width:10px;height:10px;border-radius:50%}
+  .led.closed{background:#ff5c5c;box-shadow:0 0 10px #ff5c5c}
+  .led.soon{background:#ffb54c;box-shadow:0 0 10px #ffb54c}
+  .led.open{background:#37d36a;box-shadow:0 0 10px #37d36a}
 
+  /* hero */
   .hero{border-radius:18px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.08);margin-top:10px}
   .hero img{display:block;width:100%;height:260px;object-fit:cover;filter:contrast(1.05) saturate(1.05)}
   .hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.75))}
@@ -61,7 +63,7 @@
   input,textarea{width:100%;border:1px solid var(--line);background:#0e1420;color:#fff;border-radius:10px;padding:10px}
   label{color:#cfd6e7;font-size:.95rem}
 
-  /* section infos pratiques */
+  /* infos pratiques */
   .infos{background:linear-gradient(135deg, rgba(32,148,93,.12), rgba(229,82,82,.10));
     border:1px solid var(--line);border-radius:18px;padding:14px}
   .infos h3{margin:6px 0 10px 0}
@@ -71,19 +73,29 @@
   #err{position:fixed;right:8px;bottom:8px;max-width:92vw;background:#2a1b1b;border:1px solid #5d2f2f;border-radius:10px;padding:10px 12px;display:none;z-index:999}
   #err pre{white-space:pre-wrap;margin:6px 0 0 0;color:#ffd1d1}
   footer{opacity:.75;margin:22px 0 10px;font-size:.95rem}
+
+  /* mobile affiné */
+  @media (max-width:560px){
+    .hero img{height:220px}
+    .item-name{font-size:18px}
+    .price{min-width:auto}
+    .grid2{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <!-- entête -->
   <div class="brand">
     <span class="dot"></span>
     <div class="name">PIZZ’AMIGO</div>
   </div>
 
-  <!-- Statut dynamique, compact -->
-  <div id="status" class="status st-closed">
-    <span class="b-dot"></span><b id="status-text">Fermé pour le moment — retrouvez-nous ce week-end !</b>
+  <!-- bandeau horaires compact -->
+  <div class="status" id="status">
+    <span class="led closed" id="led"></span>
+    <b id="status-text">Fermé pour le moment — retrouvez-nous ce week-end !</b>
   </div>
 
   <!-- HERO -->
@@ -99,8 +111,10 @@
   <h2>Notre carte</h2>
   <section id="menu" class="menu"></section>
 
-  <!-- Note boisson sous la carte (pas au-dessus) -->
-  <p style="margin-top:4px"><i>Boissons : réglées en ligne, <b>saveur choisie sur place</b>. Supplément (viande / poisson / œuf / fromage) : <b>+1 €</b> par ajout.</i></p>
+  <!-- Note boissons déplacée sous la carte -->
+  <p class="card" style="margin-top:6px">
+    <b>Boissons :</b> réglez en ligne, <b>saveur choisie sur place</b>. Supplément (viande / poisson / œuf / fromage) : <b>+1 €</b> par ajout.
+  </p>
 
   <!-- Barre panier -->
   <div id="cart-bar" class="hidden">
@@ -226,14 +240,12 @@
           </div>
         </div>`;
       el.querySelector('.add').onclick = ()=>{
-        if(p.drink){ // jamais de supplément pour boisson
-          cart.add(p,false,null);
-          return;
+        if(p.drink){ // pas de supplément pour boisson
+          cart.add(p,false,null); return;
         }
-        // Demande de supplément — texte "Non — Oui" explicite
-        const yes = confirm("Supplément +1 € ?\nNon = Annuler  •  Oui = OK");
+        // libellé "Non / Oui" (OK = Oui, Annuler = Non)
+        const yes = confirm("Supplément +1 € ?\nNon / Oui");
         if(!yes){ cart.add(p,false,null); return; }
-        // petit sélecteur du type de supplément
         const t = prompt("Choisis le type de supplément :\nviande / poisson / œuf / fromage","viande");
         const choice = (t||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
         const valid = SUPPL_CHOICES.find(c=>c===choice);
@@ -303,45 +315,39 @@
     }catch(err){ showErr(String(err)); alert("Impossible d'envoyer la commande. Merci de réessayer."); }
   }
 
+  /* ==== Bandeau horaires (Europe/Paris) ==== */
+  function updateStatus(){
+    const tz = 'Europe/Paris';
+    const now = new Date();
+    const fmt = new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:tz,hour12:false});
+    const h = Number(fmt.format(now).slice(0,2));
+    const m = Number(fmt.format(now).slice(3,5));
+    const toMin = (H,M)=>H*60+M;
+    const cur = toMin(h,m);
+    const soonOpen = toMin(17,30);
+    const open = toMin(18,0);
+    const closeSoon = toMin(20,30);
+    const close = toMin(21,0);
+
+    const led = document.getElementById('led');
+    const txt = document.getElementById('status-text');
+
+    if (cur < soonOpen){ led.className='led closed'; txt.textContent='Fermé pour le moment — retrouvez-nous ce week-end !'; return; }
+    if (cur >= soonOpen && cur < open){ led.className='led soon'; txt.textContent='Ouvre bientôt (dès 17:30)'; return; }
+    if (cur >= open && cur < closeSoon){ led.className='led open'; txt.textContent='Ouvert (18:00–21:00)'; return; }
+    if (cur >= closeSoon && cur < close){ led.className='led soon'; txt.textContent='Ferme bientôt (20:30)'; return; }
+    led.className='led closed'; txt.textContent='Fermé pour le moment — retrouvez-nous ce week-end !';
+  }
+  setInterval(updateStatus, 60_000);
+
   /* ==== HOOKS ==== */
   document.getElementById('btn-view').onclick=openModal;
   document.getElementById('btn-checkout').onclick=openModal;
   document.getElementById('btn-close').onclick=(e)=>{e.preventDefault();closeModal();};
   document.getElementById('btn-send').onclick=(e)=>{e.preventDefault();sendOrder();};
 
-  renderMenu(); renderCartBar();
-
-  /* ==== Statut horaires (Europe/Paris) ==== */
-  function computeStatus(){
-    const tz = 'Europe/Paris';
-    const now = new Date();
-    // heure Paris en composants
-    const p = new Date(new Intl.DateTimeFormat('fr-FR', {timeZone:tz, hour12:false, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit'}).format(now)
-      .replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:$6'));
-    const d = new Intl.DateTimeFormat('en-GB', { timeZone: tz, weekday:'short' }).format(now).toLowerCase(); // fri/sat/sun
-    const isOpenDay = (['fri','sat','sun'].includes(d));
-
-    const hm = p.getHours()*60 + p.getMinutes();
-    const at = m => m; // minutes since midnight
-    const T1730=at(17*60+30), T1800=at(18*60), T2030=at(20*60+30), T2100=at(21*60);
-
-    const el = document.getElementById('status');
-    const tx = document.getElementById('status-text');
-
-    let cls='st-closed', text='Fermé pour le moment — retrouvez-nous ce week-end !';
-
-    if (isOpenDay){
-      if (hm>=T1730 && hm<T1800) { cls='st-soon'; text='Ouvre bientôt dès 17:30'; }
-      else if (hm>=T1800 && hm<T2030) { cls='st-open'; text='Ouvert jusqu’à 21:00'; }
-      else if (hm>=T2030 && hm<T2100) { cls='st-soon'; text='Ferme bientôt — 20:30'; }
-      else { cls='st-closed'; text='Fermé pour le moment — retrouvez-nous ce week-end !'; }
-    }
-
-    el.className = 'status '+cls;
-    tx.textContent = text;
-  }
-  computeStatus();
-  setInterval(computeStatus, 60_000);
+  // init
+  renderMenu(); renderCartBar(); updateStatus();
 </script>
 </body>
 </html>
