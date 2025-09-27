@@ -13,25 +13,21 @@
   html,body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
   .wrap{max-width:980px;margin:18px auto;padding:0 14px}
 
-  /* entête */
   .brand{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
   .brand .dot{width:10px;height:10px;border-radius:50%;background:#37d36a;box-shadow:0 0 8px #37d36a}
   .brand .name{font-weight:800;letter-spacing:.5px}
 
-  /* bandeau horaires compact */
-  .status{display:flex;align-items:center;gap:10px;max-width:max-content;
-    border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;background:rgba(0,0,0,.28);backdrop-filter:blur(4px)}
-  .status .led{width:10px;height:10px;border-radius:50%}
-  .led.closed{background:#ff5c5c;box-shadow:0 0 10px #ff5c5c}
-  .led.soon{background:#ffb54c;box-shadow:0 0 10px #ffb54c}
-  .led.open{background:#37d36a;box-shadow:0 0 10px #37d36a}
-
-  /* hero */
-  .hero{border-radius:18px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.08);margin-top:10px}
+  .hero{border-radius:18px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.08)}
   .hero img{display:block;width:100%;height:260px;object-fit:cover;filter:contrast(1.05) saturate(1.05)}
   .hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.75))}
   .hero .txt{position:absolute;left:16px;right:16px;bottom:14px}
   h1{margin:0 0 6px 0;font-size:28px}
+  .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.26);
+    padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.28);backdrop-filter:blur(4px);width:max-content;margin:10px}
+  .badge .b-dot{width:8px;height:8px;border-radius:50%;background:#36d36a}
+
+  .note{background:rgba(229,82,82,.18);border:1px solid rgba(229,82,82,.5);color:#ffd3d3;
+    padding:12px 14px;border-radius:14px;margin:14px 0}
 
   h2{margin:18px 0 8px;font-size:28px}
   p{color:var(--muted);margin:8px 0 16px}
@@ -63,7 +59,7 @@
   input,textarea{width:100%;border:1px solid var(--line);background:#0e1420;color:#fff;border-radius:10px;padding:10px}
   label{color:#cfd6e7;font-size:.95rem}
 
-  /* infos pratiques */
+  /* section infos pratiques */
   .infos{background:linear-gradient(135deg, rgba(32,148,93,.12), rgba(229,82,82,.10));
     border:1px solid var(--line);border-radius:18px;padding:14px}
   .infos h3{margin:6px 0 10px 0}
@@ -73,30 +69,17 @@
   #err{position:fixed;right:8px;bottom:8px;max-width:92vw;background:#2a1b1b;border:1px solid #5d2f2f;border-radius:10px;padding:10px 12px;display:none;z-index:999}
   #err pre{white-space:pre-wrap;margin:6px 0 0 0;color:#ffd1d1}
   footer{opacity:.75;margin:22px 0 10px;font-size:.95rem}
-
-  /* mobile affiné */
-  @media (max-width:560px){
-    .hero img{height:220px}
-    .item-name{font-size:18px}
-    .price{min-width:auto}
-    .grid2{grid-template-columns:1fr}
-  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- entête -->
   <div class="brand">
     <span class="dot"></span>
     <div class="name">PIZZ’AMIGO</div>
   </div>
 
-  <!-- bandeau horaires compact -->
-  <div class="status" id="status">
-    <span class="led closed" id="led"></span>
-    <b id="status-text">Fermé pour le moment — retrouvez-nous ce week-end !</b>
-  </div>
+  <div class="badge"><span class="b-dot"></span><b>Ouverture week-end</b></div>
 
   <!-- HERO -->
   <section class="hero">
@@ -108,13 +91,12 @@
     </div>
   </section>
 
-  <h2>Notre carte</h2>
-  <section id="menu" class="menu"></section>
+  <div class="note"><b>Fermé pour le moment</b> — retrouvez-nous ce week-end !</div>
 
-  <!-- Note boissons sous la carte -->
-  <p class="card" style="margin-top:6px">
-    <b>Boissons :</b> réglez en ligne, <b>saveur choisie sur place</b>. Supplément (viande / poisson / œuf / fromage) : <b>+1 €</b> par ajout.
-  </p>
+  <h2>Notre carte</h2>
+  <p>Boissons : réglez en ligne, <b>saveur choisie sur place</b>. Supplément (viande / poisson / œuf / fromage) : <b>+1 €</b> par ajout.</p>
+
+  <section id="menu" class="menu"></section>
 
   <!-- Barre panier -->
   <div id="cart-bar" class="hidden">
@@ -162,17 +144,17 @@
 
   <footer>© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
 
-  <!-- Panneau erreurs JS -->
+  <!-- Panneau erreurs JS (anti page blanche) -->
   <div id="err"><b>Erreur JavaScript</b><pre id="err-msg"></pre></div>
 </div>
 
 <script>
   /* ==== Panneau erreur pour éviter les pages blanches ==== */
   function showErr(msg){const b=document.getElementById('err');b.style.display='block';document.getElementById('err-msg').textContent=msg;}
-  window.addEventListener('error', e=>showErr(e.message+'\\n'+(e.error&&e.error.stack||'')));
+  window.addEventListener('error', e=>showErr(e.message+'\n'+(e.error&&e.error.stack||'')));
   window.addEventListener('unhandledrejection', e=>showErr('Promise rejetée: '+(e.reason&&e.reason.message||e.reason)));
 
-  /* ==== CONFIG (change seulement API_URL si besoin) ==== */
+  /* ==== CONFIG ==== */
   const API_URL = "https://script.google.com/macros/s/AKfycbyePXcqPFPs0uhNOcVM5J5Nq3LCgsrB9UKVOmit1HVoTBzCdZRDCxEntrydbXSyQMXu/exec";
   const SUPPL_PRICE = 1.00;
   const SUPPL_CHOICES = ["viande","poisson","œuf","fromage"];
@@ -240,11 +222,11 @@
           </div>
         </div>`;
       el.querySelector('.add').onclick = ()=>{
-        if(p.drink){ // pas de supplément pour boisson
-          cart.add(p,false,null); return;
+        if(p.drink){ // pas de supplément pour les boissons
+          cart.add(p,false,null);
+          return;
         }
-        // libellé "Non / Oui" (OK = Oui, Annuler = Non)
-        const yes = confirm("Supplément +1 € ?\nNon / Oui");
+        const yes = confirm("Supplément +1 € ?\nOK = Oui · Annuler = Non");
         if(!yes){ cart.add(p,false,null); return; }
         const t = prompt("Choisis le type de supplément :\nviande / poisson / œuf / fromage","viande");
         const choice = (t||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
@@ -291,23 +273,17 @@
   }
   function closeModal(){ document.getElementById('checkout').close(); }
 
-  /* ==== util : accepte JSON OU texte ("ok") ==== */
-  async function parseApiResponse(res){
-    const raw = await res.text();
-    let data;
-    try { data = JSON.parse(raw); }
-    catch { data = { ok: /^(ok|true)$/i.test(raw.trim()) }; }
-    return { ok: !!data.ok, raw, status: res.status };
-  }
-
-  /* ==== ENVOI COMMANDE robuste ==== */
+  /* ==== ENVOI API (tolérant JSON ou texte "ok") ==== */
   async function sendOrder(){
     try{
       const name=document.getElementById('ck-name').value.trim();
-      const phone=document.getElementById('ck-phone').value.replace(/\s+/g,'').trim();
+      const phone=document.getElementById('ck-phone').value.trim();
       const slot=document.getElementById('ck-slot').value.trim();
       const note=document.getElementById('ck-note').value.trim();
-      if(!name||!phone||!slot||cart.items.length===0){ alert("Merci de compléter nom, téléphone, horaire et panier."); return; }
+      if(!name||!phone||!slot||cart.items.length===0){ 
+        alert("Merci de compléter nom, téléphone, horaire et panier."); 
+        return; 
+      }
 
       const payload={
         name, phone, slot, note,
@@ -316,53 +292,29 @@
         source: "site"
       };
 
-      // essai 1 : text/plain (souvent le plus tolérant)
-      let res  = await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
-      let pr   = await parseApiResponse(res);
+      const res = await fetch(API_URL,{
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(payload)
+      });
 
-      // essai 2 : sans header strict (si le script n'aime pas)
-      if(!res.ok || !pr.ok){
-        res = await fetch(API_URL,{method:"POST",body:JSON.stringify(payload)});
-        pr  = await parseApiResponse(res);
-      }
+      const txt = await res.text();
+      let data;
+      try { data = JSON.parse(txt); }
+      catch { data = { ok: /^(ok|true)$/i.test(txt.trim()) }; }
 
-      if(!res.ok || !pr.ok){
-        console.error("Échec API", pr.status, pr.raw);
+      if(!res.ok || !data.ok){
+        console.error('API fail', res.status, txt);
         alert("Impossible d'envoyer la commande. Merci de réessayer.");
         return;
       }
 
       cart.clear(); closeModal(); alert("Commande enregistrée. Merci !");
     }catch(err){
-      console.error(err);
+      showErr(String(err));
       alert("Impossible d'envoyer la commande. Merci de réessayer.");
     }
   }
-
-  /* ==== Bandeau horaires (Europe/Paris) ==== */
-  function updateStatus(){
-    const tz = 'Europe/Paris';
-    const now = new Date();
-    const fmt = new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:tz,hour12:false});
-    const h = Number(fmt.format(now).slice(0,2));
-    const m = Number(fmt.format(now).slice(3,5));
-    const toMin = (H,M)=>H*60+M;
-    const cur = toMin(h,m);
-    const soonOpen = toMin(17,30);
-    const open = toMin(18,0);
-    const closeSoon = toMin(20,30);
-    const close = toMin(21,0);
-
-    const led = document.getElementById('led');
-    const txt = document.getElementById('status-text');
-
-    if (cur < soonOpen){ led.className='led closed'; txt.textContent='Fermé pour le moment — retrouvez-nous ce week-end !'; return; }
-    if (cur >= soonOpen && cur < open){ led.className='led soon'; txt.textContent='Ouvre bientôt (dès 17:30)'; return; }
-    if (cur >= open && cur < closeSoon){ led.className='led open'; txt.textContent='Ouvert (18:00–21:00)'; return; }
-    if (cur >= closeSoon && cur < close){ led.className='led soon'; txt.textContent='Ferme bientôt (20:30)'; return; }
-    led.className='led closed'; txt.textContent='Fermé pour le moment — retrouvez-nous ce week-end !';
-  }
-  setInterval(updateStatus, 60_000);
 
   /* ==== HOOKS ==== */
   document.getElementById('btn-view').onclick=openModal;
@@ -370,8 +322,7 @@
   document.getElementById('btn-close').onclick=(e)=>{e.preventDefault();closeModal();};
   document.getElementById('btn-send').onclick=(e)=>{e.preventDefault();sendOrder();};
 
-  // init
-  renderMenu(); renderCartBar(); updateStatus();
+  renderMenu(); renderCartBar();
 </script>
 </body>
 </html>
