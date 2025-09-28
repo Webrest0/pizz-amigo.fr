@@ -252,12 +252,67 @@ function openModal(){
 }
 function closeModal(){ document.getElementById('checkout').close(); }
 
-/* ENVOI API robuste avec anti double-clic */
-let sending = false;
+<script>
+/* ENVOI API robuste avec anti-double clic */
 async function sendOrder(){
-  if (sending) return; // anti double-clic
-  sending = true;
+  const btn = document.getElementById('btn-send');
+  try{
+    const name=document.getElementById('ck-name').value.trim();
+    const phone=document.getElementById('ck-phone').value.trim();
+    const slot=document.getElementById('ck-slot').value.trim();
+    const note=document.getElementById('ck-note').value.trim();
 
+    if(!name||!phone||!slot||cart.items.length===0){
+      alert("Merci de compléter nom, téléphone, horaire et panier.");
+      return;
+    }
+
+    // Bloquer le bouton dès le clic
+    btn.disabled = true;
+    const oldText = btn.textContent;
+    btn.textContent = "Envoi…";
+
+    const items = cart.items.map(i=>({
+      name:i.name, qty:i.qty, price:+i.price,
+      supplType:i.suppl?.type||null, supplPrice:+(i.suppl?.price||0)
+    }));
+
+    const payload={
+      name, phone, slot, note,
+      items, basket: JSON.stringify(items),
+      total: Number(cart.total.toFixed(2)),
+      status:'new',
+      source:'site'
+    };
+
+    const res=await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload)
+    });
+
+    const txt=await res.text();
+    let ok=false;
+    try{ok=!!(JSON.parse(txt).ok);}catch{ ok=/^(ok|true)$/i.test(txt.trim()); }
+
+    if(!res.ok && !ok){
+      console.error('API fail',res.status,txt);
+      alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)'));
+    }else{
+      cart.clear();
+      closeModal();
+      alert("Commande enregistrée. Merci !");
+    }
+  }catch(err){
+    showErr(String(err));
+    alert("Impossible d'envoyer la commande.\n"+String(err));
+  }finally{
+    // Toujours réactiver le bouton
+    btn.disabled = false;
+    btn.textContent = "Envoyer la commande";
+  }
+}
+</script>
   const btn = document.getElementById('btn-send');
   const oldTxt = btn.textContent;
   btn.textContent = "Envoi…";
