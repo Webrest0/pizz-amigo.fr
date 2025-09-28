@@ -52,6 +52,11 @@
   /* ==== FIX Android : prix qui dépasse dans la modale ==== */
   #ck-items .row{flex-wrap:wrap}
   #ck-items .price{min-width:72px;text-align:right;flex-shrink:0}
+
+  /* ==== AJOUTS: spinner + état désactivé du bouton ==== */
+  .btn[disabled]{opacity:.6;cursor:not-allowed}
+  .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;vertical-align:-2px;margin-right:8px;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -237,15 +242,25 @@ function openModal(){
 }
 function closeModal(){ document.getElementById('checkout').close(); }
 
-/* ENVOI API robuste — NE PAS TOUCHER */
+/* ENVOI API robuste — NE PAS TOUCHER (ajout: anti double-clic + spinner) */
+let isSending = false;
 async function sendOrder(){
+  if(isSending) return;               // anti double-clic
+  isSending = true;
+  const btn = document.getElementById('btn-send');
+  const prevHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span>Envoi…';
+  btn.disabled = true;
+  btn.setAttribute('aria-busy','true');
+
   try{
     const name=document.getElementById('ck-name').value.trim();
     const phone=document.getElementById('ck-phone').value.trim();
     const slot=document.getElementById('ck-slot').value.trim();
     const note=document.getElementById('ck-note').value.trim();
     if(!name||!phone||!slot||cart.items.length===0){
-      alert("Merci de compléter nom, téléphone, horaire et panier."); return;
+      alert("Merci de compléter nom, téléphone, horaire et panier.");
+      return;
     }
     const items = cart.items.map(i=>({
       name:i.name, qty:i.qty, price:+i.price,
@@ -262,10 +277,22 @@ async function sendOrder(){
     const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
     const txt=await res.text();
     let ok=false; try{ok=!!(JSON.parse(txt).ok);}catch{ ok=/^(ok|true)$/i.test(txt.trim()); }
-    if(!res.ok && !ok){ console.error('API fail',res.status,txt); alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)')); return; }
+    if(!res.ok && !ok){
+      console.error('API fail',res.status,txt);
+      alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)'));
+      return;
+    }
 
     cart.clear(); closeModal(); alert("Commande enregistrée. Merci !");
-  }catch(err){ showErr(String(err)); alert("Impossible d'envoyer la commande.\n"+String(err)); }
+  }catch(err){
+    showErr(String(err));
+    alert("Impossible d'envoyer la commande.\n"+String(err));
+  }finally{
+    isSending = false;
+    btn.disabled = false;
+    btn.removeAttribute('aria-busy');
+    btn.innerHTML = prevHTML;
+  }
 }
 
 /* bandeau ouverture (comportement existant) */
