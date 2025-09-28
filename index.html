@@ -9,50 +9,33 @@
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
   .wrap{max-width:980px;margin:18px auto;padding:0 14px}
-
   .brand{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
   .brand .dot{width:10px;height:10px;border-radius:50%;background:#37d36a;box-shadow:0 0 8px #37d36a}
   .brand .name{font-weight:800;letter-spacing:.5px}
-
   .hero{border-radius:18px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.08)}
   .hero img{display:block;width:100%;height:260px;object-fit:cover;filter:contrast(1.05) saturate(1.05)}
   .hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.75))}
   .hero .txt{position:absolute;left:16px;right:16px;bottom:14px}
   h1{margin:0 0 6px 0;font-size:28px}
-
   .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.26);padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.28);backdrop-filter:blur(4px);width:max-content;margin:10px}
   .badge .b-dot{width:8px;height:8px;border-radius:50%;background:#36d36a}
-
   .note{background:rgba(229,82,82,.18);border:1px solid rgba(229,82,82,.5);color:#ffd3d3;padding:12px 14px;border-radius:14px;margin:14px 0}
-
   h2{margin:18px 0 8px;font-size:28px}
   p{color:var(--muted);margin:8px 0 16px}
-
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
   .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
   .price{color:var(--green);font-weight:800;white-space:nowrap;min-width:70px;text-align:right}
-
   .btn{border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:999px;padding:8px 12px;cursor:pointer}
   .btn.ghost{opacity:.85}
   .btn.primary{background:var(--green);color:#001b10;border-color:transparent}
   .btn.red{border-color:#ff8b8b;color:#ffb4b4}
-  .btn[disabled]{opacity:.6;cursor:not-allowed}
-
-  .spinner{
-    width:16px;height:16px;border:2px solid rgba(255,255,255,.35);
-    border-top-color:#fff;border-radius:50%;display:inline-block;
-    animation:spin .8s linear infinite;vertical-align:-3px;margin-left:8px
-  }
-  @keyframes spin{to{transform:rotate(360deg)}}
-
+  .btn[disabled]{opacity:.6;cursor:not-allowed;pointer-events:none}
   .item-name{font-size:20px;font-weight:800}
   .item-desc{color:var(--muted)}
   .menu .card{transition:transform .06s ease}
   .menu .card:active{transform:scale(.995)}
-
   #cart-bar{position:sticky;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);padding:12px;display:flex;gap:12px;justify-content:center;z-index:50}
   #cart-bar.hidden{display:none}
-
   dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:18px;max-width:760px;width:calc(100% - 24px)}
   dialog::backdrop{background:rgba(0,0,0,.6)}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -61,11 +44,9 @@
   .pill.active{outline:2px solid var(--accent);background:rgba(255,181,76,.08)}
   input,textarea{width:100%;border:1px solid var(--line);background:#0e1420;color:#fff;border-radius:10px;padding:10px}
   label{color:#cfd6e7;font-size:.95rem}
-
   .infos{background:linear-gradient(135deg, rgba(32,148,93,.12), rgba(229,82,82,.10));border:1px solid var(--line);border-radius:18px;padding:14px}
   .infos a{color:#9ec7ff}
   footer{opacity:.75;margin:22px 0 10px;font-size:.95rem}
-
   #err{position:fixed;right:8px;bottom:8px;max-width:92vw;background:#2a1b1b;border:1px solid #5d2f2f;border-radius:10px;padding:10px 12px;display:none;z-index:999}
   #err pre{white-space:pre-wrap;margin:6px 0 0 0;color:#ffd1d1}
 </style>
@@ -139,7 +120,7 @@ window.addEventListener('error', e=>showErr(e.message+'\n'+(e.error&&e.error.sta
 window.addEventListener('unhandledrejection', e=>showErr('Promise rejetée: '+(e.reason&&e.reason.message||e.reason)));
 
 /* ===== CONFIG ===== */
-const API_URL = "https://script.google.com/macros/s/AKfycbyePXcqPFPs0uhNOcVM5J5Nq3LCgsrB9UKVOmit1HVoTBzCdZRDCxEntrydbXSyQMXu/exec"; // <- ton /exec
+const API_URL = "REMPLACE-MOI-PAR-TON-URL-EXEC"; /* <<< METS ICI TON /exec ACTUEL */
 const SUPPL_PRICE = 1.00;
 const SUPPL_CHOICES = ["viande","poisson","œuf","fromage"];
 
@@ -252,8 +233,7 @@ function openModal(){
 }
 function closeModal(){ document.getElementById('checkout').close(); }
 
-<script>
-/* ENVOI API robuste avec anti-double clic */
+/* ENVOI API robuste — anti double-clic + libellé "Envoi…" (envoi inchangé) */
 async function sendOrder(){
   const btn = document.getElementById('btn-send');
   try{
@@ -261,107 +241,47 @@ async function sendOrder(){
     const phone=document.getElementById('ck-phone').value.trim();
     const slot=document.getElementById('ck-slot').value.trim();
     const note=document.getElementById('ck-note').value.trim();
-
     if(!name||!phone||!slot||cart.items.length===0){
-      alert("Merci de compléter nom, téléphone, horaire et panier.");
-      return;
+      alert("Merci de compléter nom, téléphone, horaire et panier."); return;
     }
 
-    // Bloquer le bouton dès le clic
-    btn.disabled = true;
+    // Bloquer le bouton immédiatement
     const oldText = btn.textContent;
+    btn.disabled = true;
     btn.textContent = "Envoi…";
 
     const items = cart.items.map(i=>({
       name:i.name, qty:i.qty, price:+i.price,
       supplType:i.suppl?.type||null, supplPrice:+(i.suppl?.price||0)
     }));
-
     const payload={
       name, phone, slot, note,
-      items, basket: JSON.stringify(items),
+      items, basket: JSON.stringify(items), // compat
       total: Number(cart.total.toFixed(2)),
       status:'new',
       source:'site'
     };
 
-    const res=await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify(payload)
-    });
-
+    const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
     const txt=await res.text();
-    let ok=false;
-    try{ok=!!(JSON.parse(txt).ok);}catch{ ok=/^(ok|true)$/i.test(txt.trim()); }
-
+    let ok=false; try{ok=!!(JSON.parse(txt).ok);}catch{ ok=/^(ok|true)$/i.test(txt.trim()); }
     if(!res.ok && !ok){
       console.error('API fail',res.status,txt);
       alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)'));
     }else{
-      cart.clear();
-      closeModal();
-      alert("Commande enregistrée. Merci !");
+      cart.clear(); closeModal(); alert("Commande enregistrée. Merci !");
     }
+
+    // réactiver après la réponse
+    btn.disabled = false;
+    btn.textContent = oldText;
+
   }catch(err){
-    showErr(String(err));
-    alert("Impossible d'envoyer la commande.\n"+String(err));
-  }finally{
-    // Toujours réactiver le bouton
+    // réactiver en cas d'erreur JS/réseau
     btn.disabled = false;
     btn.textContent = "Envoyer la commande";
-  }
-}
-</script>
-  const btn = document.getElementById('btn-send');
-  const oldTxt = btn.textContent;
-  btn.textContent = "Envoi…";
-  btn.disabled = true;
-  const spin = document.createElement('span'); spin.className = 'spinner'; btn.appendChild(spin);
-
-  try{
-    const name=document.getElementById('ck-name').value.trim();
-    const phone=document.getElementById('ck-phone').value.trim();
-    const slot=document.getElementById('ck-slot').value.trim();
-    const note=document.getElementById('ck-note').value.trim();
-    if(!name||!phone||!slot||cart.items.length===0){
-      alert("Merci de compléter nom, téléphone, horaire et panier.");
-      return;
-    }
-    const items = cart.items.map(i=>({
-      name:i.name, qty:i.qty, price:+i.price,
-      supplType:i.suppl?.type||null, supplPrice:+(i.suppl?.price||0)
-    }));
-    const payload={
-      name, phone, slot, note,
-      items, basket: JSON.stringify(items), // compat Dashboard
-      total: Number(cart.total.toFixed(2)),
-      status:'new',
-      source:'site'
-    };
-
-    const res=await fetch(API_URL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload)
-    });
-
-    const txt=await res.text();
-    let ok=false; try{ ok=!!(JSON.parse(txt).ok);}catch{ ok=/^(ok|true)$/i.test(txt.trim()); }
-    if(!res.ok || !ok){
-      console.error('API fail',res.status,txt);
-      alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)'));
-      return;
-    }
-
-    cart.clear(); closeModal(); alert("Commande enregistrée. Merci !");
-  }catch(err){
     showErr(String(err));
     alert("Impossible d'envoyer la commande.\n"+String(err));
-  }finally{
-    sending = false;
-    btn.disabled = false;
-    btn.textContent = oldTxt;
   }
 }
 
@@ -374,10 +294,10 @@ async function sendOrder(){
     const h = new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(now);
     const [HH,MM] = h.split(':').map(x=>+x);
     const minutes = HH*60+MM;
-    const toMin = (s)=>{const [a,b]=s.split(':');return (+a)*60+(+b);}
-    const soonOpen = minutes>=toMin('17:30') && minutes<toMin('18:00');
-    const open     = minutes>=toMin('18:00') && minutes<toMin('21:00');
-    const soonClose= minutes>=toMin('20:30') && minutes<toMin('21:00');
+    const min = (h)=>{const [a,b]=h.split(':');return (+a)*60+(+b);}
+    const soonOpen = minutes>=min('17:30') && minutes<min('18:00');
+    const open = minutes>=min('18:00') && minutes<min('21:00');
+    const soonClose = minutes>=min('20:30') && minutes<min('21:00');
 
     if(soonOpen) el.innerHTML = '<b>Ouvre bientôt</b> — dès 17:30';
     else if(open && !soonClose) el.innerHTML = '<b>Ouvert</b> — 18:00–21:00';
