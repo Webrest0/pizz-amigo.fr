@@ -16,7 +16,6 @@
     -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     -webkit-text-size-adjust:100%;
   }
-  /* petits plus pour Android (tap/scroll plus propres) */
   a,button{ -webkit-tap-highlight-color: transparent; }
   img{ display:block; max-width:100%; height:auto; }
 
@@ -36,7 +35,6 @@
     padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.28);backdrop-filter:blur(4px);width:max-content;margin:10px}
   .badge .b-dot{width:8px;height:8px;border-radius:50%;background:#36d36a}
 
-  /* Bandeau horaires (couleurs dynamiques) */
   .note{padding:12px 14px;border-radius:14px;margin:14px 0;border:1px solid var(--line);background:rgba(255,255,255,.06)}
   .note--soon{background:rgba(255,181,76,.18);border-color:rgba(255,181,76,.5);color:#ffe9c6}
   .note--open{background:rgba(31,207,124,.18);border-color:rgba(31,207,124,.55);color:#d7ffe9}
@@ -59,12 +57,10 @@
   .menu .card{transition:transform .06s ease}
   .menu .card:active{transform:scale(.995)}
 
-  /* barre panier */
   #cart-bar{position:sticky;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);
     backdrop-filter:blur(6px);padding:12px;display:flex;gap:12px;justify-content:center;z-index:50}
   #cart-bar.hidden{display:none}
 
-  /* modal checkout */
   dialog{border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:18px;max-width:760px;width:calc(100% - 24px)}
   dialog::backdrop{background:rgba(0,0,0,.6)}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -74,14 +70,12 @@
   input,textarea{width:100%;border:1px solid var(--line);background:#0e1420;color:#fff;border-radius:10px;padding:10px}
   label{color:#cfd6e7;font-size:.95rem}
 
-  /* section infos pratiques */
   .infos{background:linear-gradient(135deg, rgba(32,148,93,.12), rgba(229,82,82,.10));
     border:1px solid var(--line);border-radius:18px;padding:14px}
   .infos a{color:#9ec7ff}
 
   footer{opacity:.75;margin:22px 0 10px;font-size:.95rem}
 
-  /* panneau erreur JS */
   #err{position:fixed;right:8px;bottom:8px;max-width:92vw;background:#2a1b1b;border:1px solid #5d2f2f;border-radius:10px;padding:10px 12px;display:none;z-index:999}
   #err pre{white-space:pre-wrap;margin:6px 0 0 0;color:#ffd1d1}
 </style>
@@ -96,7 +90,6 @@
 
   <div class="badge"><span class="b-dot"></span><b>Ouverture week-end</b></div>
 
-  <!-- HERO -->
   <section class="hero">
     <img src="./images/oven.jpg" alt="Four à pizza traditionnel" />
     <div class="scrim"></div>
@@ -106,7 +99,6 @@
     </div>
   </section>
 
-  <!-- Bandeau horaires (couleur et texte dynamiques, cf. script) -->
   <div class="note" id="open-note"><b>Fermé pour le moment</b> — retrouvez-nous ce week-end !</div>
 
   <h2>Notre carte</h2>
@@ -114,14 +106,12 @@
 
   <section id="menu" class="menu"></section>
 
-  <!-- Barre panier -->
   <div id="cart-bar" class="hidden">
     <span>Panier • <b><span id="cart-total">0,00</span> €</b></span>
     <button class="btn ghost" id="btn-view">Voir panier</button>
     <button class="btn primary" id="btn-checkout">Passer commande</button>
   </div>
 
-  <!-- Modal checkout -->
   <dialog id="checkout">
     <form method="dialog" style="padding:16px">
       <h2 style="margin:4px 0 10px">Finaliser la commande</h2>
@@ -143,11 +133,9 @@
     </form>
   </dialog>
 
-  <!-- Infos pratiques -->
   <section class="infos" style="margin-top:18px">
     <h3>Infos pratiques</h3>
     <ul>
-      <!-- Liens universels Google Maps : ouvre l’appli sur Android/iOS et le web sinon -->
       <li><b>Vendredi soir</b> — Saint-Georges-de-Reneins (Parking Caisse d’épargne) • 18:00–21:00 —
         <a href="https://www.google.com/maps/search/?api=1&query=Saint-Georges-de-Reneins%20Parking%20Caisse%20d%27%C3%A9pargne" target="_blank" rel="noopener">Itinéraire</a></li>
       <li><b>Samedi soir</b> — Amareins (carrefour des feux) • 18:00–21:00 —
@@ -156,28 +144,22 @@
         <a href="https://www.google.com/maps/search/?api=1&query=Amareins%20carrefour%20des%20feux" target="_blank" rel="noopener">Itinéraire</a></li>
     </ul>
     <p><b>Téléphone :</b> <a href="tel:+33680480456">06 80 48 04 56</a> ·
-      <!-- Remplace FACEBOOK_URL par l’URL exacte de votre page -->
-      <a href="https://m.facebook.com/" target="_blank" rel="noopener">Facebook</a></p>
+      <a href="https://www.facebook.com/share/17XGQEJ3JR/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></p>
   </section>
 
   <footer>© PIZZ’AMIGO — Montmerle-sur-Saône</footer>
-
-  <!-- Panneau erreurs JS -->
   <div id="err"><b>Erreur JavaScript</b><pre id="err-msg"></pre></div>
 </div>
 
 <script>
-/* ===== Panneau erreur (anti page blanche) ===== */
 function showErr(msg){const b=document.getElementById('err');b.style.display='block';document.getElementById('err-msg').textContent=msg;}
 window.addEventListener('error', e=>showErr(e.message+'\\n'+(e.error&&e.error.stack||'')));
 window.addEventListener('unhandledrejection', e=>showErr('Promise rejetée: '+(e.reason&&e.reason.message||e.reason)));
 
-/* ===== CONFIG (NE PAS MODIFIER l’envoi) ===== */
 const API_URL = "https://script.google.com/macros/s/AKfycbyePXcqPFPs0uhNOcVM5J5Nq3LCgsrB9UKVOmit1HVoTBzCdZRDCxEntrydbXSyQMXu/exec";
 const SUPPL_PRICE = 1.00;
 const SUPPL_CHOICES = ["viande","poisson","œuf","fromage"];
 
-/* ===== CARTE ===== */
 const MENU = [
   {n:"Margharita", p:7.50, d:"tomate, emmental"},
   {n:"Chasseur", p:8.50, d:"tomate, emmental, champignons"},
@@ -206,7 +188,6 @@ const MENU = [
   {n:"Bouteille 50cl (choisie sur place)", p:3.00, d:"boisson — saveur choisie sur place", drink:true}
 ];
 
-/* ===== Panier (inchangé) ===== */
 const cart = {
   items: [],
   get total(){return this.items.reduce((s,i)=>s + (i.price + (i.suppl?.price||0))*i.qty, 0)},
@@ -222,7 +203,6 @@ const cart = {
 };
 const euro = v => v.toFixed(2).replace('.', ',');
 
-/* ===== Rendu menu (inchangé) ===== */
 function renderMenu(){
   const root=document.getElementById('menu'); root.innerHTML='';
   MENU.forEach(p=>{
@@ -250,14 +230,12 @@ function renderMenu(){
   });
 }
 
-/* ===== Barre panier ===== */
 function renderCartBar(){
   const bar=document.getElementById('cart-bar');
   document.getElementById('cart-total').textContent=euro(cart.total);
   bar.classList.toggle('hidden', cart.items.length===0);
 }
 
-/* ===== Modal panier ===== */
 function openModal(){
   const m=document.getElementById('checkout'); const list=document.getElementById('ck-items');
   list.innerHTML='';
@@ -286,7 +264,6 @@ function openModal(){
 }
 function closeModal(){ document.getElementById('checkout').close(); }
 
-/* ===== ENVOI (inchangé) ===== */
 async function sendOrder(){
   try{
     const name=document.getElementById('ck-name').value.trim();
@@ -317,12 +294,7 @@ async function sendOrder(){
   }catch(err){ showErr(String(err)); alert("Impossible d'envoyer la commande.\n"+String(err)); }
 }
 
-/* ===== Bandeau horaires (Europe/Paris) =====
-   17:30–18:00  => Ouvre bientôt - 18:00 (orange)
-   18:00–20:30  => Ouvert (vert)
-   20:30–21:00  => Ferme bientôt (orange)
-   sinon        => Fermé (rouge)
-*/
+/* Bandeau horaires Europe/Paris */
 (function(){
   const el = document.getElementById('open-note');
   function minOf(hhmm){const [H,M]=hhmm.split(':').map(Number);return H*60+M;}
@@ -348,10 +320,9 @@ async function sendOrder(){
     }
   }
   tick();
-  setInterval(tick, 30000); // rafraîchit toutes les 30s
+  setInterval(tick, 30000);
 })();
 
-/* ===== Hooks ===== */
 document.getElementById('btn-view').onclick=openModal;
 document.getElementById('btn-checkout').onclick=openModal;
 document.getElementById('btn-close').onclick=(e)=>{e.preventDefault();closeModal();};
