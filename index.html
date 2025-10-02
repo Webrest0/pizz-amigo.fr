@@ -49,14 +49,20 @@
   #err{position:fixed;right:8px;bottom:8px;max-width:92vw;background:#2a1b1b;border:1px solid #5d2f2f;border-radius:10px;padding:10px 12px;display:none;z-index:999}
   #err pre{white-space:pre-wrap;margin:6px 0 0 0;color:#ffd1d1}
 
-  /* ==== FIX Android : prix qui dépasse dans la modale ==== */
+  /* Fix Android : prix qui dépasse dans la modale */
   #ck-items .row{flex-wrap:wrap}
   #ck-items .price{min-width:72px;text-align:right;flex-shrink:0}
 
-  /* ==== AJOUTS: spinner + état désactivé du bouton ==== */
+  /* Envoi: spinner + anti double-clic */
   .btn[disabled]{opacity:.6;cursor:not-allowed}
   .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;vertical-align:-2px;margin-right:8px;animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Sélecteur de supplément */
+  #suppl form{padding:16px}
+  .pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+  .pick-btn{border:1px solid var(--line);background:#0e1420;color:#fff;border-radius:12px;padding:10px;cursor:pointer;text-align:center}
+  .pick-btn.green{background:rgba(31,207,124,.12);border-color:rgba(31,207,124,.35)}
 </style>
 </head>
 <body>
@@ -107,6 +113,21 @@
     </form>
   </dialog>
 
+  <!-- Sélecteur de supplément -->
+  <dialog id="suppl">
+    <form method="dialog">
+      <h3 style="margin:0 0 8px">Supplément ?</h3>
+      <div class="pick-grid">
+        <button value="" class="pick-btn">Sans supplément</button>
+        <div></div>
+        <button value="viande" class="pick-btn green">+1 € Viande</button>
+        <button value="poisson" class="pick-btn green">+1 € Poisson</button>
+        <button value="œuf" class="pick-btn green">+1 € Œuf</button>
+        <button value="fromage" class="pick-btn green">+1 € Fromage</button>
+      </div>
+    </form>
+  </dialog>
+
   <section class="infos" style="margin-top:18px">
     <h3>Infos pratiques</h3>
     <ul>
@@ -123,15 +144,15 @@
 </div>
 
 <script>
-/* panneau erreur anti page blanche */
+/* anti page blanche */
 function showErr(msg){const b=document.getElementById('err');b.style.display='block';document.getElementById('err-msg').textContent=msg;}
-window.addEventListener('error', e=>showErr(e.message+'\n'+(e.error&&e.error.stack||'')));
-window.addEventListener('unhandledrejection', e=>showErr('Promise rejetée: '+(e.reason&&e.reason.message||e.reason)));
+addEventListener('error', e=>showErr(e.message+'\n'+(e.error&&e.error.stack||'')));
+addEventListener('unhandledrejection', e=>showErr('Promise rejetée: '+(e.reason&&e.reason.message||e.reason)));
 
 /* ===== CONFIG ===== */
-const API_URL = "https://script.google.com/macros/s/AKfycbyePXcqPFPs0uhNOcVM5J5Nq3LCgsrB9UKVOmit1HVoTBzCdZRDCxEntrydbXSyQMXu/exec";
+/* >>> NOUVELLE API <<< */
+const API_URL = "https://script.google.com/macros/s/AKfycbzbE_VbKy5U-fJxHRJhx1Qrgm-V_B0-XKntJ6nryUefIVUOZeQglc7PoSlwQx20_g95pA/exec";
 const SUPPL_PRICE = 1.00;
-const SUPPL_CHOICES = ["viande","poisson","œuf","fromage"];
 
 /* ===== CARTE ===== */
 const MENU = [
@@ -178,6 +199,25 @@ const cart = {
 };
 const euro = v => v.toFixed(2).replace('.', ',');
 
+/* ===== Sélecteur de supplément ===== */
+function supportsDialog(){ return typeof HTMLDialogElement !== 'undefined'; }
+function pickSuppl(){
+  if(!supportsDialog()){
+    // fallback propre (sans erreur si Annuler)
+    const ok = confirm("Ajouter un supplément (+1 €) ?");
+    if(!ok) return Promise.resolve('');
+    const t = prompt("Type : viande / poisson / œuf / fromage","viande");
+    const v = (t||'').trim().toLowerCase();
+    return Promise.resolve(['viande','poisson','œuf','fromage'].includes(v)?v:'viande');
+  }
+  return new Promise(resolve=>{
+    const dlg = document.getElementById('suppl');
+    const onClose = ()=>{ dlg.removeEventListener('close', onClose); resolve(dlg.returnValue||''); };
+    dlg.addEventListener('close', onClose);
+    dlg.showModal();
+  });
+}
+
 /* rendu menu */
 function renderMenu(){
   const root=document.getElementById('menu'); root.innerHTML='';
@@ -194,13 +234,11 @@ function renderMenu(){
           <button class="btn add">Ajouter</button>
         </div>
       </div>`;
-    el.querySelector('.add').onclick = ()=>{
+    el.querySelector('.add').onclick = async ()=>{
       if(p.drink){ cart.add(p,false,null); return; }
-      if(!confirm("Supplément +1 € ?\nNon = sans • Oui = avec")){ cart.add(p,false,null); return; }
-      const t = prompt("Type du supplément :\nviande / poisson / œuf / fromage","viande");
-      const choice = (t||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
-      const valid = SUPPL_CHOICES.find(c=>c===choice);
-      cart.add(p,true, valid||"viande");
+      const choice = await pickSuppl();          // "" = sans supplément
+      if(!choice) cart.add(p,false,null);
+      else        cart.add(p,true, choice);
     };
     root.appendChild(el);
   });
@@ -242,77 +280,58 @@ function openModal(){
 }
 function closeModal(){ document.getElementById('checkout').close(); }
 
-/* ENVOI API robuste — NE PAS TOUCHER (ajout: anti double-clic + spinner) */
+/* ENVOI API — anti double-clic + spinner */
 let isSending = false;
 async function sendOrder(){
-  if(isSending) return;               // anti double-clic
+  if(isSending) return;
   isSending = true;
   const btn = document.getElementById('btn-send');
   const prevHTML = btn.innerHTML;
   btn.innerHTML = '<span class="spinner"></span>Envoi…';
-  btn.disabled = true;
-  btn.setAttribute('aria-busy','true');
+  btn.disabled = true; btn.setAttribute('aria-busy','true');
 
   try{
     const name=document.getElementById('ck-name').value.trim();
     const phone=document.getElementById('ck-phone').value.trim();
     const slot=document.getElementById('ck-slot').value.trim();
     const note=document.getElementById('ck-note').value.trim();
-    if(!name||!phone||!slot||cart.items.length===0){
-      alert("Merci de compléter nom, téléphone, horaire et panier.");
-      return;
-    }
-    const items = cart.items.map(i=>({
-      name:i.name, qty:i.qty, price:+i.price,
-      supplType:i.suppl?.type||null, supplPrice:+(i.suppl?.price||0)
-    }));
-    const payload={
-      name, phone, slot, note,
-      items, basket: JSON.stringify(items),
-      total: Number(cart.total.toFixed(2)),
-      status:'new',
-      source:'site'
-    };
+    if(!name||!phone||!slot||cart.items.length===0){ alert("Merci de compléter nom, téléphone, horaire et panier."); return; }
+    const items = cart.items.map(i=>({ name:i.name, qty:i.qty, price:+i.price, supplType:i.suppl?.type||null, supplPrice:+(i.suppl?.price||0) }));
+    const payload={ name, phone, slot, note, items, basket: JSON.stringify(items), total: Number(cart.total.toFixed(2)), status:'new', source:'site' };
 
     const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
     const txt=await res.text();
     let ok=false; try{ok=!!(JSON.parse(txt).ok);}catch{ ok=/^(ok|true)$/i.test(txt.trim()); }
-    if(!res.ok && !ok){
-      console.error('API fail',res.status,txt);
-      alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)'));
-      return;
-    }
+    if(!res.ok && !ok){ console.error('API fail',res.status,txt); alert("Impossible d'envoyer la commande.\nHTTP "+res.status+"\n"+(txt||'(réponse vide)')); return; }
 
     cart.clear(); closeModal(); alert("Commande enregistrée. Merci !");
-  }catch(err){
-    showErr(String(err));
-    alert("Impossible d'envoyer la commande.\n"+String(err));
-  }finally{
-    isSending = false;
-    btn.disabled = false;
-    btn.removeAttribute('aria-busy');
-    btn.innerHTML = prevHTML;
-  }
+  }catch(err){ showErr(String(err)); alert("Impossible d'envoyer la commande.\n"+String(err)); }
+  finally{ isSending=false; btn.disabled=false; btn.removeAttribute('aria-busy'); btn.innerHTML=prevHTML; }
 }
 
-/* bandeau ouverture (comportement existant) */
+/* Bandeau ouverture — V/ S/ D uniquement + couleurs */
 (function(){
   try{
     const el = document.getElementById('open-note');
     const now = new Date();
     const tz = 'Europe/Paris';
-    const h = new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(now);
-    const [HH,MM] = h.split(':').map(x=>+x);
+    const fmt = new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz});
+    const [HH,MM] = fmt.format(now).split(':').map(n=>+n);
     const minutes = HH*60+MM;
     const min = (h)=>{const [a,b]=h.split(':');return (+a)*60+(+b);}
-    const soonOpen = minutes>=min('17:30') && minutes<min('18:00');
-    const open = minutes>=min('18:00') && minutes<min('21:00');
-    const soonClose = minutes>=min('20:30') && minutes<min('21:00');
+    const day = new Intl.DateTimeFormat('en-GB',{weekday:'short',timeZone:tz}).format(now); // Sun, Mon, ...
+    const isOpenDay = ['Fri','Sat','Sun'].includes(day);
 
-    if(soonOpen) el.innerHTML = '<b>Ouvre bientôt</b> — 18:00';
-    else if(open && !soonClose) el.innerHTML = '<b>Ouvert</b> — 18:00–21:00';
-    else if(soonClose) el.innerHTML = '<b>Ferme bientôt</b> — à 21:00';
-    else el.innerHTML = '<b>Fermé pour le moment</b> — retrouvez-nous ce week-end !';
+    const setState = (bg,border,txt)=>{ el.style.background=bg; el.style.borderColor=border; el.innerHTML = txt; };
+
+    if(isOpenDay){
+      if(minutes>=min('17:30') && minutes<min('18:00')) setState('rgba(255,181,76,.18)','rgba(255,181,76,.5)','<b>Ouvre bientôt</b> — 18:00');
+      else if(minutes>=min('18:00') && minutes<min('20:30')) setState('rgba(31,207,124,.18)','rgba(31,207,124,.5)','<b>Ouvert</b> — 18:00–21:00');
+      else if(minutes>=min('20:30') && minutes<min('21:00')) setState('rgba(255,181,76,.18)','rgba(255,181,76,.5)','<b>Ferme bientôt</b> — 21:00');
+      else setState('rgba(229,82,82,.18)','rgba(229,82,82,.5)','<b>Fermé pour le moment</b> — retrouvez-nous ce week-end !');
+    }else{
+      setState('rgba(229,82,82,.18)','rgba(229,82,82,.5)','<b>Fermé pour le moment</b> — retrouvez-nous ce week-end !');
+    }
   }catch{}
 })();
 
